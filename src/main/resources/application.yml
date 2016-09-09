@@ -1,0 +1,21 @@
+db:
+  driver: com.mysql.jdbc.Driver
+  url: jdbc:mysql://localhost:3306/libre-lingvo?characterEncoding=UTF-8
+  username: root
+  password: 1q2w3e4r
+hibernate:
+  dialect: org.hibernate.dialect.MySQL5Dialect
+  show_sql: "true"
+  format_sql: "true"
+  hbm2ddl.auto: update
+  entitymanager.packagesToScan: com.example.libre.lingvo.entities
+---
+spring:
+profiles: dev
+hibernate:
+hbm2ddl.auto: update
+---
+spring:
+profiles: init
+hibernate:
+hbm2ddl.auto: create

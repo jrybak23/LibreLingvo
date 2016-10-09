@@ -49,11 +49,13 @@ dependencies {
 	compile('org.springframework.boot:spring-boot-starter-data-jpa')
 	compile('org.springframework.boot:spring-boot-starter-data-rest')
 	compile('org.springframework.boot:spring-boot-starter-security')
+	compile('org.springframework.boot:spring-boot-starter-mail')
 	compile('org.springframework.boot:spring-boot-devtools')
 
 	compile group: 'org.hibernate', name: 'hibernate-jpamodelgen', version: '+'
 	compile group: 'org.springframework.security.oauth', name: 'spring-security-oauth2', version: '+'
 	compile group: 'org.modelmapper', name: 'modelmapper', version: '+'
+	compile group: 'org.freemarker', name: 'freemarker', version: '2.3.23'
 
 	runtime('mysql:mysql-connector-java')
 	testCompile('org.springframework.boot:spring-boot-starter-test')

@@ -82,3 +82,4 @@ dist/
 ### Custom
 generated/
 generated_tests/
+credentials.yml

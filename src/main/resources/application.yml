@@ -7,15 +7,31 @@ hibernate:
   dialect: org.hibernate.dialect.MySQL5Dialect
   show_sql: "true"
   format_sql: "true"
-  hbm2ddl.auto: update
-  entitymanager.packagesToScan: com.example.libre.lingvo.entities
+  entitymanager.packagesToScan: org.libre.lingvo.entities
+spring:
+  profiles:
+    active: dev
 ---
 spring:
-profiles: dev
+  profiles: dev
 hibernate:
-hbm2ddl.auto: update
+  hbm2ddl:
+      auto: update
+      import_files: null
+      import_files_sql_extractor: null
 ---
 spring:
-profiles: init
+  profiles: test
 hibernate:
-hbm2ddl.auto: create
+  hbm2ddl:
+      auto: update
+      import_files: null
+      import_files_sql_extractor: null
+---
+spring:
+  profiles: init
+hibernate:
+  hbm2ddl:
+      auto: create
+      import_files: init-database.sql
+      import_files_sql_extractor: org.hibernate.tool.hbm2ddl.MultipleLinesSqlCommandExtractor

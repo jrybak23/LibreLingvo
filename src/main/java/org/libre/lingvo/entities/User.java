@@ -14,8 +14,12 @@ import java.util.Set;
 @Entity
 public class User implements Serializable {
 
+    @Id
+    @GeneratedValue
     private Long id;
 
+    @NotEmpty
+    @Column(unique = true, nullable = false)
     private String email;
 
     private String name;
@@ -24,8 +28,10 @@ public class User implements Serializable {
 
     private Boolean enabled=false;
 
+    @OneToMany(mappedBy = "pk.user", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     private Set<UserRole> userRoles=new HashSet<>();
 
+    @OneToOne(mappedBy = "user", cascade = CascadeType.REMOVE)
     private VerificationToken verificationToken;
 
     public User() {
@@ -40,8 +46,6 @@ public class User implements Serializable {
         this.userRoles = user.getUserRoles();
     }
 
-    @Id
-    @GeneratedValue
     public Long getId() {
         return id;
     }
@@ -50,8 +54,7 @@ public class User implements Serializable {
         this.id = id;
     }
 
-    @NotEmpty
-    @Column(unique = true, nullable = false)
+
     public String getEmail() {
         return email;
     }
@@ -60,7 +63,7 @@ public class User implements Serializable {
         this.email = email;
     }
 
-    @OneToMany(mappedBy = "pk.user", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+
     public Set<UserRole> getUserRoles() {
         return userRoles;
     }
@@ -93,7 +96,6 @@ public class User implements Serializable {
         this.enabled = enabled;
     }
 
-    @OneToOne(mappedBy = "user", cascade = CascadeType.REMOVE)
     public VerificationToken getVerificationToken() {
         return verificationToken;
     }

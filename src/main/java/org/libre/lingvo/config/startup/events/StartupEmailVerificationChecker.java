@@ -1,4 +1,4 @@
-package org.libre.lingvo.config.events;
+package org.libre.lingvo.config.startup.events;
 
 import org.libre.lingvo.dao.VerificationTokenDao;
 import org.libre.lingvo.entities.VerificationToken;

@@ -15,10 +15,14 @@ import java.util.Set;
 @Entity
 public class Role implements GrantedAuthority, Serializable {
 
+    @Id
+    @GeneratedValue
     private Integer id;
 
+    @NotEmpty
     private String name;
 
+    @OneToMany(mappedBy = "pk.role")
     private Set<UserRole> userRoles = new HashSet<>();
 
     public Role() {
@@ -28,8 +32,6 @@ public class Role implements GrantedAuthority, Serializable {
         this.id = id;
     }
 
-    @Id
-    @GeneratedValue
     public Integer getId() {
         return id;
     }
@@ -38,7 +40,6 @@ public class Role implements GrantedAuthority, Serializable {
         this.id = id;
     }
 
-    @NotEmpty
     public String getName() {
         return name;
     }
@@ -47,7 +48,6 @@ public class Role implements GrantedAuthority, Serializable {
         this.name = name;
     }
 
-    @OneToMany(mappedBy = "pk.role")
     public Set<UserRole> getUserRoles() {
         return userRoles;
     }
@@ -57,7 +57,6 @@ public class Role implements GrantedAuthority, Serializable {
     }
 
     @Override
-    @Transient
     public String getAuthority() {
         return name;
     }

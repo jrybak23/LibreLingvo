@@ -1,0 +1,17 @@
+<form class="form-horizontal" ng-submit="saveChanges()">
+  <div class="form-group">
+    <label for="Email" class="col-sm-1 control-label">Email:</label>
+    <div class="col-sm-7">
+      <span class="form-control text-info" id="Email">{{user.email}}</span>
+    </div>
+  </div>
+
+  <div class="form-group">
+    <label for="Name" class="col-sm-1 control-label">{{'label.name'|translate}}:</label>
+    <div class="col-sm-7">
+      <input type="text" class="form-control" id="Name" placeholder="Name" ng-model="user.name">
+    </div>
+  </div>
+
+  <button type="submit" class="btn btn-primary">{{'label.save.changes' | translate}}</button>
+</form>

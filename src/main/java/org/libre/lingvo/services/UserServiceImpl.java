@@ -14,6 +14,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 /**
@@ -35,7 +36,9 @@ public class UserServiceImpl implements UserService {
     private UserDtoConverter userDtoConverter;
 
     @Override
-    public UserDetailsDto getUserDetails(User user) {
+    public UserDetailsDto getUserDetails(Long id) {
+        Optional<User> userOptional = userDao.find(id);
+        User user = userOptional.orElseThrow(() -> new IllegalArgumentException("No user with such id"));
         return userDtoConverter.convertToUserDetailsDto(user);
     }
 
@@ -49,6 +52,9 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public void registerUser(UserRegistrationDto dto) {
+        if (userDao.existWithEmail(dto.getEmail()))
+            throw new IllegalArgumentException("User with such email already exists");
+
         User user = userDtoConverter.convertFromUserRegistrationDto(dto);
         user.setEnabled(false);
         Role role = roleDao.findByName("ROLE_USER");
@@ -59,6 +65,11 @@ public class UserServiceImpl implements UserService {
         userDao.create(user);
 
         verificationTokenService.create(user);
+    }
+
+    @Override
+    public void deleteNotEnabledUsersWithExpiredTokens() {
+        userDao.deleteNotEnabledUsersWithExpiredTokens();
     }
 
 }

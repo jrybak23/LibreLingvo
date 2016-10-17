@@ -1,0 +1,35 @@
+<form ng-submit="register()" class="form-horizontal">
+  <div class="form-group">
+    <label for="Email" class="col-sm-1 control-label">Email:</label>
+    <div class="col-sm-7">
+      <input ng-model="user.email" required type="email" class="form-control" id="Email" placeholder="Email">
+    </div>
+  </div>
+  <div class="form-group">
+    <label for="Name" class="col-sm-1 control-label">{{'label.name' | translate}}:</label>
+    <div class="col-sm-7">
+      <input ng-model="user.name" type="text" class="form-control" id="Name" placeholder="{{'label.name' | translate}}">
+    </div>
+  </div>
+
+  <div class="form-group">
+    <label for="Password" class="col-sm-1 control-label">{{'label.password' | translate}}:</label>
+    <div class="col-sm-7">
+      <input ng-model="user.password" required name="password" type="password" class="form-control" id="Password"
+             placeholder="{{'label.password' | translate}}">
+    </div>
+  </div>
+  <div class="form-group">
+    <label for="ConfirmPassword" class="col-sm-1 control-label">{{'label.confirm.password' | translate}}:</label>
+    <div class="col-sm-7">
+      <input ng-model="confirmPassword"
+             wj-validation-error="confirmPassword != user.password ? 'Passwords don\'t match' : ''"
+             required
+             type="password"
+             class="form-control" id="ConfirmPassword"
+             placeholder="{{'label.confirm.password' | translate}}">
+    </div>
+  </div>
+
+  <button type="submit" class="btn btn-primary">{{'label.sign.up' | translate}}</button>
+</form>

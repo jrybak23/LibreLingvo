@@ -8,7 +8,7 @@ public class EmailVerificationDto {
 
     private String originUrl;
 
-    private String originEnableUserUrl;
+    private String enableUserUrl;
 
     private String cancelUserEnablingUrl;
 
@@ -28,12 +28,12 @@ public class EmailVerificationDto {
         this.originUrl = originUrl;
     }
 
-    public String getOriginEnableUserUrl() {
-        return originEnableUserUrl;
+    public String getEnableUserUrl() {
+        return enableUserUrl;
     }
 
-    public void setOriginEnableUserUrl(String originEnableUserUrl) {
-        this.originEnableUserUrl = originEnableUserUrl;
+    public void setEnableUserUrl(String enableUserUrl) {
+        this.enableUserUrl = enableUserUrl;
     }
 
     public String getCancelUserEnablingUrl() {

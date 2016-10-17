@@ -13,7 +13,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
-import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.*;
 
 /**
  * Created by igorek2312 on 27.09.16.
@@ -24,15 +24,41 @@ import static org.junit.Assert.assertTrue;
 @Transactional
 public class UserDaoTest {
 
+    public static final String testEmail = "testemail@example.com";
+
     @Autowired
-    private UserDao dao;
+    private UserDao userDao;
 
     @Autowired
     private VerificationTokenDao verificationTokenDao;
 
+
     @Test
     public void testFindByEmailSubstring(){
-        List<User> l = dao.findByEmailSubstring("sample", 1,20);
-        assertTrue(l.size()>0);
+        String emailSubstring = testEmail.substring(0, 10);
+        List<User> list = userDao.findByEmailSubstring(emailSubstring, 1,20);
+        assertEquals(list.size(),0);
+        persistSample();
+        list = userDao.findByEmailSubstring(emailSubstring, 1,20);
+        assertEquals(list.size(),1);
+    }
+
+    @Test
+    public void testExistUserWithEmail(){
+        assertFalse(userDao.existWithEmail(testEmail));
+        persistSample();
+        assertTrue(userDao.existWithEmail(testEmail));
+    }
+
+    @Test
+    public void testDeleteNotEnabledWithExpiredTokens(){
+       userDao.deleteNotEnabledUsersWithExpiredTokens();
+    }
+
+    private void persistSample(){
+        User user=new User();
+        user.setEmail(testEmail);
+        user.setName("test sample");
+        userDao.create(user);
     }
 }

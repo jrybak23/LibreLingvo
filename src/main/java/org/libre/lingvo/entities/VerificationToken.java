@@ -3,6 +3,7 @@ package org.libre.lingvo.entities;
 import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
+import java.io.Serializable;
 import java.sql.Timestamp;
 import java.util.Calendar;
 import java.util.Date;
@@ -11,15 +12,15 @@ import java.util.Date;
  * Created by igorek2312 on 10.09.16.
  */
 @Entity
-public class VerificationToken {
-    private static final int EXPIRATION = 60 * 24;
+public class VerificationToken implements Serializable {
+    private static final int EXPIRATION = 60 * 24; //minutes
 
     @Id
     @GeneratedValue(generator = "uuid")
     @GenericGenerator(name = "uuid", strategy = "uuid2")
     private String id;
 
-    @OneToOne(fetch = FetchType.EAGER)
+    @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(nullable = false)
     private User user;
 

@@ -1,11 +1,44 @@
 .views-content {
- padding-top: 55px;
+  padding-top: 65px;
+  padding-bottom: 20px;
 }
 
 .footer {
   padding: 0;
 }
 
+.footer .btn {
+  height: 20px;
+  padding: 0px 10px;
+}
+
+.footer .btn-group {
+  margin: 0px;
+}
+
 .footer > * {
   margin: 0;
+}
+
+.navbar-right {
+  padding-right: 15px;
+}
+
+footer ul li {
+  display: inline;
+  margin-right: 3px;
+}
+
+#loading-bar .bar {
+  background: white;
+  height: 4px;
+}
+
+#loading-bar-spinner .spinner-icon {
+  width: 10px;
+  height: 10px;
+  border: solid 2px transparent;
+  border-top-color: white;
+  border-left-color: white;
+  border-radius: 5px;
 }

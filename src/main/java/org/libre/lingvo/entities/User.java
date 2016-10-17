@@ -28,10 +28,12 @@ public class User implements Serializable {
 
     private Boolean enabled=false;
 
-    @OneToMany(mappedBy = "pk.user", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    private Boolean nonLocked=true;
+
+    @OneToMany(mappedBy = "pk.user", cascade = CascadeType.ALL,fetch = FetchType.EAGER)
     private Set<UserRole> userRoles=new HashSet<>();
 
-    @OneToOne(mappedBy = "user", cascade = CascadeType.REMOVE)
+    @OneToOne(mappedBy = "user", cascade = CascadeType.REMOVE,fetch = FetchType.LAZY)
     private VerificationToken verificationToken;
 
     public User() {
@@ -43,6 +45,7 @@ public class User implements Serializable {
         this.email = user.getEmail();
         this.password = user.getPassword();
         this.enabled=user.isEnabled();
+        this.nonLocked=user.isNonLocked();
         this.userRoles = user.getUserRoles();
     }
 
@@ -94,6 +97,14 @@ public class User implements Serializable {
 
     public void setEnabled(boolean enabled) {
         this.enabled = enabled;
+    }
+
+    public Boolean isNonLocked() {
+        return nonLocked;
+    }
+
+    public void setNonLocked(Boolean nonLocked) {
+        this.nonLocked = nonLocked;
     }
 
     public VerificationToken getVerificationToken() {

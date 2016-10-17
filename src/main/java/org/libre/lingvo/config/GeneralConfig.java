@@ -7,16 +7,17 @@ import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.support.PropertySourcesPlaceholderConfigurer;
 import org.springframework.core.io.ClassPathResource;
+import org.springframework.scheduling.annotation.EnableScheduling;
 
 import java.net.MalformedURLException;
 import java.net.URL;
-import java.util.Timer;
 
 /**
  * Created by igorek2312 on 08.09.16.
  */
 @Configuration
 @ComponentScan
+@EnableScheduling
 public class GeneralConfig {
 
     @Bean
@@ -42,31 +43,6 @@ public class GeneralConfig {
             e.printStackTrace();
         }
         return null;
-    }
-
-    @Bean
-    public URL originEnableUserUrl() {
-        try {
-            return new URL(originUrl().toString() + "/enable-user/");
-        } catch (MalformedURLException e) {
-            e.printStackTrace();
-        }
-        return null;
-    }
-
-    @Bean
-    public URL originCancelUserEnablingUrl() {
-        try {
-            return new URL(originUrl().toString() + "/cancel-user-enabling/");
-        } catch (MalformedURLException e) {
-            e.printStackTrace();
-        }
-        return null;
-    }
-
-    @Bean
-    public Timer timer() {
-        return new Timer();
     }
 
 }

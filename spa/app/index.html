@@ -10,13 +10,16 @@
   <!-- bower:css -->
   <link rel="stylesheet" href="bower_components/bootstrap/dist/css/bootstrap.css" />
   <link rel="stylesheet" href="bower_components/components-font-awesome/css/font-awesome.css" />
+  <link rel="stylesheet" href="bower_components/bootstrap-material-design/dist/css/bootstrap-material-design.css" />
+  <link rel="stylesheet" href="bower_components/bootstrap-material-design/dist/css/ripples.css" />
+  <link rel="stylesheet" href="bower_components/angular-loading-bar/build/loading-bar.css" />
   <!-- endbower -->
   <!-- endbuild -->
   <!-- build:css(.tmp) styles/main.css -->
   <link rel="stylesheet" href="styles/main.css">
   <!-- endbuild -->
 </head>
-<body ng-app="libreLingvoApp">
+<body ng-app="libreLingvoApp" ng-controller="IndexCtrl">
 <!--[if lte IE 8]>
 <p class="browsehappy">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade
   your browser</a> to improve your experience.</p>
@@ -38,8 +41,19 @@
   <!-- Collect the nav links, forms, and other content for toggling -->
   <div class="collapse navbar-collapse navbar-ex1-collapse">
     <ul class="nav navbar-nav">
-      <li ui-sref-active="active"><a ui-sref="main"><i class="fa fa-home"></i>Home</a></li>
+      <li ui-sref-active="active"><a ui-sref="main"><i class="fa fa-home"></i>{{'label.home' | translate}}</a></li>
       <li ui-sref-active="active"><a ui-sref="about">About</a></li>
+    </ul>
+    <ul class="nav navbar-nav navbar-right">
+      <li ng-show="isAnnonymos" ui-sref-active="active"><a ui-sref="log-in"><i class="fa fa-sign-in"></i>{{'label.log.in'
+        | translate}}</a></li>
+      <li ng-show="isAnnonymos" ui-sref-active="active"><a ui-sref="sign-up"><i class="fa fa-user-plus"></i>{{'label.sign.up'
+        | translate}}</a></li>
+      <li ng-show="hasUserAuthority" ui-sref-active="active"><a ui-sref="profile"><i class="fa fa-user"></i>{{'label.profile'
+        | translate}}</a>
+      </li>
+      <li ng-show="hasUserAuthority"><a ng-click="logOut()" ui-sref="main"><i class="fa fa-sign-out"></i>{{'label.sign.out' |
+        translate}}</a></li>
     </ul>
   </div>
 </nav>
@@ -49,7 +63,25 @@
 </section>
 
 <footer class="footer panel-footer navbar-fixed-bottom">
-    <p class="text-center">&copy; Igor Rybak</p>
+  <ul>
+    <li>
+      <div class="btn-group" data-toggle="buttons">
+        <label class="btn btn-primary" ng-click="changeLanguage('en')">
+          <input type="radio" name="options"> English
+        </label>
+        <label class="btn btn-primary" ng-click="changeLanguage('uk')">
+          <input type="radio" name="options"> Українська
+        </label>
+      </div>
+    </li>
+
+    <li class="pull-right hidden-xs">
+      <a href="https://translate.google.com/">Google translate</a>
+    </li>
+    <li class="pull-right hidden-xs">
+      <a href="">Chrome plugin |</a>
+    </li>
+  </ul>
 </footer>
 
 <!-- Google Analytics: change UA-XXXXX-X to be your site's ID -->
@@ -79,6 +111,13 @@
 <script src="bower_components/angular-sanitize/angular-sanitize.js"></script>
 <script src="bower_components/angular-touch/angular-touch.js"></script>
 <script src="bower_components/angular-ui-router/release/angular-ui-router.js"></script>
+<script src="bower_components/angular-bootstrap/ui-bootstrap-tpls.js"></script>
+<script src="bower_components/angular-translate/angular-translate.js"></script>
+<script src="bower_components/angular-translate-loader-url/angular-translate-loader-url.js"></script>
+<script src="bower_components/bootstrap-sass/assets/javascripts/bootstrap.js"></script>
+<script src="bower_components/bootstrap-material-design/dist/js/material.js"></script>
+<script src="bower_components/bootstrap-material-design/dist/js/ripples.js"></script>
+<script src="bower_components/angular-loading-bar/build/loading-bar.js"></script>
 <!-- endbower -->
 <!-- endbuild -->
 
@@ -86,6 +125,21 @@
 <script src="scripts/app.js"></script>
 <script src="scripts/controllers/main.js"></script>
 <script src="scripts/controllers/about.js"></script>
+<script src="scripts/controllers/log-in.js"></script>
+<script src="scripts/controllers/sign-up.js"></script>
+<script src="scripts/services/oauth2.js"></script>
+<script src="scripts/services/message-box.js"></script>
+<script src="scripts/controllers/modal-message.js"></script>
+<script src="scripts/controllers/index.js"></script>
+<script src="scripts/services/user-authorities.js"></script>
+<script src="scripts/controllers/profile.js"></script>
+<script src="scripts/services/current-user.js"></script>
+<script src="scripts/directives/wjvalidationerror.js"></script>
+<script src="scripts/services/users.js"></script>
+<script src="scripts/controllers/enable-user.js"></script>
+<script src="scripts/controllers/cancel-user-enabling.js"></script>
+<script src="scripts/services/enable-user.js"></script>
+<script src="scripts/services/cancel-user-enabling.js"></script>
 <!-- endbuild -->
 </body>
 </html>

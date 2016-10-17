@@ -1,18 +1,22 @@
 package org.libre.lingvo.config;
 
 import freemarker.template.TemplateException;
-import org.libre.lingvo.tasks.DeleteNotEnabledUserTask;
+import org.libre.lingvo.services.UserService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.JavaMailSenderImpl;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.ui.freemarker.FreeMarkerConfigurationFactory;
 import org.springframework.web.servlet.view.freemarker.FreeMarkerConfigurer;
 
 import java.io.IOException;
-import java.util.Vector;
+import java.net.MalformedURLException;
+import java.net.URL;
 
 /**
  * Created by igorek2312 on 07.10.16.
@@ -28,6 +32,9 @@ public class EmailConfig {
 
     @Value("${email.password}")
     private String EMAIL_PASSWORD;
+
+    @Autowired
+    private UserService userService;
 
     @Bean
     public FreeMarkerConfigurer freemarkerConfig() throws IOException, TemplateException {
@@ -52,8 +59,28 @@ public class EmailConfig {
     }
 
     @Bean
-    public Vector<DeleteNotEnabledUserTask> deleteNotEnabledUserTasks() {
-        //return Collections.newSetFromMap(new ConcurrentHashMap<DeleteNotEnabledUserTask, Boolean>());
-        return new Vector<>();
+    public URL originEnableUserUrl(@Qualifier("originUrl") URL originUrl) {
+        try {
+            return new URL(originUrl.toString() + "/#/enable-user/");
+        } catch (MalformedURLException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    @Bean
+    public URL originCancelUserEnablingUrl(@Qualifier("originUrl") URL originUrl) {
+        try {
+            return new URL(originUrl.toString() + "/#/cancel-user-enabling/");
+        } catch (MalformedURLException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    //runs every 24 hours
+    @Scheduled(fixedRate = 1000*60*60*24)
+    public void deleteUsersWithExpiredTokens(){
+        userService.deleteNotEnabledUsersWithExpiredTokens();
     }
 }

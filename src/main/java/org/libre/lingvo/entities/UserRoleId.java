@@ -1,6 +1,7 @@
 package org.libre.lingvo.entities;
 
 import javax.persistence.Embeddable;
+import javax.persistence.FetchType;
 import javax.persistence.ManyToOne;
 import java.io.Serializable;
 
@@ -13,7 +14,7 @@ public class UserRoleId implements Serializable {
 
     private Role role;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     public User getUser() {
         return user;
     }
@@ -22,7 +23,7 @@ public class UserRoleId implements Serializable {
         this.user = user;
     }
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     public Role getRole() {
         return role;
     }

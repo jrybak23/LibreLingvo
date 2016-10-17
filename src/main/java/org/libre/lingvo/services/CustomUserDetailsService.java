@@ -20,14 +20,11 @@ import java.util.stream.Collectors;
 @Service
 public class CustomUserDetailsService implements UserDetailsService {
     @Autowired
-    UserDao userDao;
+    private UserDao userDao;
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        User user = userDao.findByEmail(username);
-        if (user == null) {
-            throw new UsernameNotFoundException(String.format("User %s does not exist!", username));
-        }
+        User user = userDao.findByEmail(username).orElseThrow(() -> new UsernameNotFoundException("User does not exist"));
         return new UserDaoUserDetails(user);
     }
 
@@ -54,7 +51,7 @@ public class CustomUserDetailsService implements UserDetailsService {
 
         @Override
         public boolean isAccountNonLocked() {
-            return true;
+            return isNonLocked();
         }
 
         @Override

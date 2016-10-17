@@ -13,7 +13,12 @@
     "angular-sanitize": "^1.4.0",
     "angular-touch": "^1.4.0",
     "angular-ui-router": "^0.3.1",
-    "components-font-awesome": "^4.6.3"
+    "components-font-awesome": "^4.6.3",
+    "angular-bootstrap": "^2.2.0",
+    "angular-translate": "^2.12.1",
+    "angular-translate-loader-url": "^2.12.1",
+    "bootstrap-material-design": "0.5.10",
+    "angular-loading-bar": "^0.9.0"
   },
   "devDependencies": {
     "angular-mocks": "^1.4.0"

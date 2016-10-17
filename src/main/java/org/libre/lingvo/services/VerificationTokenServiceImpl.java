@@ -6,12 +6,10 @@ import org.libre.lingvo.dao.VerificationTokenDao;
 import org.libre.lingvo.dto.EmailVerificationDto;
 import org.libre.lingvo.entities.User;
 import org.libre.lingvo.entities.VerificationToken;
-import org.libre.lingvo.tasks.DeleteNotEnabledUserTask;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.ConfigurableApplicationContext;
-import org.springframework.context.annotation.Lazy;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.mail.javamail.MimeMessagePreparator;
@@ -19,9 +17,10 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.freemarker.FreeMarkerTemplateUtils;
 
-import javax.annotation.PostConstruct;
 import java.net.URL;
-import java.util.*;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Optional;
 
 
 /**
@@ -46,9 +45,6 @@ public class VerificationTokenServiceImpl implements VerificationTokenService {
     private String EMAIL_USERNAME;
 
     @Autowired
-    private Timer timer;
-
-    @Autowired
     private JavaMailSender mailSender;
 
     @Autowired
@@ -60,9 +56,6 @@ public class VerificationTokenServiceImpl implements VerificationTokenService {
     @Autowired
     private UserDao userDao;
 
-    @Autowired
-    @Lazy
-    private Vector<DeleteNotEnabledUserTask> deleteNotEnabledUserTasks;
 
     @Autowired
     private ConfigurableApplicationContext applicationContext;
@@ -86,32 +79,20 @@ public class VerificationTokenServiceImpl implements VerificationTokenService {
         mailSender.send(preparator);
     }
 
-    private void findAndCancelTaskByTokenUuid(String uuid) {
-        deleteNotEnabledUserTasks.stream()
-                .filter(task -> task.getTokenUuid().equals(uuid))
-                .findFirst().ifPresent(task -> {
-            task.cancel();
-            timer.purge();
-            deleteNotEnabledUserTasks.remove(task);
-        });
-    }
-
     @Override
     public void enableUser(String tokenUuid) {
         Optional<VerificationToken> verificationToken = verificationTokenDao.find(tokenUuid);
-        verificationToken.ifPresent(token -> {
-            token.getUser().setEnabled(true);
-            verificationTokenDao.delete(token);
-            findAndCancelTaskByTokenUuid(tokenUuid);
-        });
-        verificationToken.orElseThrow(() -> new IllegalArgumentException("no verification token"));
+        VerificationToken token = verificationToken.orElseThrow(
+                () -> new IllegalArgumentException("No verification token with such uuid")
+        );
+
+        token.getUser().setEnabled(true);
     }
 
     @Override
     public void cancelUserEnabling(String tokenUuid) {
         verificationTokenDao.find(tokenUuid).ifPresent(token -> {
             userDao.delete(token.getUser());
-            findAndCancelTaskByTokenUuid(tokenUuid);
         });
     }
 
@@ -123,13 +104,9 @@ public class VerificationTokenServiceImpl implements VerificationTokenService {
         String uuid = token.getId();
         dto.setName(user.getName());
         dto.setOriginUrl(originUrl.toString());
-        dto.setOriginEnableUserUrl(originEnableUserUrl.toString() + uuid);
+        dto.setEnableUserUrl(originEnableUserUrl.toString() + uuid);
         dto.setCancelUserEnablingUrl(originCancelUserEnablingUrl.toString() + uuid);
         sendEmailMessage(user.getEmail(), dto);
-
-        DeleteNotEnabledUserTask task = applicationContext.getBean(DeleteNotEnabledUserTask.class);
-        task.setTokenUuid(token.getId());
-        timer.schedule(task, token.getExpiryDate());
-        deleteNotEnabledUserTasks.add(task);
     }
+
 }

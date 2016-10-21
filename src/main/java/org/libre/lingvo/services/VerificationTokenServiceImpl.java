@@ -6,6 +6,8 @@ import org.libre.lingvo.dao.VerificationTokenDao;
 import org.libre.lingvo.dto.EmailVerificationDto;
 import org.libre.lingvo.entities.User;
 import org.libre.lingvo.entities.VerificationToken;
+import org.libre.lingvo.exception.CustomError;
+import org.libre.lingvo.exception.CustomErrorException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
@@ -29,17 +31,6 @@ import java.util.Optional;
 @Service
 @Transactional
 public class VerificationTokenServiceImpl implements VerificationTokenService {
-    @Autowired
-    @Qualifier("originUrl")
-    private URL originUrl;
-
-    @Autowired
-    @Qualifier("originEnableUserUrl")
-    private URL originEnableUserUrl;
-
-    @Autowired
-    @Qualifier("originCancelUserEnablingUrl")
-    private URL originCancelUserEnablingUrl;
 
     @Value("${email.username}")
     private String EMAIL_USERNAME;
@@ -55,7 +46,6 @@ public class VerificationTokenServiceImpl implements VerificationTokenService {
 
     @Autowired
     private UserDao userDao;
-
 
     @Autowired
     private ConfigurableApplicationContext applicationContext;
@@ -83,7 +73,7 @@ public class VerificationTokenServiceImpl implements VerificationTokenService {
     public void enableUser(String tokenUuid) {
         Optional<VerificationToken> verificationToken = verificationTokenDao.find(tokenUuid);
         VerificationToken token = verificationToken.orElseThrow(
-                () -> new IllegalArgumentException("No verification token with such uuid")
+                () -> new CustomErrorException(CustomError.NO_VERIFICATION_TOKEN_WITH_SUCH_UUID)
         );
 
         token.getUser().setEnabled(true);
@@ -92,20 +82,22 @@ public class VerificationTokenServiceImpl implements VerificationTokenService {
     @Override
     public void cancelUserEnabling(String tokenUuid) {
         verificationTokenDao.find(tokenUuid).ifPresent(token -> {
-            userDao.delete(token.getUser());
+            User user = token.getUser();
+            if (!user.isEnabled())
+            userDao.delete(user);
         });
     }
 
     @Override
-    public void create(User user) {
+    public void create(User user, String originUrl) {
         VerificationToken token = new VerificationToken(user);
         verificationTokenDao.create(token);
         EmailVerificationDto dto = new EmailVerificationDto();
         String uuid = token.getId();
         dto.setName(user.getName());
-        dto.setOriginUrl(originUrl.toString());
-        dto.setEnableUserUrl(originEnableUserUrl.toString() + uuid);
-        dto.setCancelUserEnablingUrl(originCancelUserEnablingUrl.toString() + uuid);
+        dto.setOriginUrl(originUrl);
+        dto.setEnableUserUrl(originUrl + "/#/enable-user/" + uuid);
+        dto.setCancelUserEnablingUrl(originUrl + "/#/cancel-user-enabling/" + uuid);
         sendEmailMessage(user.getEmail(), dto);
     }
 

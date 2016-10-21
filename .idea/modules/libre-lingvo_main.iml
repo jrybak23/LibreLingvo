@@ -15,9 +15,9 @@
     <orderEntry type="library" name="Gradle: org.springframework.boot:spring-boot-starter-security:1.4.0.RELEASE" level="project" />
     <orderEntry type="library" name="Gradle: org.springframework.boot:spring-boot-starter-mail:1.4.0.RELEASE" level="project" />
     <orderEntry type="library" name="Gradle: org.springframework.boot:spring-boot-devtools:1.4.0.RELEASE" level="project" />
-    <orderEntry type="library" name="Gradle: org.hibernate:hibernate-jpamodelgen:5.2.2.Final" level="project" />
+    <orderEntry type="library" name="Gradle: org.hibernate:hibernate-jpamodelgen:5.2.3.Final" level="project" />
     <orderEntry type="library" name="Gradle: org.springframework.security.oauth:spring-security-oauth2:2.0.11.RELEASE" level="project" />
-    <orderEntry type="library" name="Gradle: org.modelmapper:modelmapper:0.7.6" level="project" />
+    <orderEntry type="library" name="Gradle: org.modelmapper:modelmapper:0.7.7" level="project" />
     <orderEntry type="library" name="Gradle: org.freemarker:freemarker:2.3.23" level="project" />
     <orderEntry type="library" name="Gradle: org.springframework.boot:spring-boot-starter:1.4.0.RELEASE" level="project" />
     <orderEntry type="library" name="Gradle: org.springframework.boot:spring-boot-starter-aop:1.4.0.RELEASE" level="project" />
@@ -86,7 +86,5 @@
     <orderEntry type="library" name="Gradle: org.springframework.plugin:spring-plugin-core:1.2.0.RELEASE" level="project" />
     <orderEntry type="library" name="Gradle: org.atteo:evo-inflector:1.2.1" level="project" />
     <orderEntry type="library" name="Gradle: ch.qos.logback:logback-core:1.1.7" level="project" />
-    <orderEntry type="library" name="Gradle: org.springframework:spring-test:4.3.2.RELEASE" level="project" />
-    <orderEntry type="library" name="Gradle: org.springframework.boot:spring-boot-test:1.4.0.RELEASE" level="project" />
   </component>
 </module>

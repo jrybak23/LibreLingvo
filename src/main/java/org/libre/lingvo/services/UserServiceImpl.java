@@ -8,6 +8,8 @@ import org.libre.lingvo.dto.UserRegistrationDto;
 import org.libre.lingvo.entities.Role;
 import org.libre.lingvo.entities.User;
 import org.libre.lingvo.entities.UserRole;
+import org.libre.lingvo.exception.CustomError;
+import org.libre.lingvo.exception.CustomErrorException;
 import org.libre.lingvo.utils.dto.converters.UserDtoConverter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -51,9 +53,9 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public void registerUser(UserRegistrationDto dto) {
+    public User registerUser(UserRegistrationDto dto) {
         if (userDao.existWithEmail(dto.getEmail()))
-            throw new IllegalArgumentException("User with such email already exists");
+            throw new CustomErrorException(CustomError.USER_WITH_SUCH_EMAIL_ALREADY_EXISTS);
 
         User user = userDtoConverter.convertFromUserRegistrationDto(dto);
         user.setEnabled(false);
@@ -62,9 +64,9 @@ public class UserServiceImpl implements UserService {
         userRole.setUser(user);
         userRole.setRole(role);
         user.getUserRoles().add(userRole);
-        userDao.create(user);
 
-        verificationTokenService.create(user);
+        userDao.create(user);
+        return user;
     }
 
     @Override

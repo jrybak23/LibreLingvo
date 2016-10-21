@@ -23,7 +23,13 @@ angular
     'pascalprecht.translate',
     'angular-loading-bar'
   ])
-  .constant('HOST_URL', 'http://localhost:8080')
+  .constant('GRUNT_SERVE_URL', 'http://localhost:9000')
+  .constant('TOMCAT_URL', 'http://localhost:8080')
+  .factory('HostUrl', function (GRUNT_SERVE_URL, TOMCAT_URL) {
+    var originUrl = location.origin;
+    var hostUrl = originUrl == GRUNT_SERVE_URL ? TOMCAT_URL : originUrl;
+    return hostUrl;
+  })
   .config(function ($stateProvider, $urlRouterProvider) {
     $stateProvider
       .state({
@@ -93,7 +99,9 @@ angular
         responseError: function (response) {
           console.log(response);
           var messageBox = $injector.get('MessageBox');
-          if (response.data && response.data.error_description === 'Bad credentials')
+          if (response.status === -1)
+            messageBox.show('error.connection.refused', MessageType.ERROR);
+          else if (response.data && response.data.error_description === 'Bad credentials')
             messageBox.show('error.invalid.password', MessageType.ERROR);
           else if (response.data && response.data.error_description === 'User is disabled')
             messageBox.show('error.disabled.account', MessageType.ERROR);
@@ -101,6 +109,8 @@ angular
             messageBox.show('error.locked.account', MessageType.ERROR);
           else if (response.data && response.data.message)
             messageBox.show(response.data.message, MessageType.ERROR, false);
+          else if (response.data && response.data.fieldErrors)
+            messageBox.showValidationErrorMessage(response.data.fieldErrors);
           else
             messageBox.show(response, MessageType.ERROR, false);
           return $q.reject(response);
@@ -108,8 +118,9 @@ angular
       };
     });
   })
-  .config(function ($translateProvider, HOST_URL) {
-    $translateProvider.useUrlLoader(HOST_URL + '/messageBundle');
+  .config(function ($translateProvider, HostUrlProvider) {
+    var hostUrl = HostUrlProvider.$get();
+    $translateProvider.useUrlLoader(hostUrl + '/messageBundle');
     $translateProvider.preferredLanguage('en');
     $translateProvider.fallbackLanguage('en');
   });

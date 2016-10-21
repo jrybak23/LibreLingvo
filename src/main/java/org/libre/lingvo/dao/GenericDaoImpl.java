@@ -72,4 +72,6 @@ public class GenericDaoImpl <T, ID extends Serializable> implements GenericDao<T
     public void delete(T entity) {
         entityManager.remove(entity);
     }
+
+
 }

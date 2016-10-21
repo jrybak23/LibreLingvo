@@ -8,7 +8,7 @@
  * Factory in the libreLingvoApp.
  */
 angular.module('libreLingvoApp')
-  .factory('Oauth2', function (HOST_URL, $http, $cookies, $httpParamSerializer, $q, $rootScope, UserAuthorities) {
+  .factory('Oauth2', function (HostUrl, $http, $cookies, $httpParamSerializer, $q, $rootScope, UserAuthorities) {
     var accessTokenData = {grant_type: "password"};
     var encoded = btoa("clientapp:123456");
 
@@ -17,7 +17,7 @@ angular.module('libreLingvoApp')
 
     var logInReq = {
       method: 'POST',
-      url: HOST_URL + "/oauth/token",
+      url: HostUrl + "/oauth/token",
       headers: {
         "Authorization": "Basic " + encoded,
         "Content-type": "application/x-www-form-urlencoded; charset=utf-8"
@@ -26,7 +26,7 @@ angular.module('libreLingvoApp')
 
     var logOutReq = {
       method: 'DELETE',
-      url: HOST_URL + "/api/oauth/revoke-token"
+      url: HostUrl + "/api/oauth/revoke-token"
     };
 
     var updateAuthorities = function () {

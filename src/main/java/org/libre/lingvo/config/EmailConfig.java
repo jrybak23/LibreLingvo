@@ -58,29 +58,9 @@ public class EmailConfig {
         return javaMailSender;
     }
 
-    @Bean
-    public URL originEnableUserUrl(@Qualifier("originUrl") URL originUrl) {
-        try {
-            return new URL(originUrl.toString() + "/#/enable-user/");
-        } catch (MalformedURLException e) {
-            e.printStackTrace();
-        }
-        return null;
-    }
-
-    @Bean
-    public URL originCancelUserEnablingUrl(@Qualifier("originUrl") URL originUrl) {
-        try {
-            return new URL(originUrl.toString() + "/#/cancel-user-enabling/");
-        } catch (MalformedURLException e) {
-            e.printStackTrace();
-        }
-        return null;
-    }
-
     //runs every 24 hours
-    @Scheduled(fixedRate = 1000*60*60*24)
-    public void deleteUsersWithExpiredTokens(){
+    @Scheduled(fixedRate = 1000 * 60 * 60 * 24)
+    public void deleteUsersWithExpiredTokens() {
         userService.deleteNotEnabledUsersWithExpiredTokens();
     }
 }

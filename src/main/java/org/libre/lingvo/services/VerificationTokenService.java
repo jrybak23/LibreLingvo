@@ -11,7 +11,5 @@ public interface VerificationTokenService {
 
     void cancelUserEnabling(String tokenUuid);
 
-    void create(User user);
-
-
+    void create(User user, String originUrl);
 }

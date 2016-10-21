@@ -2,6 +2,7 @@ package org.libre.lingvo.controllers;
 
 import org.libre.lingvo.config.SerializableResourceBundleMessageSource;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Locale;
@@ -14,6 +15,7 @@ import java.util.Properties;
 @RequestMapping("/messageBundle")
 public class LocaleController {
     @Autowired
+    @Qualifier("angularMessageSource")
     private SerializableResourceBundleMessageSource messageBundle;
 
     @RequestMapping(method = RequestMethod.GET)

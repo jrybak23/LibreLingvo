@@ -3,6 +3,7 @@ package org.libre.lingvo.services;
 import org.libre.lingvo.dto.FullUserDetailsDto;
 import org.libre.lingvo.dto.UserDetailsDto;
 import org.libre.lingvo.dto.UserRegistrationDto;
+import org.libre.lingvo.entities.User;
 
 import java.util.List;
 
@@ -15,7 +16,7 @@ public interface UserService {
 
     List<FullUserDetailsDto> getAllFullUserDetail();
 
-    void registerUser(UserRegistrationDto dto);
+    User registerUser(UserRegistrationDto dto);
 
     void deleteNotEnabledUsersWithExpiredTokens();
 }

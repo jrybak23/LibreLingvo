@@ -9,6 +9,7 @@
  */
 angular.module('libreLingvoApp')
   .controller('IndexCtrl', function ($scope, $translate, $cookies, $http, Oauth2) {
+
     $scope.changeLanguage = function (lang_key) {
       $http.defaults.headers.common['Accept-Language'] = lang_key;
       $cookies.put("default_lang_key", lang_key);

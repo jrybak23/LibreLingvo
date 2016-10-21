@@ -29,20 +29,10 @@ public class GeneralConfig {
         return propertySourcesPlaceholderConfigurer;
     }
 
-
     @Bean(name = "main")
     public ModelMapper modelMapper() {
         return new ModelMapper();
     }
 
-    @Bean
-    public URL originUrl() {
-        try {
-            return new URL("http://localhost:9000");
-        } catch (MalformedURLException e) {
-            e.printStackTrace();
-        }
-        return null;
-    }
 
 }

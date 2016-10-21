@@ -12,6 +12,7 @@ angular.module('libreLingvoApp')
     var messageContent = "none";
     var messageTitle = "none";
     var panelClass = "panel-default";
+    var messagefieldErrors;
 
     var messageModalOptions = {
       animation: true,
@@ -25,6 +26,16 @@ angular.module('libreLingvoApp')
         },
         panelClass: function () {
           return panelClass;
+        }
+      }
+    };
+
+    var validationErrorMessageModalOptions = {
+      animation: true,
+      size: "lg",
+      resolve: {
+        fieldErrors: function () {
+          return messagefieldErrors;
         }
       }
     };
@@ -60,6 +71,12 @@ angular.module('libreLingvoApp')
         messageModalOptions.templateUrl = 'views/modal-message.html';
         messageModalOptions.controller = 'ModalMessageCtrl';
         return $uibModal.open(messageModalOptions).result;
+      },
+      showValidationErrorMessage:function (fieldErrors) {
+        messagefieldErrors=fieldErrors;
+        validationErrorMessageModalOptions.templateUrl = 'views/validation-error-modal-message.html';
+        validationErrorMessageModalOptions.controller = 'ValidationErrorModalMessageCtrl';
+        return $uibModal.open(validationErrorMessageModalOptions).result;
       }
     };
   })

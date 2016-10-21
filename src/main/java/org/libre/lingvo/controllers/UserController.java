@@ -6,6 +6,7 @@ import org.libre.lingvo.dto.UserDetailsDto;
 import org.libre.lingvo.dto.UserRegistrationDto;
 import org.libre.lingvo.entities.User;
 import org.libre.lingvo.services.UserService;
+import org.libre.lingvo.services.VerificationTokenService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.access.hierarchicalroles.RoleHierarchyImpl;
@@ -15,6 +16,7 @@ import org.springframework.security.core.authority.AuthorityUtils;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.oauth2.common.OAuth2AccessToken;
 import org.springframework.security.oauth2.provider.token.TokenStore;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
@@ -31,6 +33,9 @@ public class UserController {
 
     @Autowired
     private UserService userService;
+
+    @Autowired
+    private VerificationTokenService verificationTokenService;
 
     @Autowired
     private RoleHierarchyImpl roleHierarchy;
@@ -74,8 +79,11 @@ public class UserController {
 
     @RequestMapping(value = "/users", method = RequestMethod.POST)
     @ResponseStatus(HttpStatus.CREATED)
-    public void registerUser(@RequestBody UserRegistrationDto dto) {
-        userService.registerUser(dto);
+    public void registerUser(HttpServletRequest request,@Validated @RequestBody UserRegistrationDto dto) {
+        String originUrl = request.getHeader("Origin");
+
+        User user = userService.registerUser(dto);
+        verificationTokenService.create(user,originUrl);
     }
 
 

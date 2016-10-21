@@ -8,6 +8,6 @@
  * Factory in the libreLingvoApp.
  */
 angular.module('libreLingvoApp')
-  .factory('UserAuthorities', function ($resource, HOST_URL) {
-    return $resource(HOST_URL + "/api/users/me/authorities");
+  .factory('UserAuthorities', function ($resource, HostUrl) {
+    return $resource(HostUrl + "/api/users/me/authorities");
   });

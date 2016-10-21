@@ -4,12 +4,8 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.support.ReloadableResourceBundleMessageSource;
 import org.springframework.web.servlet.LocaleResolver;
-import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
-import org.springframework.web.servlet.i18n.LocaleChangeInterceptor;
-import org.springframework.web.servlet.i18n.SessionLocaleResolver;
-
-import java.util.Locale;
+import org.springframework.web.servlet.i18n.CookieLocaleResolver;
 
 /**
  * Created by igorek2312 on 11.10.16.
@@ -17,24 +13,29 @@ import java.util.Locale;
 @Configuration
 public class ResourceWebConfig extends WebMvcConfigurerAdapter {
 
-    @Override
-    public void addInterceptors(InterceptorRegistry registry) {
-        LocaleChangeInterceptor interceptor = new LocaleChangeInterceptor();
-        interceptor.setParamName("lang");
-        registry.addInterceptor(interceptor);
+    @Bean
+    public LocaleResolver localeResolver() {
+        return new CookieLocaleResolver();
     }
 
     @Bean
-    public LocaleResolver localeResolver(){
-        SessionLocaleResolver resolver = new SessionLocaleResolver();
-        resolver.setDefaultLocale(new Locale("en"));
-        return resolver;
+    public ReloadableResourceBundleMessageSource messageSource() {
+        ReloadableResourceBundleMessageSource messageSource = new ReloadableResourceBundleMessageSource();
+        messageSource.setBasename("classpath:/ValidationMessages");
+        return messageSource;
     }
 
     @Bean
-    public ReloadableResourceBundleMessageSource messageSource(){
-        SerializableResourceBundleMessageSource messageSource=new SerializableResourceBundleMessageSource();
-        messageSource.setBasename("classpath:/Locale");
-        return  messageSource;
+    public ReloadableResourceBundleMessageSource backendMessageSource() {
+        ReloadableResourceBundleMessageSource messageSource = new ReloadableResourceBundleMessageSource();
+        messageSource.setBasename("classpath:/Messages");
+        return messageSource;
+    }
+
+    @Bean
+    public SerializableResourceBundleMessageSource angularMessageSource() {
+        SerializableResourceBundleMessageSource messageSource = new SerializableResourceBundleMessageSource();
+        messageSource.setBasename("classpath:/AngularMessages");
+        return messageSource;
     }
 }

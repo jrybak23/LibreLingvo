@@ -54,13 +54,6 @@ angular
         controllerAs: 'signUp'
       })
       .state({
-        name: 'about',
-        url: '/about',
-        templateUrl: 'views/about.html',
-        controller: 'AboutCtrl',
-        controllerAs: 'about'
-      })
-      .state({
         name: 'profile',
         url: '/profile',
         templateUrl: 'views/profile.html',

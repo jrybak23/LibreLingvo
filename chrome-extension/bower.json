@@ -1,0 +1,12 @@
+{
+  "name": "libre-lingvo-extension",
+  "private": true,
+  "version": "0.0.0",
+  "dependencies": {
+    "jquery": "^3.1.1"
+  },
+  "devDependencies": {
+    "chai": "^3.5.0",
+    "mocha": "^3.1.2"
+  }
+}

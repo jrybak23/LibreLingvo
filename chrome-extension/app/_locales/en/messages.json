@@ -1,0 +1,10 @@
+{
+  "appName": {
+    "message": "libre-lingvo extension",
+    "description": "The name of the application"
+  },
+  "appDescription": {
+    "message": "Save words from google translate to your vocabluary",
+    "description": "The description of the application"
+  }
+}

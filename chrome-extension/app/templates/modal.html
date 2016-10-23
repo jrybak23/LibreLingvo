@@ -4,16 +4,36 @@
   <!-- Modal content -->
   <div class="modal-content">
     <div class="modal-header">
-      <span class="close">×</span>
-      <h2>Modal Header</h2>
+      <span class="close-modal">×</span>
+      <h2>Save translation to LibreLingvo</h2>
     </div>
     <div class="modal-body">
-      <p>Some text in the Modal Body</p>
-      <p>Some other text...</p>
-    </div>
-    <div class="modal-footer">
-      <h3>Modal Footer</h3>
+      <div class="row">
+        <div id="save-source-box">Lorem ipsum dolor sit amet, consectetur adipisicing elit!</div>
+        <input id="save-result-box" type="text">
+      </div>
+      <div class="row">
+        <label for="part-of-speech">Part of speech:</label>
+        <select id="part-of-speech"class="modal-form-element">
+        	<option value="NOT_DEFINED">not defined</option>
+        	<option value="NOUN">noun</option>
+        	<option value="VERB">verb</option>
+        	<option value="ADJECTIVE">adjective</option>
+        	<option value="ADVERB">adverb</option>
+        	<option value="PRONOUN">pronoun</option>
+        	<option value="PREPOSITION">preposition</option>
+        	<option value="CONJUNCTION">conjunction</option>
+        	<option value="INTERJECTION">interjection</option>
+        	<option value="ARTICLE">article</option>
+        </select>
+      </div>
+      <div class="row">
+        <button id="submit-save-button" class="modal-form-element">Save</button>
+        <button id="cancel-save-button" class="modal-form-element">Cancel</button>
+      </div>
     </div>
   </div>
 
 </div>
+
+

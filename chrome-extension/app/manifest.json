@@ -14,7 +14,10 @@
     ]
   },
   "permissions": [
-    "activeTab"
+    "activeTab",
+    "cookies",
+    "http://localhost:9000/*",
+    "http://localhost:8080/*"
   ],
   "options_ui": {
     "page": "options.html",
@@ -28,19 +31,23 @@
         "https://translate.google.ru/*"
       ],
       "js": [
-        "bower_components/jquery/dist/jquery.min.js",
+        "bower_components/jquery/dist/jquery.js",
+        "bower_components/underscore/underscore.js",
+        "scripts/libre-lingvo-service.js",
         "scripts/contentscript.js"
       ],
       "css":[
-        "styles/content-style.css"
-      ]
+        "styles/content-style.css",
+        "styles/modal.css"
+      ],
+      "run_at":"document_end"
     }
   ],
   "browser_action": {
     "default_icon": {
       "512": "images/save_translate_512.png"
     },
-    "default_title": "libre-lingvo extension",
+    "default_title": "LibreLingvo extension",
     "default_popup": "popup.html"
   },
   "web_accessible_resources": [

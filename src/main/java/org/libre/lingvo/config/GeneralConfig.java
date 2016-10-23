@@ -9,9 +9,6 @@ import org.springframework.context.support.PropertySourcesPlaceholderConfigurer;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.scheduling.annotation.EnableScheduling;
 
-import java.net.MalformedURLException;
-import java.net.URL;
-
 /**
  * Created by igorek2312 on 08.09.16.
  */

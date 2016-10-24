@@ -28,7 +28,7 @@ module.exports = function (grunt) {
   // Define the configuration for all the tasks
   grunt.initConfig({
 
-    // Project settings
+    // Project getAuthoritiesRequestSettings
     yeoman: appConfig,
 
     // Watches files for changes and runs tasks based on the changed files
@@ -67,7 +67,7 @@ module.exports = function (grunt) {
       }
     },
 
-    // The actual grunt server settings
+    // The actual grunt server getAuthoritiesRequestSettings
     connect: {
       options: {
         port: 9000,
@@ -422,7 +422,7 @@ module.exports = function (grunt) {
       ]
     },
 
-    // Test settings
+    // Test getAuthoritiesRequestSettings
     karma: {
       unit: {
         configFile: 'test/karma.conf.js',

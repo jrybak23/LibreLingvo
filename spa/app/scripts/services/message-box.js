@@ -68,13 +68,13 @@ angular.module('libreLingvoApp')
         messageTitle = $translate.instant(getTitle(messageType));
         panelClass=getPanelClass(messageType);
 
-        messageModalOptions.templateUrl = 'views/modal-message.html';
+        messageModalOptions.templateUrl = 'views/mainModal-message.html';
         messageModalOptions.controller = 'ModalMessageCtrl';
         return $uibModal.open(messageModalOptions).result;
       },
       showValidationErrorMessage:function (fieldErrors) {
         messagefieldErrors=fieldErrors;
-        validationErrorMessageModalOptions.templateUrl = 'views/validation-error-modal-message.html';
+        validationErrorMessageModalOptions.templateUrl = 'views/validation-error-mainModal-message.html';
         validationErrorMessageModalOptions.controller = 'ValidationErrorModalMessageCtrl';
         return $uibModal.open(validationErrorMessageModalOptions).result;
       }

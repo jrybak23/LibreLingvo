@@ -1,4 +1,4 @@
-package org.libre.lingvo.exception;
+package org.libre.lingvo.dto.exception;
 
 /**
  * Created by igorek2312 on 18.10.16.

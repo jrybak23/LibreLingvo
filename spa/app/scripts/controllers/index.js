@@ -8,7 +8,22 @@
  * Controller of the libreLingvoApp
  */
 angular.module('libreLingvoApp')
-  .controller('IndexCtrl', function ($scope, $translate, $cookies, $http, Oauth2) {
+  .controller('IndexCtrl', function ($scope, $translate, $cookies, $http, $window, Oauth2) {
+
+    var w = angular.element($window);
+    $scope.$watch(
+      function () {
+        return $window.innerWidth;
+      },
+      function (value) {
+        $scope.windowWidth = value;
+      },
+      true
+    );
+
+    w.bind('resize', function(){
+      $scope.$apply();
+    });
 
     $scope.changeLanguage = function (lang_key) {
       $http.defaults.headers.common['Accept-Language'] = lang_key;

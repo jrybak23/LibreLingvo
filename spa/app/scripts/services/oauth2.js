@@ -8,7 +8,7 @@
  * Factory in the libreLingvoApp.
  */
 angular.module('libreLingvoApp')
-  .factory('Oauth2', function (HostUrl, $http, $cookies, $httpParamSerializer, $q, $rootScope, UserAuthorities) {
+  .factory('Oauth2', function (HostUrl, $http, $cookies, $httpParamSerializer, $q, $rootScope, $state, UserAuthorities) {
     var accessTokenData = {grant_type: "password"};
     var encoded = btoa("clientapp:123456");
 
@@ -29,15 +29,22 @@ angular.module('libreLingvoApp')
       url: HostUrl + "/api/oauth/revoke-token"
     };
 
+    var authorities = ['ROLE_ANONYMOUS'];
+
     var updateAuthorities = function () {
+      $rootScope.hasUserAuthority = authorities.indexOf('ROLE_USER') > -1;
+      $rootScope.hasAdminAuthority = authorities.indexOf('ROLE_ADMIN') > -1;
+      $rootScope.isAnnonymos = authorities.indexOf('ROLE_ANONYMOUS') > -1;
+    };
+
+    var loadAndUpdateAuthorities = function () {
       UserAuthorities.get(function (data) {
-        $rootScope.authorities = data.authorities;
-        $rootScope.hasUserAuthority = $rootScope.authorities.indexOf('ROLE_USER') > -1;
-        $rootScope.hasAdminAuthority = $rootScope.authorities.indexOf('ROLE_ADMIN') > -1;
-        $rootScope.isAnnonymos = $rootScope.authorities.indexOf('ROLE_ANONYMOUS') > -1;
+        authorities = data.authorities;
+        updateAuthorities();
       });
     };
-    updateAuthorities();
+    loadAndUpdateAuthorities();
+
 
     return {
       logIn: function (username, password) {
@@ -51,7 +58,7 @@ angular.module('libreLingvoApp')
           $http.defaults.headers.common.Authorization = 'Bearer ' + data.data.access_token;
           $cookies.put("access_token", data.data.access_token);
 
-          updateAuthorities();
+          loadAndUpdateAuthorities();
           deferred.resolve();
         }, function (error) {
           deferred.reject(error);
@@ -64,7 +71,7 @@ angular.module('libreLingvoApp')
         $http(logOutReq).then(function (data) {
             delete $http.defaults.headers.common.Authorization;
             $cookies.remove("access_token");
-            updateAuthorities();
+            loadAndUpdateAuthorities();
             deferred.resolve();
           }, function (error) {
             deferred.reject(error);
@@ -72,6 +79,13 @@ angular.module('libreLingvoApp')
         );
 
         return deferred.promise;
+      },
+      handleInvalidToken: function () {
+        $cookies.remove("access_token");
+        delete $http.defaults.headers.common.Authorization;
+        location.href=location.origin;
+        //location.assign(location.origin + '/#/log-in');
+        /*$(location).attr('href',location.host + '/#/log-in')*/
       }
     };
   });

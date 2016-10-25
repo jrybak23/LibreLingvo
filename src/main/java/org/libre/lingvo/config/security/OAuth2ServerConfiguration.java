@@ -102,8 +102,8 @@ public class OAuth2ServerConfiguration {
                     .scopes("use")
                     .resourceIds(RESOURCE_ID)
                     .secret("123456")
-                    .accessTokenValiditySeconds(3600*24*7)
-                    .authorities("USER");
+                    //.accessTokenValiditySeconds(30);
+                    .accessTokenValiditySeconds(3600*24*7);
         }
 
         @Bean

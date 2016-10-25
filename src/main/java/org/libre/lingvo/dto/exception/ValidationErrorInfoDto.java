@@ -1,4 +1,6 @@
-package org.libre.lingvo.dto;
+package org.libre.lingvo.dto.exception;
+
+import org.libre.lingvo.dto.FieldErrorDto;
 
 import java.util.ArrayList;
 import java.util.List;

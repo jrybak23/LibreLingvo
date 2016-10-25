@@ -87,4 +87,11 @@ public class UserController {
     }
 
 
+    @RequestMapping(value = "/test",method = RequestMethod.GET)
+    @PreAuthorize("hasRole('ROLE_OAUTH_CLIENT')")
+    public String get(){
+        return "secret message";
+    }
+
+
 }

@@ -8,11 +8,11 @@
   <!-- Place favicon.ico and apple-touch-saveButton.png in the root directory -->
   <!-- build:css(.) styles/vendor.css -->
   <!-- bower:css -->
-  <link rel="stylesheet" href="bower_components/bootstrap/dist/css/bootstrap.css" />
-  <link rel="stylesheet" href="bower_components/components-font-awesome/css/font-awesome.css" />
-  <link rel="stylesheet" href="bower_components/bootstrap-material-design/dist/css/bootstrap-material-design.css" />
-  <link rel="stylesheet" href="bower_components/bootstrap-material-design/dist/css/ripples.css" />
-  <link rel="stylesheet" href="bower_components/angular-loading-bar/build/loading-bar.css" />
+  <link rel="stylesheet" href="bower_components/bootstrap/dist/css/bootstrap.css"/>
+  <link rel="stylesheet" href="bower_components/components-font-awesome/css/font-awesome.css"/>
+  <link rel="stylesheet" href="bower_components/bootstrap-material-design/dist/css/bootstrap-material-design.css"/>
+  <link rel="stylesheet" href="bower_components/bootstrap-material-design/dist/css/ripples.css"/>
+  <link rel="stylesheet" href="bower_components/angular-loading-bar/build/loading-bar.css"/>
   <!-- endbower -->
   <!-- endbuild -->
   <!-- build:css(.tmp) styles/main.css -->
@@ -39,10 +39,22 @@
   </div>
 
   <!-- Collect the nav links, forms, and other content for toggling -->
-  <div class="collapse navbar-collapse navbar-ex1-collapse">
+  <div class="collapse navbar-collapse" ng-class="windowWidth<768?'navbar-ex1-collapse':''">
     <ul class="nav navbar-nav">
       <li ui-sref-active="active" data-toggle="collapse" data-target=".navbar-ex1-collapse"><a ui-sref="main"><i
         class="fa fa-home"></i>{{'label.home' | translate}}</a></li>
+      <li class="dropdown">
+        <a  class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true"
+           aria-expanded="false">Dropdown <span class="caret"></span></a>
+        <ul class="dropdown-menu">
+          <li><a href="#">Action</a></li>
+          <li><a href="#">Another action</a></li>
+          <li><a href="#">Something else here</a></li>
+          <li><a href="#">Separated link</a></li>
+          <li><a href="#">One more separated link</a></li>
+          <li role="separator" class="visible-xs divider"></li>
+        </ul>
+      </li>
     </ul>
     <ul class="nav navbar-nav navbar-right">
       <li ng-show="isAnnonymos" ui-sref-active="active"><a ui-sref="log-in" data-toggle="collapse"
@@ -117,7 +129,6 @@
 <script src="bower_components/angular-bootstrap/ui-bootstrap-tpls.js"></script>
 <script src="bower_components/angular-translate/angular-translate.js"></script>
 <script src="bower_components/angular-translate-loader-url/angular-translate-loader-url.js"></script>
-<script src="bower_components/bootstrap-sass/assets/javascripts/bootstrap.js"></script>
 <script src="bower_components/bootstrap-material-design/dist/js/material.js"></script>
 <script src="bower_components/bootstrap-material-design/dist/js/ripples.js"></script>
 <script src="bower_components/angular-loading-bar/build/loading-bar.js"></script>
@@ -127,7 +138,6 @@
 <!-- build:js({.tmp,app}) scripts/scripts.js -->
 <script src="scripts/app.js"></script>
 <script src="scripts/controllers/main.js"></script>
-<script src="scripts/controllers/about.js"></script>
 <script src="scripts/controllers/log-in.js"></script>
 <script src="scripts/controllers/sign-up.js"></script>
 <script src="scripts/services/oauth2.js"></script>

@@ -74,7 +74,7 @@ angular
       });
 
     $urlRouterProvider
-      .otherwise('/');
+      .otherwise('/log-in');
 
   })
   .config(function ($httpProvider, MessageType) {
@@ -94,16 +94,25 @@ angular
           var messageBox = $injector.get('MessageBox');
           if (response.status === -1)
             messageBox.show('error.connection.refused', MessageType.ERROR);
-          else if (response.data && response.data.error_description === 'Bad credentials')
-            messageBox.show('error.invalid.password', MessageType.ERROR);
-          else if (response.data && response.data.error_description === 'User is disabled')
-            messageBox.show('error.disabled.account', MessageType.ERROR);
-          else if (response.data && response.data.error_description === 'User account is locked')
-            messageBox.show('error.locked.account', MessageType.ERROR);
-          else if (response.data && response.data.message)
-            messageBox.show(response.data.message, MessageType.ERROR, false);
-          else if (response.data && response.data.fieldErrors)
-            messageBox.showValidationErrorMessage(response.data.fieldErrors);
+          else
+          if (response.data) {
+            if (response.data.error_description === 'Bad credentials')
+              messageBox.show('error.invalid.password', MessageType.ERROR);
+            else if (response.data.error_description === 'User is disabled')
+              messageBox.show('error.disabled.account', MessageType.ERROR);
+            else if (response.data.error_description === 'User account is locked')
+              messageBox.show('error.locked.account', MessageType.ERROR);
+            else if (response.data.error === 'invalid_token')
+              $injector.get('Oauth2').handleInvalidToken();
+            else if (response.data.errorCode === 401) {
+              messageBox.show(response.data.message, MessageType.ERROR);
+              $injector.get('$state').go('log-in');
+            }
+            else if (response.data.message)
+              messageBox.show(response.data.message, MessageType.ERROR, false);
+            else if (response.data.fieldErrors)
+              messageBox.showValidationErrorMessage(response.data.fieldErrors);
+          }
           else
             messageBox.show(response, MessageType.ERROR, false);
           return $q.reject(response);

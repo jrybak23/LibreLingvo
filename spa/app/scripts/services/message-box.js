@@ -43,20 +43,20 @@ angular.module('libreLingvoApp')
     var getTitle = function (messageType) {
       if (messageType === MessageType.INFO || messageType === MessageType.SUCCESS)
         return "label.message.ok.title";
-      else if (messageType === MessageType.WARNING)
+      if (messageType === MessageType.WARNING)
         return "label.message.warning.title";
-      else if (messageType === MessageType.ERROR)
+      if (messageType === MessageType.ERROR)
         return "label.message.error.title";
     };
 
     var getPanelClass = function (messageType) {
       if (messageType === MessageType.INFO)
         return 'panel-info';
-      else if (messageType === MessageType.SUCCESS)
+      if (messageType === MessageType.SUCCESS)
         return 'panel-success';
-      else if (messageType === MessageType.WARNING)
+      if (messageType === MessageType.WARNING)
         return 'panel-warning';
-      else if (messageType === MessageType.ERROR)
+      if (messageType === MessageType.ERROR)
         return 'panel-danger';
     };
 
@@ -68,13 +68,13 @@ angular.module('libreLingvoApp')
         messageTitle = $translate.instant(getTitle(messageType));
         panelClass=getPanelClass(messageType);
 
-        messageModalOptions.templateUrl = 'views/mainModal-message.html';
+        messageModalOptions.templateUrl = 'views/modal-message.html';
         messageModalOptions.controller = 'ModalMessageCtrl';
         return $uibModal.open(messageModalOptions).result;
       },
       showValidationErrorMessage:function (fieldErrors) {
         messagefieldErrors=fieldErrors;
-        validationErrorMessageModalOptions.templateUrl = 'views/validation-error-mainModal-message.html';
+        validationErrorMessageModalOptions.templateUrl = 'views/validation-error-modal-message.html';
         validationErrorMessageModalOptions.controller = 'ValidationErrorModalMessageCtrl';
         return $uibModal.open(validationErrorMessageModalOptions).result;
       }

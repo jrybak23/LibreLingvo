@@ -1,14 +1,16 @@
 package org.libre.lingvo.controllers;
 
-import org.libre.lingvo.dto.ErrorInfoDto;
-import org.libre.lingvo.dto.ValidationErrorInfoDto;
-import org.libre.lingvo.exception.CustomError;
-import org.libre.lingvo.exception.CustomErrorException;
+import org.libre.lingvo.dto.exception.CustomError;
+import org.libre.lingvo.dto.exception.CustomErrorException;
+import org.libre.lingvo.dto.exception.ErrorInfoDto;
+import org.libre.lingvo.dto.exception.ValidationErrorInfoDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.MessageSource;
 import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.AccessDeniedException;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
@@ -27,13 +29,14 @@ public class ExceptionHandlerController {
     @Qualifier("backendMessageSource")
     private MessageSource ms;
 
-    @ResponseStatus(code = HttpStatus.BAD_REQUEST)
     @ExceptionHandler(CustomErrorException.class)
     @ResponseBody
-    public ErrorInfoDto handleErrorCodeException(CustomErrorException e) {
-        CustomError err = e.getError();
-        String message = ms.getMessage(err.getMessageKey(), err.getMessageArgs(), LocaleContextHolder.getLocale());
-        return new ErrorInfoDto(message, err.getDescription());
+    public ResponseEntity<ErrorInfoDto> handleErrorCodeException(CustomErrorException e) {
+        CustomError error = e.getError();
+        String message = ms.getMessage(error.getMessageKey(), error.getMessageArgs(), LocaleContextHolder.getLocale());
+
+        ErrorInfoDto dto = new ErrorInfoDto(error.getCode(),message, error.getDescription());
+        return new ResponseEntity<>(dto, error.getHttpStatus());
     }
 
     @ResponseStatus(HttpStatus.BAD_REQUEST)
@@ -47,4 +50,12 @@ public class ExceptionHandlerController {
         return dto;
     }
 
+    @ResponseBody
+    @ExceptionHandler(AccessDeniedException.class)
+    public ResponseEntity<ErrorInfoDto> handleException(AccessDeniedException e) {
+        CustomError error=CustomError.ACCESS_DENIED;
+        String message = ms.getMessage(error.getMessageKey(), null, LocaleContextHolder.getLocale());
+        ErrorInfoDto dto = new ErrorInfoDto(error.getCode(), message, e.getMessage());
+        return new ResponseEntity<>(dto,error.getHttpStatus());
+    }
 }

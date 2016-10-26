@@ -84,8 +84,6 @@ angular.module('libreLingvoApp')
         $cookies.remove("access_token");
         delete $http.defaults.headers.common.Authorization;
         location.href=location.origin;
-        //location.assign(location.origin + '/#/log-in');
-        /*$(location).attr('href',location.host + '/#/log-in')*/
       }
     };
   });

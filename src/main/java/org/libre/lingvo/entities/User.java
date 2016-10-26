@@ -36,7 +36,14 @@ public class User implements Serializable {
     @OneToOne(mappedBy = "user", cascade = CascadeType.REMOVE,fetch = FetchType.LAZY)
     private VerificationToken verificationToken;
 
+    @OneToOne(cascade = CascadeType.ALL,fetch = FetchType.LAZY, optional = false)
+    @JoinColumn
+    private Folder folder;
+
     public User() {
+        Folder root=new Folder();
+        root.setName("root");
+        setFolder(root);
     }
 
     public User(User user) {
@@ -113,5 +120,13 @@ public class User implements Serializable {
 
     public void setVerificationToken(VerificationToken verificationToken) {
         this.verificationToken = verificationToken;
+    }
+
+    public Folder getFolder() {
+        return folder;
+    }
+
+    public void setFolder(Folder folder) {
+        this.folder = folder;
     }
 }

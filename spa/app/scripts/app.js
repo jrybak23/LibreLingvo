@@ -126,3 +126,5 @@ angular
     $translateProvider.preferredLanguage('en');
     $translateProvider.fallbackLanguage('en');
   });
+
+$('.dropdown-toggle').dropdown();

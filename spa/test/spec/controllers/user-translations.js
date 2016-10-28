@@ -1,23 +1,23 @@
 'use strict';
 
-describe('Controller: FooCtrl', function () {
+describe('Controller: UserTranslationsCtrl', function () {
 
   // load the controller's module
   beforeEach(module('libreLingvoApp'));
 
-  var FooCtrl,
+  var UserTranslationsCtrl,
     scope;
 
   // Initialize the controller and a mock scope
   beforeEach(inject(function ($controller, $rootScope) {
     scope = $rootScope.$new();
-    FooCtrl = $controller('FooCtrl', {
+    UserTranslationsCtrl = $controller('UserTranslationsCtrl', {
       $scope: scope
       // place here mocked dependencies
     });
   }));
 
   it('should attach a list of awesomeThings to the scope', function () {
-    expect(FooCtrl.awesomeThings.length).toBe(3);
+    expect(UserTranslationsCtrl.awesomeThings.length).toBe(3);
   });
 });

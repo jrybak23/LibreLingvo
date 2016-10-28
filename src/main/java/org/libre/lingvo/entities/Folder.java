@@ -24,7 +24,7 @@ public class Folder {
     private Set<Folder> subFolders =new HashSet<>();
 
     @OneToMany(mappedBy = "folder",cascade = CascadeType.ALL)
-    private Set<TranslationPreferences> translations=new HashSet<>();
+    private Set<Translation> translations=new HashSet<>();
 
     public Long getId() {
         return id;
@@ -58,11 +58,11 @@ public class Folder {
         this.subFolders = subFolders;
     }
 
-    public Set<TranslationPreferences> getTranslations() {
+    public Set<Translation> getTranslations() {
         return translations;
     }
 
-    public void setTranslations(Set<TranslationPreferences> translations) {
+    public void setTranslations(Set<Translation> translations) {
         this.translations = translations;
     }
 }

@@ -71,6 +71,13 @@ angular
         url: '/cancel-user-enabling/:verificationToken',
         controller: 'CancelUserEnablingCtrl',
         controllerAs: 'cancelUserEnabling'
+      })
+      .state({
+        name: 'user-translations',
+        url: '/user-translations',
+        templateUrl: 'views/user-translations.html',
+        controller: 'UserTranslationsCtrl',
+        controllerAs: 'userTranslations'
       });
 
     $urlRouterProvider
@@ -94,8 +101,7 @@ angular
           var messageBox = $injector.get('MessageBox');
           if (response.status === -1)
             messageBox.show('error.connection.refused', MessageType.ERROR);
-          else
-          if (response.data) {
+          else if (response.data) {
             if (response.data.error_description === 'Bad credentials')
               messageBox.show('error.invalid.password', MessageType.ERROR);
             else if (response.data.error_description === 'User is disabled')
@@ -125,6 +131,7 @@ angular
     $translateProvider.useUrlLoader(hostUrl + '/messageBundle');
     $translateProvider.preferredLanguage('en');
     $translateProvider.fallbackLanguage('en');
+    $translateProvider.useSanitizeValueStrategy('escapeParameters');
   });
 
 $('.dropdown-toggle').dropdown();

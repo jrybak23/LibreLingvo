@@ -17,9 +17,10 @@
   <!-- endbuild -->
   <!-- build:css(.tmp) styles/main.css -->
   <link rel="stylesheet" href="styles/main.css">
+  <link rel="stylesheet" href="styles/user-translations.css">
   <!-- endbuild -->
 </head>
-<body ng-app="libreLingvoApp" ng-controller="IndexCtrl">
+<body ng-app="libreLingvoApp" ng-controller="IndexCtrl" ng-cloak>
 <!--[if lte IE 8]>
 <p class="browsehappy">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade
   your browser</a> to improve your experience.</p>
@@ -44,7 +45,7 @@
       <li ui-sref-active="active" data-toggle="collapse" data-target=".navbar-ex1-collapse"><a ui-sref="main"><i
         class="fa fa-home"></i>{{'label.home' | translate}}</a></li>
       <li class="dropdown">
-        <a  class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true"
+        <a class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true"
            aria-expanded="false">Dropdown <span class="caret"></span></a>
         <ul class="dropdown-menu">
           <li><a href="#">Action</a></li>
@@ -56,18 +57,24 @@
         </ul>
       </li>
     </ul>
-    <ul class="nav navbar-nav navbar-right">
-      <li ng-show="isAnnonymos" ui-sref-active="active"><a ui-sref="log-in" data-toggle="collapse"
-                                                           data-target=".navbar-ex1-collapse"><i
+    <ul class="nav navbar-nav navbar-right" ng-show="isAnnonymos">
+      <li ui-sref-active="active"><a ui-sref="log-in" data-toggle="collapse"
+                                     data-target=".navbar-ex1-collapse"><i
         class="fa fa-sign-in"></i>{{'label.log.in' | translate}}</a></li>
-      <li ng-show="isAnnonymos" ui-sref-active="active"><a ui-sref="sign-up" data-toggle="collapse"
-                                                           data-target=".navbar-ex1-collapse"><i
+      <li ui-sref-active="active"><a ui-sref="sign-up" data-toggle="collapse"
+                                     data-target=".navbar-ex1-collapse"><i
         class="fa fa-user-plus"></i>{{'label.sign.up' | translate}}</a></li>
-      <li ng-show="hasUserAuthority" ui-sref-active="active"><a ui-sref="profile" data-toggle="collapse"
-                                                                data-target=".navbar-ex1-collapse"><i
+    </ul>
+    <ul class="nav navbar-nav navbar-right" ng-show="hasUserAuthority">
+      <li ui-sref-active="active">
+        <a ui-sref="user-translations" ui-sref="profile" data-toggle="collapse"
+           data-target=".navbar-ex1-collapse"><i class="fa fa-language"></i> {{'label.translations' | translate}}</a>
+      </li>
+      <li ui-sref-active="active"><a ui-sref="profile" data-toggle="collapse"
+                                     data-target=".navbar-ex1-collapse"><i
         class="fa fa-user"></i>{{'label.profile' | translate}}</a></li>
-      <li ng-show="hasUserAuthority"><a ng-click="logOut()" ui-sref="main" data-toggle="collapse"
-                                        data-target=".navbar-ex1-collapse"><i class="fa fa-sign-out"></i>{{'label.sign.out'
+      <li><a ng-click="logOut()" ui-sref="main" data-toggle="collapse"
+             data-target=".navbar-ex1-collapse"><i class="fa fa-sign-out"></i>{{'label.sign.out'
         | translate}}</a></li>
     </ul>
   </div>
@@ -155,6 +162,8 @@
 <script src="scripts/services/enable-user.js"></script>
 <script src="scripts/services/cancel-user-enabling.js"></script>
 <script src="scripts/controllers/validation-error-modal-message.js"></script>
+<script src="scripts/controllers/user-translations.js"></script>
+<script src="scripts/filters/localized-lang-name.js"></script>
 <!-- endbuild -->
 </body>
 </html>

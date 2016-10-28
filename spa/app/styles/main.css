@@ -1,6 +1,14 @@
+[ng\:cloak], [ng-cloak], [data-ng-cloak], [x-ng-cloak], .ng-cloak, .x-ng-cloak {
+  display: none !important;
+}
+
+html, body, .container-fluid {
+  height:100%;
+}
+
 .views-content {
   padding-top: 65px;
-  padding-bottom: 20px;
+  padding-bottom: 30px;
 }
 
 .footer {

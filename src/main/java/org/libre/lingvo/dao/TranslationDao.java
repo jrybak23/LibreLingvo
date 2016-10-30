@@ -1,0 +1,36 @@
+package org.libre.lingvo.dao;
+
+import org.libre.lingvo.entities.Translation;
+import org.libre.lingvo.model.PartOfSpeech;
+
+import java.util.List;
+import java.util.Optional;
+
+/**
+ * Created by igorek2312 on 29.10.16.
+ */
+public interface TranslationDao extends GenericDao<Translation, Long> {
+    List<Translation> findUserTranslations(
+            Long userId,
+            Integer pageIndex,
+            Integer maxRecords
+    );
+
+    Long countByUserId(Long userId);
+
+    Optional<Boolean> existsSuchTranslation(
+            Long userId,
+            String sourceText,
+            String sourceLangKey,
+            String resultText,
+            String resultLangKey,
+            PartOfSpeech partOfSpeech
+    );
+
+    List<Translation> findSuchTranslations(
+            Long userId,
+            String sourceText,
+            String sourceLangKey,
+            String resultLangKey
+    );
+}

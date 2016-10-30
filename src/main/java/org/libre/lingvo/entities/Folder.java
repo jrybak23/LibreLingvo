@@ -26,6 +26,10 @@ public class Folder {
     @OneToMany(mappedBy = "folder",cascade = CascadeType.ALL)
     private Set<Translation> translations=new HashSet<>();
 
+    @ManyToOne
+    @JoinColumn
+    private User user;
+
     public Long getId() {
         return id;
     }
@@ -64,5 +68,13 @@ public class Folder {
 
     public void setTranslations(Set<Translation> translations) {
         this.translations = translations;
+    }
+
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
     }
 }

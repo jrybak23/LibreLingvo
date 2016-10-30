@@ -1,8 +1,10 @@
 package org.libre.lingvo.entities;
 
 import org.hibernate.annotations.Type;
+import org.libre.lingvo.model.PartOfSpeech;
 
 import javax.persistence.*;
+import java.util.Date;
 
 /**
  * Created by igorek2312 on 26.10.16.
@@ -18,12 +20,18 @@ public class Translation {
     private User user;
 
     @ManyToOne
-    @JoinColumn
+    @JoinColumn(nullable = false)
     private Word sourceWord;
 
     @ManyToOne
-    @JoinColumn
+    @JoinColumn(nullable = false)
     private Word resultWord;
+
+    @Enumerated(EnumType.STRING)
+    @Column(nullable = false)
+    private PartOfSpeech partOfSpeech;
+
+    private Boolean learned;
 
     @ManyToOne
     @JoinColumn
@@ -32,7 +40,17 @@ public class Translation {
     @Type(type="text")
     private String note;
 
-    private Integer views;
+    private Integer views=1;
+
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date lastModificationDate;
+
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date learningDate;
+
+    public void incrementViews(){
+        views++;
+    }
 
     public Long getId() {
         return id;
@@ -66,6 +84,22 @@ public class Translation {
         this.resultWord = resultWord;
     }
 
+    public PartOfSpeech getPartOfSpeech() {
+        return partOfSpeech;
+    }
+
+    public void setPartOfSpeech(PartOfSpeech partOfSpeech) {
+        this.partOfSpeech = partOfSpeech;
+    }
+
+    public Boolean isLearned() {
+        return learned;
+    }
+
+    public void setLearned(Boolean learned) {
+        this.learned = learned;
+    }
+
     public Folder getFolder() {
         return folder;
     }
@@ -88,5 +122,21 @@ public class Translation {
 
     public void setViews(Integer views) {
         this.views = views;
+    }
+
+    public Date getLastModificationDate() {
+        return lastModificationDate;
+    }
+
+    public void setLastModificationDate(Date lastModificationDate) {
+        this.lastModificationDate = lastModificationDate;
+    }
+
+    public Date getLearningDate() {
+        return learningDate;
+    }
+
+    public void setLearningDate(Date learningDate) {
+        this.learningDate = learningDate;
     }
 }

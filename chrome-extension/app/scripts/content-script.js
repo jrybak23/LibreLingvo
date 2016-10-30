@@ -8,7 +8,7 @@ var errorModal = {};
 var saveButton = {};
 var saveSourceBox = {};
 var saveResultBox = {};
-var partOfSpeechCheckbox = {};
+var partOfSpeechCombobox = {};
 var errorMessage = {};
 var sourceBox = $('#source');
 var resultBox = $('#result_box');
@@ -26,24 +26,33 @@ $.get(chrome.extension.getURL('/templates/modal.html'), function (data) {
 
   saveSourceBox = document.getElementById('save-source-box');
   saveResultBox = document.getElementById('save-result-box');
-  partOfSpeechCheckbox = document.getElementById('part-of-speech');
+  partOfSpeechCombobox = document.getElementById('part-of-speech');
 
   var submitSaveButton = document.getElementById('submit-save-button');
 
   submitSaveButton.onclick = function () {
-    var sourceWordDto = new WordDto(saveSourceBox.innerText, sourceLangKeyInput.val());
-    var resultWordDto = new WordDto(saveResultBox.value, resultLangKeyInput.val());
-    var translationDto = new TranslationDto(sourceWordDto, resultWordDto, partOfSpeechCheckbox.value);
-    showErrorMessage("ne oks");
+    var translationDto = new TranslationDto(
+      saveSourceBox.innerText,
+      sourceLangKeyInput.val(),
+      saveResultBox.value,
+      resultLangKeyInput.val(),
+      partOfSpeechCombobox.value
+    );
+
     libreLingvoService.saveTranslation(translationDto).then(
       function (data) {
         setTranslationIsSaved(true);
-        console.log(data);
+        closeMainModal();
       },
       function (error) {
         console.error(error);
+        if (error.responseText){
+          var err=JSON.parse(error.responseText);
+          showErrorMessage(err.message);
+        }
       }
     );
+
   };
 
   var cancelSaveButton = document.getElementById('cancel-save-button');
@@ -106,13 +115,12 @@ var checkTranslation = function () {
   saveSourceBox.innerText = source;
   saveResultBox.value = resultBox.text();
 
-  var sourceWordDto = new WordDto(source, sourceLangKey);
-  var checkUserTranslationsDto = new CheckUserTranslationsDto(sourceWordDto, resultLangKey);
-
-
-  libreLingvoService.getUserTranslations(checkUserTranslationsDto).then(
+  libreLingvoService.getUserTranslations(source, sourceLangKey, resultLangKey).then(
     function (data) {
-      setTranslationIsSaved(true);
+      if (data instanceof Array && data.length)
+        setTranslationIsSaved(true);
+      else
+        setTranslationIsSaved(false);
     },
     function (error) {
       setTranslationIsSaved(false);

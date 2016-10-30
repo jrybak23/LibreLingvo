@@ -14,7 +14,7 @@ public class Word {
     @GeneratedValue
     private Long id;
 
-    @Column(length = 50)
+    @Column(length = 300)
     private String text;
 
     @Column(length = 2)

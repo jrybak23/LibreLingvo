@@ -35,7 +35,7 @@
         "bower_components/jquery/dist/jquery.js",
         "bower_components/underscore/underscore.js",
         "scripts/libre-lingvo-service.js",
-        "scripts/contentscript.js"
+        "scripts/content-script.js"
       ],
       "css":[
         "styles/content-style.css",

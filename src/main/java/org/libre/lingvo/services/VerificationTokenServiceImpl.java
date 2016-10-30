@@ -10,7 +10,6 @@ import org.libre.lingvo.entities.User;
 import org.libre.lingvo.entities.VerificationToken;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.mail.javamail.MimeMessagePreparator;
@@ -44,10 +43,6 @@ public class VerificationTokenServiceImpl implements VerificationTokenService {
 
     @Autowired
     private UserDao userDao;
-
-    @Autowired
-    private ConfigurableApplicationContext applicationContext;
-
 
     public void sendEmailMessage(String email, EmailVerificationDto dto) {
         MimeMessagePreparator preparator = mimeMessage -> {

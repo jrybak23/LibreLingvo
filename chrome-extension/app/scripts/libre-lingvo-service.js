@@ -6,27 +6,27 @@
 var HOST_URL = 'http://localhost:8080';
 var BASE_URL = 'http://localhost:9000';
 
-var WordDto = function (text, langKey) {
-  this.text = text;
-  this.langKey = langKey;
-};
-
-var TranslationDto = function (sourceWordDto, resultWordDto, partOfSpeech) {
-  this.sourceWordDto = sourceWordDto;
-  this.resultWordDto = resultWordDto;
-  this.partOfSpeech = partOfSpeech;
-};
-
-var CheckUserTranslationsDto = function (sourceWordDto, resultLangKey) {
-  this.sourceWordDto = sourceWordDto;
+var TranslationDto = function (sourceText,
+                               sourceLangKey,
+                               resultText,
+                               resultLangKey,
+                               partOfSpeech) {
+  this.sourceText = sourceText;
+  this.sourceLangKey = sourceLangKey;
+  this.resultText = resultText;
   this.resultLangKey = resultLangKey;
+  this.partOfSpeech = partOfSpeech;
+  this.note = null;
 };
 
 var RequestSettings = function (method, url, data) {
   this.method = method;
   this.url = url;
   this.data = data;
-  this.headers = {};
+  this.headers = {
+    "content-type": "application/json",
+    "accept-language": "en"
+  };
   this.crossDomain = true;
   this.async = true;
 };
@@ -52,15 +52,38 @@ var libreLingvoService = {
 
     return sendAjaxRequest(message);
   },
-  getUserTranslations: function (checkUserTranslationsDto) {
-    console.log('getUserTranslations request:', checkUserTranslationsDto);
-    //rest api request return promise
+  getUserTranslations: function (sourceText, sourceLangKey, resultLangKey) {
+    console.log('getUserTranslations request:', sourceText, sourceLangKey, resultLangKey);
 
-    return Promise.resolve('list');
+    var requestSettings = new RequestSettings(
+      'GET',
+      HOST_URL + '/api/users/me/translations?sourceText='+sourceText+
+      '&sourceLangKey='+sourceLangKey+
+      '&resultLangKey='+resultLangKey
+    );
+
+    var message = {
+      action: 'sendAjaxRequest',
+      requestSettings: requestSettings
+    };
+
+    return sendAjaxRequest(message);
   },
   saveTranslation: function (translationDto) {
     console.log('saveTranslation request', translationDto);
-    return Promise.resolve('list');
+
+    var requestSettings = new RequestSettings(
+      'POST',
+      HOST_URL + '/api/users/me/translations',
+      JSON.stringify(translationDto)
+    );
+
+    var message = {
+      action: 'sendAjaxRequest',
+      requestSettings: requestSettings
+    };
+
+    return sendAjaxRequest(message);
   }
 };
 

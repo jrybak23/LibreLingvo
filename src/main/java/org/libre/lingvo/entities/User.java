@@ -38,12 +38,13 @@ public class User implements Serializable {
 
     @OneToOne(cascade = CascadeType.ALL,fetch = FetchType.LAZY, optional = false)
     @JoinColumn
-    private Folder folder;
+    private Folder rootFolder;
 
     public User() {
         Folder root=new Folder();
         root.setName("root");
-        setFolder(root);
+        setRootFolder(root);
+        root.setUser(this);
     }
 
     public User(User user) {
@@ -122,11 +123,11 @@ public class User implements Serializable {
         this.verificationToken = verificationToken;
     }
 
-    public Folder getFolder() {
-        return folder;
+    public Folder getRootFolder() {
+        return rootFolder;
     }
 
-    public void setFolder(Folder folder) {
-        this.folder = folder;
+    public void setRootFolder(Folder rootFolder) {
+        this.rootFolder = rootFolder;
     }
 }

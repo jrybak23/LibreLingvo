@@ -1,4 +1,4 @@
-package org.libre.lingvo.config.criteria.queries;
+package org.libre.lingvo.dao.criteria.queries;
 
 import org.libre.lingvo.entities.Role;
 import org.libre.lingvo.entities.Role_;

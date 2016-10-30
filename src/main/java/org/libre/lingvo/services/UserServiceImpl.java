@@ -40,7 +40,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public UserDetailsDto getUserDetails(Long id) {
         Optional<User> userOptional = userDao.find(id);
-        User user = userOptional.orElseThrow(() -> new IllegalArgumentException("No user with such id"));
+        User user = userOptional.orElseThrow(() -> new CustomErrorException(CustomError.NO_USER_WITH_SUCH_ID));
         return userDtoConverter.convertToUserDetailsDto(user);
     }
 

@@ -73,25 +73,17 @@ public class UserController {
     }
 
     @RequestMapping(value = "/users", method = RequestMethod.GET)
+    @PreAuthorize("hasAuthority('ROLE_ADMIN')")
     public List<FullUserDetailsDto> getAllFullUserDetails() {
         return userService.getAllFullUserDetail();
     }
 
     @RequestMapping(value = "/users", method = RequestMethod.POST)
     @ResponseStatus(HttpStatus.CREATED)
-    public void registerUser(HttpServletRequest request,@Validated @RequestBody UserRegistrationDto dto) {
+    public void registerUser(HttpServletRequest request, @RequestBody @Validated UserRegistrationDto dto) {
         String originUrl = request.getHeader("Origin");
 
         User user = userService.registerUser(dto);
-        verificationTokenService.create(user,originUrl);
+        verificationTokenService.create(user, originUrl);
     }
-
-
-    @RequestMapping(value = "/test",method = RequestMethod.GET)
-    @PreAuthorize("hasRole('ROLE_OAUTH_CLIENT')")
-    public String get(){
-        return "secret message";
-    }
-
-
 }

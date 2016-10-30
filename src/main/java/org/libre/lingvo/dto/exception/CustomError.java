@@ -6,12 +6,15 @@ import org.springframework.http.HttpStatus;
  * Created by igorek2312 on 21.10.16.
  */
 public enum CustomError {
-    USER_WITH_SUCH_EMAIL_ALREADY_EXISTS(0,"User with such email already exists", "error.user.with.such.email.exists"),
-    NO_VERIFICATION_TOKEN_WITH_SUCH_UUID(1,"No verification token with such uuid", "error.failed.account.enabling"),
-    ACCESS_DENIED(401,HttpStatus.UNAUTHORIZED,null,"error.access.denied");
+    USER_WITH_SUCH_EMAIL_ALREADY_EXISTS(0, "User with such email already exists", "error.user.with.such.email.exists"),
+    NO_VERIFICATION_TOKEN_WITH_SUCH_UUID(1, "No verification token with such uuid", "error.failed.account.enabling"),
+    USER_HAS_ALREADY_SUCH_TRANSLATION(2, "User has already such translation", "error.user.has.already.such.translation"),
+    NO_USER_WITH_SUCH_ID(3, "No user with such id"),
+    ACCESS_DENIED(401, HttpStatus.UNAUTHORIZED, null, "error.access.denied"),
+    FORBIDDEN(403, HttpStatus.FORBIDDEN, null, "error.forbidden");
 
     private final int code;
-    private HttpStatus httpStatus=HttpStatus.BAD_GATEWAY;
+    private HttpStatus httpStatus = HttpStatus.BAD_REQUEST;
     private String description;
     private String messageKey = null;
     private Object[] messageArgs = null;

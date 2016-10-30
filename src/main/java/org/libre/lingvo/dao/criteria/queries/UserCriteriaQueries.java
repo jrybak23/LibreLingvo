@@ -1,4 +1,4 @@
-package org.libre.lingvo.config.criteria.queries;
+package org.libre.lingvo.dao.criteria.queries;
 
 import org.libre.lingvo.entities.User;
 import org.libre.lingvo.entities.User_;
@@ -68,7 +68,7 @@ public class UserCriteriaQueries extends AbstractCriteriaQueriesConfig {
         sq.where(cb.equal(userRoot.get(User_.email), emailParameter));
         CriteriaBuilder.Case<Boolean> booleanCase = cb.<Boolean>selectCase();
         Expression<Boolean> booleanExpression = booleanCase.when(cb.exists(sq), true).otherwise(false);
-        cq.select(booleanCase);
+        cq.select(booleanExpression);
         return cq;
     }
 

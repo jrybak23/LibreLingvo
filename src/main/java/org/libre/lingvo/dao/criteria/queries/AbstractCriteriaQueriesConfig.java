@@ -1,4 +1,4 @@
-package org.libre.lingvo.config.criteria.queries;
+package org.libre.lingvo.dao.criteria.queries;
 
 import javax.annotation.PostConstruct;
 import javax.persistence.EntityManager;

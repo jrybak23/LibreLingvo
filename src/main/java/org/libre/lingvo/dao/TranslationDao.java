@@ -16,7 +16,7 @@ public interface TranslationDao extends GenericDao<Translation, Long> {
             Integer maxRecords
     );
 
-    Long countByUserId(Long userId);
+    Long countUserTranslations(Long userId);
 
     Optional<Boolean> existsSuchTranslation(
             Long userId,

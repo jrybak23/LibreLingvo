@@ -29,7 +29,7 @@ var updateAccessToken = function () {
         resolve();
       }
       else {
-        reject(new ErrorMessage('no access token cookie'));
+        reject(new ErrorMessage({description:'No access token'}));
       }
     });
   });

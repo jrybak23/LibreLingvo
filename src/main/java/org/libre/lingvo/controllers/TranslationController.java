@@ -1,7 +1,7 @@
 package org.libre.lingvo.controllers;
 
 import org.libre.lingvo.dto.AddedTranslationDto;
-import org.libre.lingvo.dto.TranslationDto;
+import org.libre.lingvo.dto.TranslationsDto;
 import org.libre.lingvo.entities.User;
 import org.libre.lingvo.services.TranslationService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,8 +9,6 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
 
 /**
  * Created by igorek2312 on 29.10.16.
@@ -29,7 +27,7 @@ public class TranslationController {
 
     @RequestMapping(value = "/users/me/translations", method = RequestMethod.GET)
     @PreAuthorize("hasAuthority('ROLE_USER')")
-    public List<TranslationDto> viewUserTranslations(
+    public TranslationsDto viewUserTranslations(
             @AuthenticationPrincipal User user,
             @RequestParam(required = false, defaultValue = "1") Integer pageIndex,
             @RequestParam(required = false, defaultValue = "20") Integer maxRecords,

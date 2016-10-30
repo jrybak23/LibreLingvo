@@ -41,13 +41,13 @@ public class TranslationDaoImpl extends GenericDaoImpl<Translation, Long> implem
     ) {
         return entityManager.createQuery(findUserTranslations)
                 .setParameter("userId", userId)
-                .setFirstResult(pageIndex - 1)
+                .setFirstResult((pageIndex-1)*maxRecords)
                 .setMaxResults(maxRecords)
                 .getResultList();
     }
 
     @Override
-    public Long countByUserId(Long userId) {
+    public Long countUserTranslations(Long userId) {
         return entityManager.createQuery(countTranslationsByUserId)
                 .setParameter("userId", userId)
                 .getSingleResult();

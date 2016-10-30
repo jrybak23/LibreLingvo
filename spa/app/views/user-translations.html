@@ -2,7 +2,7 @@
   <div class="row">
     <div id="criteria-panel" class="panel panel-default no-float">
       <div class="panel-body">
-        Panel body ...
+        Panel body ... {{pageIndex+'/'+pagesNumber+'|'+totalRecords}}
       </div>
     </div>
     <div id="table-container" class="no-float">
@@ -18,24 +18,17 @@
           </thead>
           <tbody>
           <!--tr*2>((td>{en})+(td>{uk})+(td>{pineapple})+(td>{ананас}))-->
-          <tr>
-            <td>{{'label.language.'+'en' | translate}}</td>
-            <td>{{'label.language.'+'uk' | translate}}</td>
-            <td>pineapple</td>
-            <td>ананас</td>
+          <tr ng-repeat="translation in translations">
+            <td>{{'label.language.'+ translation.sourceWord.langKey | translate}}</td>
+            <td>{{'label.language.'+ translation.resultWord.langKey | translate}}</td>
+            <td>{{translation.sourceWord.text}}</td>
+            <td>{{translation.resultWord.text}}</td>
           </tr>
           </tbody>
         </table>
         <div class="text-center">
-          <ul class="pagination pagination-small">
-            <li><a href="#">&laquo;</a></li>
-            <li><a href="#">1</a></li>
-            <li><a href="#">2</a></li>
-            <li><a href="#">3</a></li>
-            <li><a href="#">4</a></li>
-            <li><a href="#">5</a></li>
-            <li><a href="#">&raquo;</a></li>
-          </ul>
+          <ul uib-pagination total-items="totalRecords" ng-model="pageIndex" max-size="maxPagSize"
+              class="pagination-md"  boundary-links="true" direction-links="false" first-text="&laquo;" last-text="&raquo;" num-pages="pagesNumber" ng-change="loadTranslations()"></ul>
         </div>
       </div>
     </div>

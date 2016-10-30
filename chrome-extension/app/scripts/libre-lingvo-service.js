@@ -53,7 +53,6 @@ var libreLingvoService = {
     return sendAjaxRequest(message);
   },
   getUserTranslations: function (sourceText, sourceLangKey, resultLangKey) {
-    console.log('getUserTranslations request:', sourceText, sourceLangKey, resultLangKey);
 
     var requestSettings = new RequestSettings(
       'GET',
@@ -70,8 +69,6 @@ var libreLingvoService = {
     return sendAjaxRequest(message);
   },
   saveTranslation: function (translationDto) {
-    console.log('saveTranslation request', translationDto);
-
     var requestSettings = new RequestSettings(
       'POST',
       HOST_URL + '/api/users/me/translations',

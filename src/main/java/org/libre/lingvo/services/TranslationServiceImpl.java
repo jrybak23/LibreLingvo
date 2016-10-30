@@ -5,6 +5,7 @@ import org.libre.lingvo.dao.UserDao;
 import org.libre.lingvo.dao.WordDao;
 import org.libre.lingvo.dto.AddedTranslationDto;
 import org.libre.lingvo.dto.TranslationDto;
+import org.libre.lingvo.dto.TranslationsDto;
 import org.libre.lingvo.dto.exception.CustomError;
 import org.libre.lingvo.dto.exception.CustomErrorException;
 import org.libre.lingvo.entities.Translation;
@@ -52,14 +53,13 @@ public class TranslationServiceImpl implements TranslationService {
 
     @Override
     public void addUserTranslation(Long userId, AddedTranslationDto dto) {
-
         Translation translation = new Translation();
         User user = userDao.find(userId)
                 .orElseThrow(() -> new CustomErrorException(CustomError.NO_USER_WITH_SUCH_ID));
         translation.setUser(user);
 
-        String sourceText = dto.getSourceText();
-        String resultText = dto.getResultText();
+        String sourceText = dto.getSourceText().trim();
+        String resultText = dto.getResultText().trim();
         String sourceLangKey = dto.getSourceLangKey();
         String resultLangKey = dto.getResultLangKey();
 
@@ -92,33 +92,47 @@ public class TranslationServiceImpl implements TranslationService {
     }
 
     @Override
-    public List<TranslationDto> checkForUserTranslations(
+    public TranslationsDto checkForUserTranslations(
             Long userId,
             String sourceText,
             String sourceLangKey,
             String resultLangKey
     ) {
-        return translationDao.findSuchTranslations(
+        List<TranslationDto> translations = translationDao.findSuchTranslations(
                 userId,
-                sourceText,
+                sourceText.trim(),
                 sourceLangKey,
                 resultLangKey
         )
                 .stream()
-                .map(translationDtoConverter::convertToTranslationDto)
+                .map(translation -> {
+                    translation.incrementViews();
+                    return translationDtoConverter.convertToTranslationDto(translation);
+                })
                 .collect(Collectors.toList());
+
+        TranslationsDto dto=new TranslationsDto();
+        dto.setTranslations(translations);
+
+        return dto;
     }
 
     @Override
-    public List<TranslationDto> getUserTranslations(
+    public TranslationsDto getUserTranslations(
             Long userId,
             Integer pageIndex,
             Integer maxRecords,
             String searchSubstring
     ) {
-        return translationDao.findUserTranslations(userId, pageIndex, maxRecords)
+        List<TranslationDto> translations = translationDao.findUserTranslations(userId, pageIndex, maxRecords)
                 .stream()
                 .map(translationDtoConverter::convertToTranslationDto)
                 .collect(Collectors.toList());
+        Long totalRecords = translationDao.countUserTranslations(userId);
+
+        TranslationsDto dto=new TranslationsDto();
+        dto.setTranslations(translations);
+        dto.setTotalRecords(totalRecords);
+        return dto;
     }
 }

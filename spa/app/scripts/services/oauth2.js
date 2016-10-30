@@ -38,13 +38,15 @@ angular.module('libreLingvoApp')
     };
 
     var loadAndUpdateAuthorities = function () {
+      var deferred = $q.defer();
+      $rootScope.updateAuthoritiesPromise= deferred.promise;
       UserAuthorities.get(function (data) {
         authorities = data.authorities;
         updateAuthorities();
+        deferred.resolve();
       });
     };
     loadAndUpdateAuthorities();
-
 
     return {
       logIn: function (username, password) {

@@ -46,9 +46,13 @@ $.get(chrome.extension.getURL('/templates/modal.html'), function (data) {
       },
       function (error) {
         console.error(error);
-        if (error.responseText){
-          var err=JSON.parse(error.responseText);
-          showErrorMessage(err.message);
+        if (error.description && error.description==='No access token')
+            window.location.href=BASE_URL;
+
+        if (error.responseText) {
+          var err = JSON.parse(error.responseText);
+          if (err.message)
+            showErrorMessage(err.message);
         }
       }
     );
@@ -117,7 +121,7 @@ var checkTranslation = function () {
 
   libreLingvoService.getUserTranslations(source, sourceLangKey, resultLangKey).then(
     function (data) {
-      if (data instanceof Array && data.length)
+      if (data.translations && data.translations.length)
         setTranslationIsSaved(true);
       else
         setTranslationIsSaved(false);
@@ -131,12 +135,3 @@ var checkTranslation = function () {
 //checkTranslation();
 resultBox.on('DOMSubtreeModified', _.debounce(checkTranslation, 800));
 
-/*
- libreLingvoService.viewAuthorities().then(
- function (response) {
- console.log('response in service:', response);
- },
- function (error) {
- console.log('error in service', error);
- }
- );*/

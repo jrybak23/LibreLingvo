@@ -20,6 +20,7 @@ angular
     'ngTouch',
     'ui.router',
     'ui.bootstrap',
+
     'pascalprecht.translate',
     'angular-loading-bar'
   ])
@@ -74,10 +75,17 @@ angular
       })
       .state({
         name: 'user-translations',
-        url: '/user-translations',
+        url: '/user-translations?page-index&search-substring&part-of-speech',
         templateUrl: 'views/user-translations.html',
         controller: 'UserTranslationsCtrl',
         controllerAs: 'userTranslations'
+      })
+      .state({
+        name: 'translation-detail',
+        url: '/translation-detail/:translationId',
+        templateUrl: 'views/translation-detail.html',
+        controller: 'TranslationDetailCtrl',
+        controllerAs: 'translationDetail'
       });
 
     $urlRouterProvider

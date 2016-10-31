@@ -10,13 +10,21 @@ import java.util.Optional;
  * Created by igorek2312 on 29.10.16.
  */
 public interface TranslationDao extends GenericDao<Translation, Long> {
-    List<Translation> findUserTranslations(
+    List<Translation> findFilteredUserTranslations(
             Long userId,
+            String searchSubstring,
+            PartOfSpeech partOfSpeech,
             Integer pageIndex,
             Integer maxRecords
     );
 
-    Long countUserTranslations(Long userId);
+    Long countFilteredUserTranslations(
+            Long userId,
+            String searchSubstring,
+            PartOfSpeech partOfSpeech
+    );
+
+    Long countTotalUserTranslations(Long userId);
 
     Optional<Boolean> existsSuchTranslation(
             Long userId,

@@ -11,6 +11,7 @@ import org.libre.lingvo.dto.exception.CustomErrorException;
 import org.libre.lingvo.entities.Translation;
 import org.libre.lingvo.entities.User;
 import org.libre.lingvo.entities.Word;
+import org.libre.lingvo.model.PartOfSpeech;
 import org.libre.lingvo.utils.dto.converters.TranslationDtoConverter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -122,16 +123,29 @@ public class TranslationServiceImpl implements TranslationService {
             Long userId,
             Integer pageIndex,
             Integer maxRecords,
-            String searchSubstring
+            String searchSubstring,
+            PartOfSpeech partOfSpeech
     ) {
-        List<TranslationDto> translations = translationDao.findUserTranslations(userId, pageIndex, maxRecords)
+        List<TranslationDto> translations = translationDao.findFilteredUserTranslations(
+                userId,
+                searchSubstring,
+                partOfSpeech,
+                pageIndex,
+                maxRecords
+        )
                 .stream()
                 .map(translationDtoConverter::convertToTranslationDto)
                 .collect(Collectors.toList());
-        Long totalRecords = translationDao.countUserTranslations(userId);
+        Long filteredRecords = translationDao.countFilteredUserTranslations(
+                userId,
+                searchSubstring,
+                partOfSpeech
+        );
+        Long totalRecords = translationDao.countTotalUserTranslations(userId);
 
         TranslationsDto dto=new TranslationsDto();
         dto.setTranslations(translations);
+        dto.setFilteredRecords(filteredRecords);
         dto.setTotalRecords(totalRecords);
         return dto;
     }

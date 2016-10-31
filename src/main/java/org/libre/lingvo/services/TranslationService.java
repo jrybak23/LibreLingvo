@@ -2,6 +2,7 @@ package org.libre.lingvo.services;
 
 import org.libre.lingvo.dto.AddedTranslationDto;
 import org.libre.lingvo.dto.TranslationsDto;
+import org.libre.lingvo.model.PartOfSpeech;
 
 /**
  * Created by igorek2312 on 29.10.16.
@@ -16,5 +17,11 @@ public interface TranslationService {
             String resultLangKey
     );
 
-    TranslationsDto getUserTranslations(Long userId, Integer pageIndex, Integer maxRecords, String searchSubstring);
+    TranslationsDto getUserTranslations(
+            Long userId,
+            Integer pageIndex,
+            Integer maxRecords,
+            String searchSubstring,
+            PartOfSpeech partOfSpeech
+    );
 }

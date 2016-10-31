@@ -16,25 +16,56 @@ import javax.persistence.criteria.*;
 @Configuration
 public class TranslationCriteriaQueries extends AbstractCriteriaQueriesConfig {
 
+    private void configureForFilteredUserTranslationsQuery(CriteriaQuery cq, Root<Translation> translationRoot) {
+        ParameterExpression<Long> userIdPrm = cb.parameter(Long.class, "userId");
+        ParameterExpression<String> searchSubstringPrm = cb.parameter(String.class, "searchSubstring");
+        Expression<String> searchSubstringPattern = cb.concat(cb.concat("%", searchSubstringPrm), "%");
+        ParameterExpression<PartOfSpeech> partOfSpeechPrm = cb.parameter(PartOfSpeech.class, "partOfSpeech");
+        Path<Long> userIdPath = translationRoot.get(Translation_.user).get(User_.id);
+        Path<String> sourceTextPath = translationRoot.get(Translation_.sourceWord).get(Word_.text);
+        Path<String> resultTextPath = translationRoot.get(Translation_.resultWord).get(Word_.text);
+        Path<PartOfSpeech> partOfSpeechPath = translationRoot.get(Translation_.partOfSpeech);
+        cq.where(
+                cb.and(
+                        cb.equal(userIdPrm, userIdPath),
+                        cb.or(
+                                cb.like(sourceTextPath, searchSubstringPattern),
+                                cb.like(resultTextPath, searchSubstringPattern)
+                        ),
+                        cb.or(
+                                cb.equal(partOfSpeechPrm,partOfSpeechPath),
+                                cb.isNull(partOfSpeechPrm)
+                        )
+                )
+        );
+    }
+
     @Bean
-    public CriteriaQuery<Translation> findUserTranslations() {
+    public CriteriaQuery<Translation> findFilteredUserTranslations() {
         CriteriaQuery<Translation> cq = cb.createQuery(Translation.class);
         Root<Translation> translationRoot = cq.from(Translation.class);
-        ParameterExpression<Long> userIdParameter = cb.parameter(Long.class, "userId");
-        Path<Long> userIdPath = translationRoot.get(Translation_.user).get(User_.id);
+        configureForFilteredUserTranslationsQuery(cq, translationRoot);
         cq.select(translationRoot);
-        cq.where(cb.equal(userIdParameter, userIdPath));
         return cq;
     }
 
     @Bean
-    public CriteriaQuery<Long> countTranslationsByUserId() {
+    public CriteriaQuery<Long> countFilteredUserTranslations() {
         CriteriaQuery<Long> cq = cb.createQuery(Long.class);
         Root<Translation> translationRoot = cq.from(Translation.class);
-        ParameterExpression<Long> userIdParameter = cb.parameter(Long.class, "userId");
-        Path<Long> userIdPath = translationRoot.get(Translation_.user).get(User_.id);
+        configureForFilteredUserTranslationsQuery(cq, translationRoot);
         cq.select(cb.count(translationRoot));
-        cq.where(cb.equal(userIdParameter, userIdPath));
+        return cq;
+    }
+
+    @Bean
+    public CriteriaQuery<Long> countTotalUserTranslations() {
+        CriteriaQuery<Long> cq = cb.createQuery(Long.class);
+        Root<Translation> translationRoot = cq.from(Translation.class);
+        ParameterExpression<Long> userIdPrm = cb.parameter(Long.class, "userId");
+        Path<Long> userIdPath = translationRoot.get(Translation_.user).get(User_.id);
+        cq.where(cb.equal(userIdPrm, userIdPath));
+        cq.select(cb.count(translationRoot));
         return cq;
     }
 

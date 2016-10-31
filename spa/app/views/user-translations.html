@@ -2,7 +2,29 @@
   <div class="row">
     <div id="criteria-panel" class="panel panel-default no-float">
       <div class="panel-body">
-        Panel body ... {{pageIndex+'/'+pagesNumber+'|'+totalRecords}}
+        <div>
+          <input ng-model="searchSubstring" ng-change="updateTranslations()" ng-model='searchSubstring'
+                 ng-model-options="{ debounce: 700 }"
+                 type="text" class="form-control" placeholder="{{'label.search.in.words' | translate}}">
+        </div>
+        <div>
+          <select name="name" id="part-of-speech" class="form-control" ng-model="partOfSpeech" ng-change="updateTranslations()">
+            <option value="" disabled selected>{{'label.part.of.speech' | translate}}</option>
+            <option value="ALL">{{'label.all' | translate}}</option>
+            <option value="NOT_DEFINED">{{'label.part.of.speech.not.defined' | translate}}</option>
+            <option value="NOUN">{{'label.part.of.speech.noun' | translate}}</option>
+            <option value="VERB">{{'label.part.of.speech.verb' | translate}}</option>
+            <option value="ADJECTIVE">{{'label.part.of.speech.adjective' | translate}}</option>
+            <option value="PARTICIPLE">{{'label.part.of.speech.participle' | translate}}</option>
+            <option value="ADVERB">{{'label.part.of.speech.adverb' | translate}}</option>
+            <option value="PRONOUN">{{'label.part.of.speech.pronoun' | translate}}</option>
+            <option value="PREPOSITION">{{'label.part.of.speech.preposition' | translate}}</option>
+            <option value="CONJUNCTION">{{'label.part.of.speech.сonjunction' | translate}}</option>
+            <option value="INTERJECTION">{{'label.part.of.speech.interjection' | translate}}</option>
+            <option value="ARTICLE">{{'label.part.of.speech.article' | translate}}</option>
+          </select>
+        </div>
+        <div class="text-muted">{{'label.criteria.panel.filtered' | translate:recordsCount}}</div>
       </div>
     </div>
     <div id="table-container" class="no-float">
@@ -10,29 +32,43 @@
         <table class="table table-hover">
           <thead>
           <tr>
-            <th>{{'label.source.language' | translate}}</th>
-            <th>{{'label.translation.language' | translate}}</th>
+            <!-- <th>{{'label.source.language' | translate}}</th>
+             <th>{{'label.translation.language' | translate}}</th>-->
             <th>{{'label.source.word' | translate}}</th>
             <th>{{'label.translation.word' | translate}}</th>
+            <th></th>
+            <th></th>
           </tr>
           </thead>
           <tbody>
           <!--tr*2>((td>{en})+(td>{uk})+(td>{pineapple})+(td>{ананас}))-->
           <tr ng-repeat="translation in translations">
-            <td>{{'label.language.'+ translation.sourceWord.langKey | translate}}</td>
-            <td>{{'label.language.'+ translation.resultWord.langKey | translate}}</td>
-            <td>{{translation.sourceWord.text}}</td>
-            <td>{{translation.resultWord.text}}</td>
+            <td uib-tooltip="{{'label.language.'+ translation.sourceWord.langKey | translate}}"
+                tooltip-append-to-body="true">{{translation.sourceWord.text}}
+            </td>
+            <td uib-tooltip="{{'label.language.'+ translation.resultWord.langKey | translate}}"
+                tooltip-append-to-body="true">{{translation.resultWord.text}}
+            </td>
+            <td><a ui-sref="translation-detail({translationId:{{translation.id}}})"><i
+              class="fa fa-info-circle"></i></a></td>
+            <td><a><i class="fa fa-pencil-square-o"></i></a></td>
           </tr>
           </tbody>
         </table>
+
         <div class="text-center">
-          <ul uib-pagination total-items="totalRecords" ng-model="pageIndex" max-size="maxPagSize"
-              class="pagination-md"  boundary-links="true" direction-links="false" first-text="&laquo;" last-text="&raquo;" num-pages="pagesNumber" ng-change="loadTranslations()"></ul>
+          <ul uib-pagination total-items="filteredRecords" ng-model="pageIndex" max-size="maxPagSize"
+              class="pagination-md" boundary-links="true" direction-links="false" first-text="&laquo;"
+              last-text="&raquo;" num-pages="pagesNumber" ng-change="updateTranslations()"></ul>
         </div>
       </div>
     </div>
   </div>
 </div>
 
+<!--<a href="#" uib-tooltip="tooltip!!!">Pellentesque</a>
+<p>
+  <button uib-popover="I appeared on mouse enter!" popover-trigger="'mouseenter'" type="button" class="btn btn-default">Mouseenter</button>
+</p>
+ng-click="viewTranslationDetail(translation.id)"-->
 

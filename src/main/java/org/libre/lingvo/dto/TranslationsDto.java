@@ -8,6 +8,8 @@ import java.util.List;
 public class TranslationsDto {
     private List<TranslationDto> translations;
 
+    private Long filteredRecords;
+
     private Long totalRecords;
 
     public List<TranslationDto> getTranslations() {
@@ -16,6 +18,14 @@ public class TranslationsDto {
 
     public void setTranslations(List<TranslationDto> translations) {
         this.translations = translations;
+    }
+
+    public Long getFilteredRecords() {
+        return filteredRecords;
+    }
+
+    public void setFilteredRecords(Long filteredRecords) {
+        this.filteredRecords = filteredRecords;
     }
 
     public Long getTotalRecords() {

@@ -34,8 +34,8 @@ public class UserCriteriaQueries extends AbstractCriteriaQueriesConfig {
         Root<User> userRoot = cq.from(User.class);
         cq.select(userRoot);
         ParameterExpression<String> parameter = cb.parameter(String.class, "emailSubstring");
-        Expression<String> patern = cb.concat(cb.concat("%", parameter), "%");
-        cq.where(cb.like(userRoot.get(User_.email), patern));
+        Expression<String> pattern = cb.concat(cb.concat("%", parameter), "%");
+        cq.where(cb.like(userRoot.get(User_.email), pattern));
         return cq;
     }
 

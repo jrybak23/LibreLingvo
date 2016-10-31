@@ -3,6 +3,7 @@ package org.libre.lingvo.controllers;
 import org.libre.lingvo.dto.AddedTranslationDto;
 import org.libre.lingvo.dto.TranslationsDto;
 import org.libre.lingvo.entities.User;
+import org.libre.lingvo.model.PartOfSpeech;
 import org.libre.lingvo.services.TranslationService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -31,6 +32,8 @@ public class TranslationController {
             @AuthenticationPrincipal User user,
             @RequestParam(required = false, defaultValue = "1") Integer pageIndex,
             @RequestParam(required = false, defaultValue = "20") Integer maxRecords,
+            @RequestParam(required = false, defaultValue = "") String searchSubstring,
+            @RequestParam(required = false) PartOfSpeech partOfSpeech,
 
             @RequestParam(required = false) String sourceText,
             @RequestParam(required = false) String sourceLangKey,
@@ -48,7 +51,8 @@ public class TranslationController {
                 user.getId(),
                 pageIndex,
                 maxRecords,
-                ""
+                searchSubstring,
+                partOfSpeech
         );
     }
 }

@@ -1,6 +1,7 @@
 package org.libre.lingvo.utils.dto.converters;
 
 import org.libre.lingvo.dto.AddedTranslationDto;
+import org.libre.lingvo.dto.TranslationDetailDto;
 import org.libre.lingvo.dto.TranslationDto;
 import org.libre.lingvo.entities.Translation;
 import org.springframework.stereotype.Component;
@@ -20,4 +21,11 @@ public class TranslationDtoConverterImpl extends AbstractDtoConverter implements
     public TranslationDto convertToTranslationDto(Translation translation) {
         return modelMapper.map(translation,TranslationDto.class);
     }
+
+    @Override
+    public TranslationDetailDto convertToTranslationDetailDto(Translation translation) {
+        return modelMapper.map(translation,TranslationDetailDto.class);
+    }
+
+
 }

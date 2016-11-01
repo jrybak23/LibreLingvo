@@ -16,7 +16,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 /**
@@ -38,18 +37,21 @@ public class UserServiceImpl implements UserService {
     private UserDtoConverter userDtoConverter;
 
     @Override
-    public UserDetailsDto getUserDetails(Long id) {
-        Optional<User> userOptional = userDao.find(id);
-        User user = userOptional.orElseThrow(() -> new CustomErrorException(CustomError.NO_USER_WITH_SUCH_ID));
+    public UserDetailsDto getUserDetails(Long userId) {
+        User user = userDao.find(userId).orElseThrow(() -> {
+            CustomError error = CustomError.NO_ENTITY_WITH_SUCH_ID;
+            error.setDescriptionArgs(User.class.getName(), userId);
+            return new CustomErrorException(error);
+        });
         return userDtoConverter.convertToUserDetailsDto(user);
     }
 
     @Override
     public List<FullUserDetailsDto> getAllFullUserDetail() {
-        List<User> users = userDao.findAll();
-        List<FullUserDetailsDto> dtos = users.stream().map(user -> userDtoConverter.convertToFullUserDetailsDto(user))
+        return userDao.findAll()
+                .stream()
+                .map(user -> userDtoConverter.convertToFullUserDetailsDto(user))
                 .collect(Collectors.toList());
-        return dtos;
     }
 
     @Override

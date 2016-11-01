@@ -10,6 +10,8 @@ import javax.persistence.criteria.CriteriaQuery;
 import java.util.List;
 import java.util.Optional;
 
+import static org.libre.lingvo.model.ParametersNames.TRANSLATION_ID;
+import static org.libre.lingvo.model.ParametersNames.WORD_ID;
 import static org.libre.lingvo.utils.optional.dao.OptionalDaoUtil.findOptional;
 
 /**
@@ -36,6 +38,10 @@ public class TranslationDaoImpl extends GenericDaoImpl<Translation, Long> implem
     @Autowired
     @Qualifier("findUserTranslationsForChecking")
     private CriteriaQuery<Translation> findUserTranslationsForChecking;
+
+    @Autowired
+    @Qualifier("existsOtherTranslationsDependedOnWord")
+    private CriteriaQuery<Boolean> existsOtherTranslationsDependedOnWord;
 
     @Override
     public List<Translation> findFilteredUserTranslations(
@@ -106,6 +112,14 @@ public class TranslationDaoImpl extends GenericDaoImpl<Translation, Long> implem
                 .setParameter("sourceLangKey", sourceLangKey)
                 .setParameter("resultLangKey", resultLangKey)
                 .getResultList();
+    }
+
+    @Override
+    public Optional<Boolean> existsOtherTranslationsDependedOnWord(Long translationId, Long wordId) {
+        return findOptional(() -> entityManager.createQuery(existsOtherTranslationsDependedOnWord)
+                .setParameter(TRANSLATION_ID, translationId)
+                .setParameter(WORD_ID, wordId)
+                .getSingleResult());
     }
 
 

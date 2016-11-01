@@ -11,6 +11,12 @@ html, body, .container-fluid {
   padding-bottom: 30px;
 }
 
+.views-content::after{
+  display: block;
+  content: '.';
+  color: rgba(255, 255, 255, 0);
+}
+
 .footer {
   padding: 0;
 }
@@ -51,4 +57,7 @@ footer ul li {
   border-radius: 5px;
 }
 
+.fa{
+  font-size: 20px;
+}
 

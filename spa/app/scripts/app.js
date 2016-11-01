@@ -86,6 +86,13 @@ angular
         templateUrl: 'views/translation-detail.html',
         controller: 'TranslationDetailCtrl',
         controllerAs: 'translationDetail'
+      })
+      .state({
+        name: 'edit-translation',
+        url: '/edit-translation/:translationId',
+        templateUrl: 'views/edit-translation.html',
+        controller: 'EditTranslationCtrl',
+        controllerAs: 'editTranslation'
       });
 
     $urlRouterProvider
@@ -123,12 +130,12 @@ angular
               $injector.get('$state').go('log-in');
             }
             else if (response.data.message)
-              messageBox.show(response.data.message, MessageType.ERROR, false);
+              messageBox.show(response.data.message, MessageType.ERROR);
             else if (response.data.fieldErrors)
               messageBox.showValidationErrorMessage(response.data.fieldErrors);
           }
           else
-            messageBox.show(response, MessageType.ERROR, false);
+            messageBox.show(response, MessageType.ERROR);
           return $q.reject(response);
         }
       };

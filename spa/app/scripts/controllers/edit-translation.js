@@ -2,13 +2,13 @@
 
 /**
  * @ngdoc function
- * @name libreLingvoApp.controller:TranslationDetailCtrl
+ * @name libreLingvoApp.controller:EditTranslationCtrl
  * @description
- * # TranslationDetailCtrl
+ * # EditTranslationCtrl
  * Controller of the libreLingvoApp
  */
 angular.module('libreLingvoApp')
-  .controller('TranslationDetailCtrl', function ($scope, $state, $stateParams, Translations) {
+  .controller('EditTranslationCtrl', function ($scope, $state, $stateParams, Translations) {
     Translations.get(
       {
         userId: 'me',

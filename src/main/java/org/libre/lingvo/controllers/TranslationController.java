@@ -1,11 +1,14 @@
 package org.libre.lingvo.controllers;
 
 import org.libre.lingvo.dto.AddedTranslationDto;
+import org.libre.lingvo.dto.CreatedResourceDto;
+import org.libre.lingvo.dto.TranslationDetailDto;
 import org.libre.lingvo.dto.TranslationsDto;
 import org.libre.lingvo.entities.User;
 import org.libre.lingvo.model.PartOfSpeech;
 import org.libre.lingvo.services.TranslationService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.validation.annotation.Validated;
@@ -22,8 +25,12 @@ public class TranslationController {
 
     @RequestMapping(value = "/users/me/translations", method = RequestMethod.POST)
     @PreAuthorize("hasAuthority('ROLE_USER')")
-    public void addTranslation(@AuthenticationPrincipal User user, @RequestBody @Validated AddedTranslationDto dto) {
-        translationService.addUserTranslation(user.getId(), dto);
+    @ResponseStatus(HttpStatus.CREATED)
+    public CreatedResourceDto addTranslation(
+            @AuthenticationPrincipal User user,
+            @RequestBody @Validated AddedTranslationDto dto
+    ) {
+        return translationService.addUserTranslation(user.getId(), dto);
     }
 
     @RequestMapping(value = "/users/me/translations", method = RequestMethod.GET)
@@ -55,4 +62,25 @@ public class TranslationController {
                 partOfSpeech
         );
     }
+
+    @RequestMapping(value = "/users/me/translations/{translationId}", method = RequestMethod.GET)
+    @PreAuthorize("hasAuthority('ROLE_USER')")
+    public TranslationDetailDto viewUserTranslationDetail(
+            @AuthenticationPrincipal User user,
+            @PathVariable Long translationId
+    ) {
+        return translationService.getUserTranslationDetailDto(user.getId(), translationId);
+    }
+
+    @RequestMapping(value = "/users/me/translations/{translationId}", method = RequestMethod.DELETE)
+    @PreAuthorize("hasAuthority('ROLE_USER')")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void deleteUserTranslation(
+            @AuthenticationPrincipal User user,
+            @PathVariable Long translationId
+    ) {
+         translationService.deleteUserTranslation(user.getId(),translationId);
+    }
+
+
 }

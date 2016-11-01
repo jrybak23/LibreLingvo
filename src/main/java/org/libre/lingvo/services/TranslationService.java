@@ -1,6 +1,8 @@
 package org.libre.lingvo.services;
 
 import org.libre.lingvo.dto.AddedTranslationDto;
+import org.libre.lingvo.dto.CreatedResourceDto;
+import org.libre.lingvo.dto.TranslationDetailDto;
 import org.libre.lingvo.dto.TranslationsDto;
 import org.libre.lingvo.model.PartOfSpeech;
 
@@ -8,7 +10,7 @@ import org.libre.lingvo.model.PartOfSpeech;
  * Created by igorek2312 on 29.10.16.
  */
 public interface TranslationService {
-    void addUserTranslation(Long userId, AddedTranslationDto dto);
+    CreatedResourceDto addUserTranslation(Long userId, AddedTranslationDto dto);
 
     TranslationsDto checkForUserTranslations(
             Long userId,
@@ -24,4 +26,8 @@ public interface TranslationService {
             String searchSubstring,
             PartOfSpeech partOfSpeech
     );
+
+    TranslationDetailDto getUserTranslationDetailDto(Long userId,Long translationId);
+
+    void deleteUserTranslation(Long userId,Long translationId);
 }

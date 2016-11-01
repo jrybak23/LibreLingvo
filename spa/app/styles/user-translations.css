@@ -6,10 +6,6 @@
   padding: 3px;
 }
 
-#table-container .fa{
-  font-size: 20px;
-}
-
 @media (min-width: 768px) {
   #user-translations {
     display: table;

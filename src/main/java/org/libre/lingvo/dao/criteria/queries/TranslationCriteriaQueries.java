@@ -10,6 +10,9 @@ import org.springframework.context.annotation.Configuration;
 
 import javax.persistence.criteria.*;
 
+import static org.libre.lingvo.model.ParametersNames.TRANSLATION_ID;
+import static org.libre.lingvo.model.ParametersNames.WORD_ID;
+
 /**
  * Created by igorek2312 on 29.10.16.
  */
@@ -54,7 +57,7 @@ public class TranslationCriteriaQueries extends AbstractCriteriaQueriesConfig {
         CriteriaQuery<Long> cq = cb.createQuery(Long.class);
         Root<Translation> translationRoot = cq.from(Translation.class);
         configureForFilteredUserTranslationsQuery(cq, translationRoot);
-        cq.select(cb.count(translationRoot));
+        cq.select(cb.count(translationRoot.get(Translation_.id)));
         return cq;
     }
 
@@ -65,7 +68,7 @@ public class TranslationCriteriaQueries extends AbstractCriteriaQueriesConfig {
         ParameterExpression<Long> userIdPrm = cb.parameter(Long.class, "userId");
         Path<Long> userIdPath = translationRoot.get(Translation_.user).get(User_.id);
         cq.where(cb.equal(userIdPrm, userIdPath));
-        cq.select(cb.count(translationRoot));
+        cq.select(cb.count(translationRoot.get(Translation_.id)));
         return cq;
     }
 
@@ -127,6 +130,36 @@ public class TranslationCriteriaQueries extends AbstractCriteriaQueriesConfig {
                         cb.equal(resultLangKeyPrm, resultLangKeyPath)
                 )
         );
+
+        return cq;
+    }
+
+    @Bean
+    CriteriaQuery<Boolean> existsOtherTranslationsDependedOnWord(){
+        CriteriaQuery<Boolean> cq = cb.createQuery(Boolean.class);
+        cq.from(Translation.class);
+        Subquery<Translation> sq = cq.subquery(Translation.class);
+        Root<Translation> translationRoot = sq.from(Translation.class);
+
+        ParameterExpression<Long> translationIdPrm = cb.parameter(Long.class, TRANSLATION_ID);
+        ParameterExpression<Long> wordIdPrm = cb.parameter(Long.class, WORD_ID);
+        Path<Long> translationIdPath = translationRoot.get(Translation_.id);
+        Path<Long> sourceWordIdPath = translationRoot.get(Translation_.sourceWord).get(Word_.id);
+        Path<Long> resultWordIdPath = translationRoot.get(Translation_.resultWord).get(Word_.id);
+        sq.select(translationRoot);
+        sq.where(
+                cb.and(
+                        cb.notEqual(translationIdPrm,translationIdPath),
+                        cb.or(
+                                cb.equal(wordIdPrm,sourceWordIdPath),
+                                cb.equal(wordIdPrm,resultWordIdPath)
+                        )
+                )
+        );
+
+        CriteriaBuilder.Case<Boolean> booleanCase = cb.<Boolean>selectCase();
+        Expression<Boolean> expression = booleanCase.when(cb.exists(sq), true).otherwise(false);
+        cq.select(expression);
 
         return cq;
     }

@@ -41,4 +41,6 @@ public interface TranslationDao extends GenericDao<Translation, Long> {
             String sourceLangKey,
             String resultLangKey
     );
+
+    Optional<Boolean> existsOtherTranslationsDependedOnWord(Long translationId, Long wordId);
 }

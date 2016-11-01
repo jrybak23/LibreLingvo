@@ -3,9 +3,7 @@ package org.libre.lingvo.services;
 import org.libre.lingvo.dao.TranslationDao;
 import org.libre.lingvo.dao.UserDao;
 import org.libre.lingvo.dao.WordDao;
-import org.libre.lingvo.dto.AddedTranslationDto;
-import org.libre.lingvo.dto.TranslationDto;
-import org.libre.lingvo.dto.TranslationsDto;
+import org.libre.lingvo.dto.*;
 import org.libre.lingvo.dto.exception.CustomError;
 import org.libre.lingvo.dto.exception.CustomErrorException;
 import org.libre.lingvo.entities.Translation;
@@ -53,10 +51,14 @@ public class TranslationServiceImpl implements TranslationService {
     }
 
     @Override
-    public void addUserTranslation(Long userId, AddedTranslationDto dto) {
+    public CreatedResourceDto addUserTranslation(Long userId, AddedTranslationDto dto) {
         Translation translation = new Translation();
         User user = userDao.find(userId)
-                .orElseThrow(() -> new CustomErrorException(CustomError.NO_USER_WITH_SUCH_ID));
+                .orElseThrow(() -> {
+                    CustomError error = CustomError.NO_ENTITY_WITH_SUCH_ID;
+                    error.setDescriptionArgs(User.class.getName(), userId);
+                    return new CustomErrorException(error);
+                });
         translation.setUser(user);
 
         String sourceText = dto.getSourceText().trim();
@@ -90,6 +92,7 @@ public class TranslationServiceImpl implements TranslationService {
         translation.setFolder(user.getRootFolder());
 
         translationDao.create(translation);
+        return new CreatedResourceDto(translation.getId());
     }
 
     @Override
@@ -112,7 +115,7 @@ public class TranslationServiceImpl implements TranslationService {
                 })
                 .collect(Collectors.toList());
 
-        TranslationsDto dto=new TranslationsDto();
+        TranslationsDto dto = new TranslationsDto();
         dto.setTranslations(translations);
 
         return dto;
@@ -143,10 +146,48 @@ public class TranslationServiceImpl implements TranslationService {
         );
         Long totalRecords = translationDao.countTotalUserTranslations(userId);
 
-        TranslationsDto dto=new TranslationsDto();
+        TranslationsDto dto = new TranslationsDto();
         dto.setTranslations(translations);
         dto.setFilteredRecords(filteredRecords);
         dto.setTotalRecords(totalRecords);
         return dto;
+    }
+
+    @Override
+    public TranslationDetailDto getUserTranslationDetailDto(Long userId, Long translationId) {
+        Translation translation = translationDao.find(translationId).orElseThrow(() -> {
+            CustomError error = CustomError.NO_ENTITY_WITH_SUCH_ID;
+            error.setDescriptionArgs(Translation.class.getName(), translationId);
+            return new CustomErrorException(error);
+        });
+
+        if (!translation.getUser().getId().equals(userId))
+            throw new CustomErrorException(CustomError.FORBIDDEN);
+
+        return translationDtoConverter.convertToTranslationDetailDto(translation);
+    }
+
+    private void safeDelete(Long translationId, Word word) {
+        Boolean exists = translationDao.existsOtherTranslationsDependedOnWord(translationId, word.getId())
+                .orElse(false);
+        if (!exists)
+            wordDao.delete(word);
+    }
+
+    @Override
+    public void deleteUserTranslation(Long userId, Long translationId) {
+        Translation translation = translationDao.find(translationId).orElseThrow(() -> {
+            CustomError error = CustomError.NO_ENTITY_WITH_SUCH_ID;
+            error.setDescriptionArgs(Translation.class.getName(), translationId);
+            return new CustomErrorException(error);
+        });
+
+        if (!translation.getUser().getId().equals(userId))
+            throw new CustomErrorException(CustomError.FORBIDDEN);
+
+        safeDelete(translationId, translation.getSourceWord());
+        safeDelete(translationId, translation.getResultWord());
+
+        translationDao.delete(translation);
     }
 }

@@ -1,2 +1,102 @@
-<p>This is the translation-detail view.</p>
-<p>{{id}}</p>
+<p>{{translation}}</p>
+<div class="row">
+  <div class="col-sm-6">
+    <div class="panel panel-primary">
+      <div class="panel-heading">
+        <h3 class="panel-title">Translation</h3>
+      </div>
+      <div class="panel-body">
+        <div class="row">
+          <div class="col-sm-4 text-muted">
+            {{'label.source.word' | translate}}:
+          </div>
+          <div class="col-sm-8 text-info">
+            <span>{{translation.sourceWord.text}}</span>
+            <a ui-sref="edit-translation({translationId:translation.id})" class="pull-right">
+              <i class="fa fa-pencil-square-o"></i>
+            </a>
+          </div>
+        </div>
+        <hr>
+        <div class="row">
+          <div class="col-sm-4 text-muted">
+            {{'label.translation.word' | translate}}:
+          </div>
+          <div class="col-sm-8 text-info">
+            <span>{{translation.resultWord.text}}</span>
+            <a ui-sref="edit-translation({translationId:translation.id})" class="pull-right">
+              <i class="fa fa-pencil-square-o"></i>
+            </a>
+          </div>
+        </div>
+        <hr>
+        <div class="row">
+          <div class="col-sm-4 text-muted">
+            {{'label.source.language' | translate}}:
+          </div>
+          <div class="col-sm-8 text-info">
+            <span>{{'label.language.'+translation.sourceWord.langKey | translate}}</span>
+            <a ui-sref="edit-translation({translationId:translation.id})" class="pull-right">
+              <i class="fa fa-pencil-square-o"></i>
+            </a>
+          </div>
+        </div>
+        <hr>
+        <div class="row">
+          <div class="col-sm-4 text-muted">
+            {{'label.translation.language' | translate}}:
+          </div>
+          <div class="col-sm-8 text-info">
+            <span>{{'label.language.'+translation.resultWord.langKey | translate}}</span>
+            <a ui-sref="edit-translation({translationId:translation.id})" class="pull-right">
+              <i class="fa fa-pencil-square-o"></i>
+            </a>
+          </div>
+        </div>
+        <hr>
+        <div class="row">
+          <div class="col-sm-4 text-muted">
+            {{'label.part.of.speech' | translate}}:
+          </div>
+          <div class="col-sm-8 text-info">
+            <span>{{'label.part.of.speech.'+translation.partOfSpeech.toLowerCase().replace('_',".") | translate}}</span>
+            <a ui-sref="edit-translation({translationId:translation.id})" class="pull-right">
+              <i class="fa fa-pencil-square-o"></i>
+            </a>
+          </div>
+        </div>
+        <hr>
+        <div class="row">
+          <div class="col-sm-4 text-muted">
+            {{'label.views.quantity' | translate}}:
+          </div>
+          <div class="col-sm-8 text-info">
+            {{translation.views}}
+          </div>
+        </div>
+        <hr>
+        <div class="row">
+          <div class="col-sm-4 text-muted">
+            {{'label.last.modification.date' | translate}}:
+          </div>
+          <div class="col-sm-8 text-info" >
+            {{translation.lastModificationDate}}
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="col-sm-6">
+    <div ng-show="translation.note" class="panel panel-primary">
+    	  <div class="panel-heading">
+    			<h3 class="panel-title">Note</h3>
+    	  </div>
+    	  <div class="panel-body">
+    			Panel body ...
+    	  </div>
+    </div>
+  </div>
+</div>
+
+

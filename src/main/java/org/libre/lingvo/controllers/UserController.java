@@ -1,9 +1,6 @@
 package org.libre.lingvo.controllers;
 
-import org.libre.lingvo.dto.FullUserDetailsDto;
-import org.libre.lingvo.dto.UserAuthoritiesDto;
-import org.libre.lingvo.dto.UserDetailsDto;
-import org.libre.lingvo.dto.UserRegistrationDto;
+import org.libre.lingvo.dto.*;
 import org.libre.lingvo.entities.User;
 import org.libre.lingvo.services.UserService;
 import org.libre.lingvo.services.VerificationTokenService;
@@ -62,7 +59,6 @@ public class UserController {
     }
 
     @RequestMapping(value = "/oauth/revoke-token", method = RequestMethod.DELETE)
-    @ResponseStatus(HttpStatus.OK)
     public void logout(HttpServletRequest request) {
         String authHeader = request.getHeader("Authorization");
         if (authHeader != null) {
@@ -80,10 +76,11 @@ public class UserController {
 
     @RequestMapping(value = "/users", method = RequestMethod.POST)
     @ResponseStatus(HttpStatus.CREATED)
-    public void registerUser(HttpServletRequest request, @RequestBody @Validated UserRegistrationDto dto) {
+    public CreatedResourceDto registerUser(HttpServletRequest request, @RequestBody @Validated UserRegistrationDto dto) {
         String originUrl = request.getHeader("Origin");
 
         User user = userService.registerUser(dto);
         verificationTokenService.create(user, originUrl);
+        return new CreatedResourceDto(user.getId());
     }
 }

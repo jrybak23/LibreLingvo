@@ -42,11 +42,11 @@ angular.module('libreLingvoApp')
 
     var getTitle = function (messageType) {
       if (messageType === MessageType.INFO || messageType === MessageType.SUCCESS)
-        return "label.message.ok.title";
+        return "label.message.title.ok";
       if (messageType === MessageType.WARNING)
-        return "label.message.warning.title";
+        return "label.message.title.warning";
       if (messageType === MessageType.ERROR)
-        return "label.message.error.title";
+        return "label.message.title.error";
     };
 
     var getPanelClass = function (messageType) {
@@ -61,22 +61,30 @@ angular.module('libreLingvoApp')
     };
 
     return {
-      show: function (content, messageType, translate) {
-        var translate = translate || true;
-        messageContent = translate ? $translate.instant(content) : content;
-        messageType= messageType || MessageType.SUCCESS;
-        messageTitle = $translate.instant(getTitle(messageType));
-        panelClass=getPanelClass(messageType);
+      show: function (content, messageType) {
+        messageContent = content;
+        messageType = messageType || MessageType.SUCCESS;
+        messageTitle =getTitle(messageType);
+        panelClass = getPanelClass(messageType);
 
         messageModalOptions.templateUrl = 'views/modal-message.html';
         messageModalOptions.controller = 'ModalMessageCtrl';
         return $uibModal.open(messageModalOptions).result;
       },
-      showValidationErrorMessage:function (fieldErrors) {
-        messagefieldErrors=fieldErrors;
+      showValidationErrorMessage: function (fieldErrors) {
+        messagefieldErrors = fieldErrors;
         validationErrorMessageModalOptions.templateUrl = 'views/validation-error-modal-message.html';
         validationErrorMessageModalOptions.controller = 'ValidationErrorModalMessageCtrl';
         return $uibModal.open(validationErrorMessageModalOptions).result;
+      },
+      showGeneralQuestion: function (content, messageType) {
+        messageContent = content;
+        messageType = messageType || MessageType.WARNING;
+        panelClass = getPanelClass(messageType);
+        messageTitle =  messageTitle =getTitle(messageType);
+        messageModalOptions.templateUrl = 'views/general-question-modal.html';
+        messageModalOptions.controller = 'GeneralQuestionModalCtrl';
+        return $uibModal.open(messageModalOptions).result;
       }
     };
   })

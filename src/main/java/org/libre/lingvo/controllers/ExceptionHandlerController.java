@@ -29,13 +29,22 @@ public class ExceptionHandlerController {
     @Qualifier("backendMessageSource")
     private MessageSource ms;
 
+   /* @ExceptionHandler(Exception.class)
+    @ResponseBody
+    public void handleException(Exception e){
+
+    }*/
+
     @ExceptionHandler(CustomErrorException.class)
     @ResponseBody
     public ResponseEntity<ErrorInfoDto> handleErrorCodeException(CustomErrorException e) {
         CustomError error = e.getError();
-        String message = ms.getMessage(error.getMessageKey(), error.getMessageArgs(), LocaleContextHolder.getLocale());
 
-        ErrorInfoDto dto = new ErrorInfoDto(error.getCode(),message, error.getDescription());
+        String message = error.getMessageKey().isPresent()
+                ? ms.getMessage(error.getMessageKey().get(), error.getMessageArgs(), LocaleContextHolder.getLocale())
+                : null;
+
+        ErrorInfoDto dto = new ErrorInfoDto(error.getCode(), message, error.getDescription());
         return new ResponseEntity<>(dto, error.getHttpStatus());
     }
 
@@ -53,9 +62,10 @@ public class ExceptionHandlerController {
     @ResponseBody
     @ExceptionHandler(AccessDeniedException.class)
     public ResponseEntity<ErrorInfoDto> handleException(AccessDeniedException e) {
-        CustomError error=CustomError.ACCESS_DENIED;
-        String message = ms.getMessage(error.getMessageKey(), null, LocaleContextHolder.getLocale());
+        CustomError error = CustomError.ACCESS_DENIED;
+        String message = error.getMessageKey().isPresent()
+                ? ms.getMessage(error.getMessageKey().get(), null, LocaleContextHolder.getLocale()) : null;
         ErrorInfoDto dto = new ErrorInfoDto(error.getCode(), message, e.getMessage());
-        return new ResponseEntity<>(dto,error.getHttpStatus());
+        return new ResponseEntity<>(dto, error.getHttpStatus());
     }
 }

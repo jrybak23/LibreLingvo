@@ -2,27 +2,40 @@ package org.libre.lingvo.dto.exception;
 
 import org.springframework.http.HttpStatus;
 
+import java.util.Optional;
+
 /**
  * Created by igorek2312 on 21.10.16.
  */
 public enum CustomError {
-    USER_WITH_SUCH_EMAIL_ALREADY_EXISTS(0, "User with such email already exists", "error.user.with.such.email.exists"),
-    NO_VERIFICATION_TOKEN_WITH_SUCH_UUID(1, "No verification token with such uuid", "error.failed.account.enabling"),
-    USER_HAS_ALREADY_SUCH_TRANSLATION(2, "User has already such translation", "error.user.has.already.such.translation"),
-    NO_USER_WITH_SUCH_ID(3, "No user with such id"),
+    USER_WITH_SUCH_EMAIL_ALREADY_EXISTS(
+            1,
+            HttpStatus.CONFLICT,
+            "User with such email already exists",
+            "error.user.with.such.email.exists"
+    ),
+    NO_VERIFICATION_TOKEN_WITH_SUCH_UUID(
+            2,
+            HttpStatus.NOT_FOUND,
+            "No verification token with such uuid",
+            "error.failed.account.enabling"
+    ),
+    USER_HAS_ALREADY_SUCH_TRANSLATION(
+            3,
+            HttpStatus.CONFLICT,
+            "User has already such translation",
+            "error.user.has.already.such.translation"
+    ),
     ACCESS_DENIED(401, HttpStatus.UNAUTHORIZED, null, "error.access.denied"),
-    FORBIDDEN(403, HttpStatus.FORBIDDEN, null, "error.forbidden");
+    FORBIDDEN(403, HttpStatus.FORBIDDEN, null, "error.forbidden"),
+    NO_ENTITY_WITH_SUCH_ID(404, HttpStatus.NOT_FOUND, "No entity %s with id %s");
 
     private final int code;
-    private HttpStatus httpStatus = HttpStatus.BAD_REQUEST;
+    private final HttpStatus httpStatus;
     private String description;
     private String messageKey = null;
+    private Object[] descriptionArgs = null;
     private Object[] messageArgs = null;
-
-    CustomError(int code, String description) {
-        this.code = code;
-        this.description = description;
-    }
 
     CustomError(int code, HttpStatus httpStatus) {
         this.code = code;
@@ -33,12 +46,6 @@ public enum CustomError {
         this.code = code;
         this.httpStatus = httpStatus;
         this.description = description;
-    }
-
-    CustomError(int code, String description, String messageKey) {
-        this.code = code;
-        this.description = description;
-        this.messageKey = messageKey;
     }
 
     CustomError(int code, HttpStatus httpStatus, String description, String messageKey) {
@@ -53,22 +60,26 @@ public enum CustomError {
     }
 
     public String getDescription() {
-        return description;
+        return String.format(description, descriptionArgs);
     }
 
     public void setDescription(String description) {
         this.description = description;
     }
 
-    public String getMessageKey() {
-        return messageKey;
+    public Optional<String> getMessageKey() {
+        return Optional.ofNullable(messageKey);
+    }
+
+    public void setDescriptionArgs(Object... descriptionArgs) {
+        this.descriptionArgs = descriptionArgs;
     }
 
     public Object[] getMessageArgs() {
         return messageArgs;
     }
 
-    public void setMessageArgs(Object[] messageArgs) {
+    public void setMessageArgs(Object... messageArgs) {
         this.messageArgs = messageArgs;
     }
 

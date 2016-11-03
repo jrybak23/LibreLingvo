@@ -8,6 +8,7 @@
  *
  * Main module of the application.
  */
+
 angular
   .module('libreLingvoApp', [
     'ngAnimate',
@@ -20,9 +21,10 @@ angular
     'ngTouch',
     'ui.router',
     'ui.bootstrap',
-
     'pascalprecht.translate',
-    'angular-loading-bar'
+    'angular-loading-bar',
+    'ui.tinymce',
+    'angularMoment'
   ])
   .constant('GRUNT_SERVE_URL', 'http://localhost:9000')
   .constant('TOMCAT_URL', 'http://localhost:8080')
@@ -81,18 +83,43 @@ angular
         controllerAs: 'userTranslations'
       })
       .state({
-        name: 'translation-detail',
-        url: '/translation-detail/:translationId',
-        templateUrl: 'views/translation-detail.html',
-        controller: 'TranslationDetailCtrl',
-        controllerAs: 'translationDetail'
+        name: 'translation.detail',
+        url: '/detail',
+        views: {
+          'main': {
+            templateUrl: 'views/translation-detail.html',
+            controller: 'TranslationDetailCtrl',
+            controllerAs: 'translationDetail'
+          },
+          'note': {
+            templateUrl: 'views/note-detail.html',
+            controller: 'NoteDetailCtrl',
+            controllerAs: 'noteDetail'
+          }
+        }
       })
       .state({
-        name: 'edit-translation',
-        url: '/edit-translation/:translationId',
-        templateUrl: 'views/edit-translation.html',
-        controller: 'EditTranslationCtrl',
-        controllerAs: 'editTranslation'
+        name: 'translation.edit',
+        url: '/edit',
+        views: {
+          'main': {
+            templateUrl: 'views/edit-translation.html',
+            controller: 'EditTranslationCtrl',
+            controllerAs: 'editTranslation'
+          },
+          'note': {
+            templateUrl: 'views/edit-note.html',
+            controller: 'EditNoteCtrl',
+            controllerAs: 'editNote'
+          }
+        }
+      })
+      .state({
+        name: 'translation',
+        url: '/translation/:translationId',
+        templateUrl: 'views/translation.html',
+        controller: 'TranslationCtrl',
+        controllerAs: 'translation'
       });
 
     $urlRouterProvider
@@ -148,5 +175,20 @@ angular
     $translateProvider.fallbackLanguage('en');
     $translateProvider.useSanitizeValueStrategy('escapeParameters');
   });
+
+
+// update popover template for binding unsafe html
+angular.module("uib/template/popover/popover.html", []).run(function ($templateCache) {
+  console.log("cache");
+  //$templateCache.removeAll();
+
+  $templateCache.put("uib/template/popover/popover.html",
+    "<div class=\"arrow\"></div>\n" +
+    "<div class=\"popover-inner\">\n" +
+    "    <h3 class=\"popover-title\" ng-bind=\"uibTitle\" ng-if=\"uibTitle\"></h3>\n" +
+    "    <div class=\"popover-content\" ng-bind-html=\"content\"></div>\n" +
+    "</div>\n" +
+    "");
+});
 
 $('.dropdown-toggle').dropdown();

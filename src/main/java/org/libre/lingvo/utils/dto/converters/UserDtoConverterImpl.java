@@ -14,17 +14,18 @@ public class UserDtoConverterImpl extends AbstractDtoConverter implements UserDt
 
     @Override
     public UserDetailsDto convertToUserDetailsDto(User user) {
+
         return modelMapper.map(user,UserDetailsDto.class);
     }
 
     @Override
     public FullUserDetailsDto convertToFullUserDetailsDto(User user) {
-        return modelMapper.map(user,FullUserDetailsDto.class);
+        return modelMapper.map(user, FullUserDetailsDto.class);
     }
 
     @Override
     public User convertFromUserRegistrationDto(UserRegistrationDto dto) {
-        return modelMapper.map(dto,User.class);
+        return modelMapper.map(dto, User.class);
     }
 
 }

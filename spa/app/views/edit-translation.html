@@ -1,84 +1,63 @@
-<p>{{translation}}</p>
-<div class="row">
-  <div class="col-sm-6" id="edit-translation-form">
-    <div class="panel panel-primary">
-      <div class="panel-heading">
-        <h3 class="panel-title">Translation</h3>
-      </div>
-      <div class="panel-body">
-        <div class="row">
-          <div class="col-sm-4 text-muted">
-            {{'label.source.word' | translate}}:
-          </div>
-          <div class="col-sm-8 text-info">
-            <input ng-model="translation.sourceWord.text" type="text" class="form-control">
-          </div>
-        </div>
-        <hr>
-        <div class="row">
-          <div class="col-sm-4 text-muted">
-            {{'label.translation.word' | translate}}:
-          </div>
-          <div class="col-sm-8 text-info">
-            <input ng-model="translation.resultWord.text" type="text" class="form-control">
-          </div>
-        </div>
-        <hr>
-        <div class="row">
-          <div class="col-sm-4 text-muted">
-            {{'label.source.language' | translate}}:
-          </div>
-          <div class="col-sm-8 text-info">
-            <span>{{'label.language.'+translation.sourceWord.langKey | translate}}</span>
-          </div>
-        </div>
-        <hr>
-        <div class="row">
-          <div class="col-sm-4 text-muted">
-            {{'label.translation.language' | translate}}:
-          </div>
-          <div class="col-sm-8 text-info">
-            <span>{{'label.language.'+translation.resultWord.langKey | translate}}</span>
-          </div>
-        </div>
-        <hr>
-        <div class="row">
-          <div class="col-sm-4 text-muted">
-            {{'label.part.of.speech' | translate}}:
-          </div>
-          <div class="col-sm-8 text-info">
-            <select name="name" id="part-of-speech" class="form-control" ng-model="translation.partOfSpeech"
-                    ng-change="updateTranslations()">
-              <option value="" disabled selected>{{'label.part.of.speech' | translate}}</option>
-              <option value="ALL">{{'label.all' | translate}}</option>
-              <option value="NOT_DEFINED">{{'label.part.of.speech.not.defined' | translate}}</option>
-              <option value="NOUN">{{'label.part.of.speech.noun' | translate}}</option>
-              <option value="VERB">{{'label.part.of.speech.verb' | translate}}</option>
-              <option value="ADJECTIVE">{{'label.part.of.speech.adjective' | translate}}</option>
-              <option value="PARTICIPLE">{{'label.part.of.speech.participle' | translate}}</option>
-              <option value="ADVERB">{{'label.part.of.speech.adverb' | translate}}</option>
-              <option value="PRONOUN">{{'label.part.of.speech.pronoun' | translate}}</option>
-              <option value="PREPOSITION">{{'label.part.of.speech.preposition' | translate}}</option>
-              <option value="CONJUNCTION">{{'label.part.of.speech.сonjunction' | translate}}</option>
-              <option value="INTERJECTION">{{'label.part.of.speech.interjection' | translate}}</option>
-              <option value="ARTICLE">{{'label.part.of.speech.article' | translate}}</option>
-            </select>
-          </div>
-        </div>
-      </div>
+<form ng-submit="edit()" role="form">
+  <div class="row">
+    <div class="col-sm-4 text-muted">
+      {{'label.source.word' | translate}}:
+    </div>
+    <div class="col-sm-8 text-info">
+      <input ng-model="translation.sourceWord.text" type="text" class="form-control">
     </div>
   </div>
-
-  <div class="col-sm-6">
-    <div ng-show="translation.note" class="panel panel-primary">
-      <div class="panel-heading">
-        <h3 class="panel-title">Note</h3>
-      </div>
-      <div class="panel-body">
-        Panel body ...
-      </div>
+  <hr>
+  <div class="row">
+    <div class="col-sm-4 text-muted">
+      {{'label.translation.word' | translate}}:
+    </div>
+    <div class="col-sm-8 text-info">
+      <input ng-model="translation.resultWord.text" type="text" class="form-control">
     </div>
   </div>
-</div>
+  <hr>
+  <div class="row">
+    <div class="col-sm-4 text-muted">
+      {{'label.source.language' | translate}}:
+    </div>
+    <div class="col-sm-8 text-info">
+      <span>{{'label.language.'+translation.sourceWord.langKey | translate}}</span>
+    </div>
+  </div>
+  <hr>
+  <div class="row">
+    <div class="col-sm-4 text-muted">
+      {{'label.translation.language' | translate}}:
+    </div>
+    <div class="col-sm-8 text-info">
+      <span>{{'label.language.'+translation.resultWord.langKey | translate}}</span>
+    </div>
+  </div>
+  <hr>
+  <div class="row">
+    <div class="col-sm-4 text-muted">
+      {{'label.part.of.speech' | translate}}:
+    </div>
+    <div class="col-sm-8 text-info">
+      <select name="name" id="part-of-speech" class="form-control" ng-model="translation.partOfSpeech"
+              ng-change="updateTranslations()">
+        <option value="" disabled selected>{{'label.part.of.speech' | translate}}</option>
+        <option value="NOT_DEFINED">{{'label.part.of.speech.not.defined' | translate}}</option>
+        <option value="NOUN">{{'label.part.of.speech.noun' | translate}}</option>
+        <option value="VERB">{{'label.part.of.speech.verb' | translate}}</option>
+        <option value="ADJECTIVE">{{'label.part.of.speech.adjective' | translate}}</option>
+        <option value="PARTICIPLE">{{'label.part.of.speech.participle' | translate}}</option>
+        <option value="ADVERB">{{'label.part.of.speech.adverb' | translate}}</option>
+        <option value="PRONOUN">{{'label.part.of.speech.pronoun' | translate}}</option>
+        <option value="PREPOSITION">{{'label.part.of.speech.preposition' | translate}}</option>
+        <option value="CONJUNCTION">{{'label.part.of.speech.сonjunction' | translate}}</option>
+        <option value="INTERJECTION">{{'label.part.of.speech.interjection' | translate}}</option>
+        <option value="ARTICLE">{{'label.part.of.speech.article' | translate}}</option>
+      </select>
+    </div>
+  </div>
+  <button type="submit" class="btn btn-primary">{{'label.save.changes' | translate}}</button>
+</form>
 
 

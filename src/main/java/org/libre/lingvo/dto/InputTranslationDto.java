@@ -8,7 +8,7 @@ import javax.validation.constraints.Size;
 /**
  * Created by igorek2312 on 29.10.16.
  */
-public class AddedTranslationDto {
+public class InputTranslationDto {
     @NotBlank(message = "{NotBlank.addedTranslationDto.sourceText}")
     @Size(max = 300, message = "{Size.addedTranslationDto.sourceText}")
     private String sourceText;

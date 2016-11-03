@@ -1,0 +1,7 @@
+<a ng-show="!note" ui-sref="translation.edit({translationId:translationId})">
+  <i class="fa fa-pencil-square-o"></i> <span>{{'label.create.note' | translate}}</span>
+</a>
+<div ng-show="note" ng-bind-html="note"></div>
+<a ng-show="note" ui-sref="translation.edit({translationId:translationId})">
+  <i class="fa fa-pencil-square-o"></i> <span>{{'label.edit.note' | translate}}</span>
+</a>

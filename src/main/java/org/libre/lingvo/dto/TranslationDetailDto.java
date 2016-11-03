@@ -1,6 +1,9 @@
 package org.libre.lingvo.dto;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import org.libre.lingvo.model.PartOfSpeech;
+
+import java.util.Date;
 
 /**
  * Created by igorek2312 on 31.10.16.
@@ -20,9 +23,11 @@ public class TranslationDetailDto {
 
     private Integer views;
 
-    private String lastModificationDate;
+    @JsonFormat(pattern = "dd-MM-yyyy HH:mm:ss")
+    private Date lastModificationDate;
 
-    private String learningDate;
+    @JsonFormat(pattern = "dd-MM-yyyy HH:mm:ss")
+    private Date learningDate;
 
     public Long getId() {
         return id;
@@ -80,19 +85,19 @@ public class TranslationDetailDto {
         this.views = views;
     }
 
-    public String getLastModificationDate() {
+    public Date getLastModificationDate() {
         return lastModificationDate;
     }
 
-    public void setLastModificationDate(String lastModificationDate) {
+    public void setLastModificationDate(Date lastModificationDate) {
         this.lastModificationDate = lastModificationDate;
     }
 
-    public String getLearningDate() {
+    public Date getLearningDate() {
         return learningDate;
     }
 
-    public void setLearningDate(String learningDate) {
+    public void setLearningDate(Date learningDate) {
         this.learningDate = learningDate;
     }
 }

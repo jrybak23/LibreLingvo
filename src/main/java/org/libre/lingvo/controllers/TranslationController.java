@@ -1,9 +1,6 @@
 package org.libre.lingvo.controllers;
 
-import org.libre.lingvo.dto.AddedTranslationDto;
-import org.libre.lingvo.dto.CreatedResourceDto;
-import org.libre.lingvo.dto.TranslationDetailDto;
-import org.libre.lingvo.dto.TranslationsDto;
+import org.libre.lingvo.dto.*;
 import org.libre.lingvo.entities.User;
 import org.libre.lingvo.model.PartOfSpeech;
 import org.libre.lingvo.services.TranslationService;
@@ -28,7 +25,7 @@ public class TranslationController {
     @ResponseStatus(HttpStatus.CREATED)
     public CreatedResourceDto addTranslation(
             @AuthenticationPrincipal User user,
-            @RequestBody @Validated AddedTranslationDto dto
+            @RequestBody @Validated InputTranslationDto dto
     ) {
         return translationService.addUserTranslation(user.getId(), dto);
     }
@@ -72,6 +69,45 @@ public class TranslationController {
         return translationService.getUserTranslationDetailDto(user.getId(), translationId);
     }
 
+    @RequestMapping(value = "/users/me/translations/{translationId}/note", method = RequestMethod.GET)
+    @PreAuthorize("hasAuthority('ROLE_USER')")
+    public TranslationDetailDto viewTranslationNote(
+            @AuthenticationPrincipal User user,
+            @PathVariable Long translationId
+    ) {
+        return translationService.getUserTranslationDetailDto(user.getId(), translationId);
+    }
+
+    @RequestMapping(value = "/users/me/translations/{translationId}",method = RequestMethod.PUT)
+    @PreAuthorize("hasAuthority('ROLE_USER')")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void editTranslation(
+            @AuthenticationPrincipal User user,
+            @RequestBody @Validated InputTranslationDto dto,
+            @PathVariable Long translationId
+    ){
+        translationService.updateTranslation(
+                user.getId(),
+                translationId,
+                dto
+        );
+    }
+
+    @RequestMapping(value = "/users/me/translations/{translationId}/note",method = RequestMethod.PUT)
+    @PreAuthorize("hasAuthority('ROLE_USER')")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void editTranslationNote(
+            @AuthenticationPrincipal User user,
+            @RequestBody @Validated TranslationNoteDto dto,
+            @PathVariable Long translationId
+    ){
+        translationService.updateTranslationNote(
+                user.getId(),
+                translationId,
+                dto
+        );
+    }
+
     @RequestMapping(value = "/users/me/translations/{translationId}", method = RequestMethod.DELETE)
     @PreAuthorize("hasAuthority('ROLE_USER')")
     @ResponseStatus(HttpStatus.NO_CONTENT)
@@ -81,6 +117,4 @@ public class TranslationController {
     ) {
          translationService.deleteUserTranslation(user.getId(),translationId);
     }
-
-
 }

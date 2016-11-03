@@ -18,4 +18,21 @@ angular.module('libreLingvoApp')
         $scope.translation = response;
       }
     );
+
+    $scope.edit=function () {
+      Translations.update(
+        {
+          userId: 'me',
+          translationId: $stateParams.translationId
+        },
+        {
+          "sourceText" : $scope.translation.sourceWord.text,
+          "sourceLangKey" : $scope.translation.sourceWord.langKey,
+          "resultText" : $scope.translation.resultWord.text,
+          "resultLangKey" : $scope.translation.resultWord.langKey,
+          "partOfSpeech" : $scope.translation.partOfSpeech,
+          "note" : null
+        }
+      );
+    }
   });

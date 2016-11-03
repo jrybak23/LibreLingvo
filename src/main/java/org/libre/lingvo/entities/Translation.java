@@ -20,11 +20,11 @@ public class Translation {
     private User user;
 
     @ManyToOne
-    @JoinColumn(nullable = false)
+    @JoinColumn
     private Word sourceWord;
 
     @ManyToOne
-    @JoinColumn(nullable = false)
+    @JoinColumn
     private Word resultWord;
 
     @Enumerated(EnumType.STRING)

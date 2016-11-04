@@ -56,9 +56,9 @@ var libreLingvoService = {
 
     var requestSettings = new RequestSettings(
       'GET',
-      HOST_URL + '/api/users/me/translations?sourceText='+sourceText+
-      '&sourceLangKey='+sourceLangKey+
-      '&resultLangKey='+resultLangKey
+      HOST_URL + '/api/users/me/translations?source-text='+sourceText+
+      '&source-lang-key='+sourceLangKey+
+      '&result-lang-key='+resultLangKey
     );
 
     var message = {

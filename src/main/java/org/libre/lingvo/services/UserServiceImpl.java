@@ -18,6 +18,8 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import static org.libre.lingvo.utils.EntityUtil.findOrThrowNotFound;
+
 /**
  * Created by igorek2312 on 08.09.16.
  */
@@ -38,11 +40,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public UserDetailsDto getUserDetails(Long userId) {
-        User user = userDao.find(userId).orElseThrow(() -> {
-            CustomError error = CustomError.NO_ENTITY_WITH_SUCH_ID;
-            error.setDescriptionArgs(User.class.getName(), userId);
-            return new CustomErrorException(error);
-        });
+        User user = findOrThrowNotFound(userDao, userId);
         return userDtoConverter.convertToUserDetailsDto(user);
     }
 

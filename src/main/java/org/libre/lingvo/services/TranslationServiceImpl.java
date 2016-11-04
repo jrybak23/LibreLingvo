@@ -10,6 +10,8 @@ import org.libre.lingvo.entities.Translation;
 import org.libre.lingvo.entities.User;
 import org.libre.lingvo.entities.Word;
 import org.libre.lingvo.model.PartOfSpeech;
+import org.libre.lingvo.model.SortingOptions;
+import org.libre.lingvo.model.TranslationSortFieldOptions;
 import org.libre.lingvo.utils.dto.converters.TranslationDtoConverter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -19,6 +21,8 @@ import java.util.Date;
 import java.util.List;
 import java.util.function.Supplier;
 import java.util.stream.Collectors;
+
+import static org.libre.lingvo.utils.EntityUtil.findOrThrowNotFound;
 
 /**
  * Created by igorek2312 on 29.10.16.
@@ -132,12 +136,16 @@ public class TranslationServiceImpl implements TranslationService {
             Integer pageIndex,
             Integer maxRecords,
             String searchSubstring,
-            PartOfSpeech partOfSpeech
+            PartOfSpeech partOfSpeech,
+            TranslationSortFieldOptions sortField,
+            SortingOptions sortOrder
     ) {
         List<TranslationDto> translations = translationDao.findFilteredUserTranslations(
                 userId,
                 searchSubstring,
                 partOfSpeech,
+                sortField,
+                sortOrder,
                 pageIndex,
                 maxRecords
         )
@@ -160,41 +168,28 @@ public class TranslationServiceImpl implements TranslationService {
 
     @Override
     public TranslationDetailDto getUserTranslationDetailDto(Long userId, Long translationId) {
-        Translation translation = translationDao.find(translationId).orElseThrow(() -> {
-            CustomError error = CustomError.NO_ENTITY_WITH_SUCH_ID;
-            error.setDescriptionArgs(Translation.class.getName(), translationId);
-            return new CustomErrorException(error);
-        });
-
+        Translation translation = findOrThrowNotFound(translationDao, translationId);
         checkIfUserIsOwnerOfTranslation(userId,translation);
-
         return translationDtoConverter.convertToTranslationDetailDto(translation);
     }
 
     @Override
     public TranslationNoteDto getUserTranslationNote(Long userId, Long translationId) {
-        Translation translation = translationDao.find(translationId).orElseThrow(() -> {
-            CustomError error = CustomError.NO_ENTITY_WITH_SUCH_ID;
-            error.setDescriptionArgs(Translation.class.getName(), translationId);
-            return new CustomErrorException(error);
-        });
-
+        Translation translation = findOrThrowNotFound(translationDao, translationId);
         checkIfUserIsOwnerOfTranslation(userId,translation);
-
         return new TranslationNoteDto(translation.getNote());
     }
 
-
-    private void safeDelete(Long translationId, Word word) {
+    private void safeWordDelete(Long translationId, Word word) {
         Boolean exists = translationDao.existsOtherTranslationsDependedOnWord(translationId, word.getId())
                 .orElse(false);
         if (!exists)
             wordDao.delete(word);
     }
 
-    private Word safeUpdate(Long translationId, String newWordText, String newWordLangKey, Word word) {
+    private Word safeWordUpdate(Long translationId, String newWordText, String newWordLangKey, Word word) {
         if (!(word.getText().equals(newWordText) && word.getLangKey().equals(newWordLangKey))) {
-            safeDelete(translationId, word);
+            safeWordDelete(translationId, word);
 
             return wordDao.findByTextAndLangKey(newWordText, newWordLangKey)
                     .orElseGet(getWordSupplier(newWordText, newWordLangKey));
@@ -204,12 +199,7 @@ public class TranslationServiceImpl implements TranslationService {
 
     @Override
     public void updateTranslation(Long userId, Long translationId, InputTranslationDto dto) {
-        Translation translation = translationDao.find(translationId).orElseThrow(() -> {
-            CustomError error = CustomError.NO_ENTITY_WITH_SUCH_ID;
-            error.setDescriptionArgs(Translation.class.getName(), translationId);
-            return new CustomErrorException(error);
-        });
-
+        Translation translation = findOrThrowNotFound(translationDao, translationId);
         checkIfUserIsOwnerOfTranslation(userId,translation);
 
         Word sourceWord = translation.getSourceWord();
@@ -218,15 +208,14 @@ public class TranslationServiceImpl implements TranslationService {
         translation.setResultWord(null);
         translationDao.update(translation);
 
-        Word updatedSourceWord = safeUpdate(
+        Word updatedSourceWord = safeWordUpdate(
                 translation.getId(),
                 dto.getSourceText(),
                 dto.getSourceLangKey(),
                 sourceWord
         );
 
-
-        Word updatedResultWord = safeUpdate(
+        Word updatedResultWord = safeWordUpdate(
                 translation.getId(),
                 dto.getResultText(),
                 dto.getResultLangKey(),
@@ -243,31 +232,19 @@ public class TranslationServiceImpl implements TranslationService {
 
     @Override
     public void updateTranslationNote(Long userId, Long translationId, TranslationNoteDto dto) {
-        Translation translation = translationDao.find(translationId).orElseThrow(() -> {
-            CustomError error = CustomError.NO_ENTITY_WITH_SUCH_ID;
-            error.setDescriptionArgs(Translation.class.getName(), translationId);
-            return new CustomErrorException(error);
-        });
-
+        Translation translation = findOrThrowNotFound(translationDao, translationId);
         checkIfUserIsOwnerOfTranslation(userId,translation);
-
         translation.setNote(dto.getNote());
-
+        translation.setLastModificationDate(new Date());
         translationDao.update(translation);
     }
 
     @Override
     public void deleteUserTranslation(Long userId, Long translationId) {
-        Translation translation = translationDao.find(translationId).orElseThrow(() -> {
-            CustomError error = CustomError.NO_ENTITY_WITH_SUCH_ID;
-            error.setDescriptionArgs(Translation.class.getName(), translationId);
-            return new CustomErrorException(error);
-        });
-
+        Translation translation = findOrThrowNotFound(translationDao, translationId);
         checkIfUserIsOwnerOfTranslation(userId,translation);
-
-        safeDelete(translationId, translation.getSourceWord());
-        safeDelete(translationId, translation.getResultWord());
+        safeWordDelete(translationId, translation.getSourceWord());
+        safeWordDelete(translationId, translation.getResultWord());
 
         translationDao.delete(translation);
     }

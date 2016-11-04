@@ -73,5 +73,8 @@ public class GenericDaoImpl <T, ID extends Serializable> implements GenericDao<T
         entityManager.remove(entity);
     }
 
-
+    @Override
+    public Class<? extends T> getDaoType() {
+        return daoType;
+    }
 }

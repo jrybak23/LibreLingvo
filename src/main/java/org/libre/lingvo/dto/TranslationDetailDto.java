@@ -23,10 +23,10 @@ public class TranslationDetailDto {
 
     private Integer views;
 
-    @JsonFormat(pattern = "dd-MM-yyyy HH:mm:ss")
+    @JsonFormat(pattern = "MM.dd.yyyy HH:mm:ss")
     private Date lastModificationDate;
 
-    @JsonFormat(pattern = "dd-MM-yyyy HH:mm:ss")
+    @JsonFormat(pattern = "MM.dd.yyyy HH:mm:ss")
     private Date learningDate;
 
     public Long getId() {

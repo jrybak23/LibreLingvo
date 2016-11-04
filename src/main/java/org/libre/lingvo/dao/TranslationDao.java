@@ -2,6 +2,8 @@ package org.libre.lingvo.dao;
 
 import org.libre.lingvo.entities.Translation;
 import org.libre.lingvo.model.PartOfSpeech;
+import org.libre.lingvo.model.SortingOptions;
+import org.libre.lingvo.model.TranslationSortFieldOptions;
 
 import java.util.List;
 import java.util.Optional;
@@ -14,6 +16,8 @@ public interface TranslationDao extends GenericDao<Translation, Long> {
             Long userId,
             String searchSubstring,
             PartOfSpeech partOfSpeech,
+            TranslationSortFieldOptions sortFieldOption,
+            SortingOptions sortingOption,
             Integer pageIndex,
             Integer maxRecords
     );

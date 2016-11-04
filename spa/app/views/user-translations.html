@@ -8,7 +8,7 @@
                  type="text" class="form-control" placeholder="{{'label.search.in.words' | translate}}">
         </div>
         <div class="form-group">
-          <select name="name" id="part-of-speech" class="form-control" ng-model="partOfSpeech"
+          <select name="name" class="form-control" ng-model="partOfSpeech"
                   ng-change="updateTranslations()">
             <option value="" disabled selected>{{'label.part.of.speech' | translate}}</option>
             <option value="ALL">{{'label.all' | translate}}</option>
@@ -23,6 +23,22 @@
             <option value="CONJUNCTION">{{'label.part.of.speech.сonjunction' | translate}}</option>
             <option value="INTERJECTION">{{'label.part.of.speech.interjection' | translate}}</option>
             <option value="ARTICLE">{{'label.part.of.speech.article' | translate}}</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <select name="name" class="form-control" ng-model="sortField" ng-change="updateTranslations()">
+            <option value="" disabled selected>{{'label.sort' | translate}}</option>
+            <option value="SORT_SOURCE_TEXT"> {{'label.sorting.field.source.text' | translate}}</option>
+            <option value="SORT_RESULT_TEXT"> {{'label.sorting.field.result.text' | translate}}</option>
+            <option value="SORT_VIEWS"> {{'label.sorting.field.views' | translate}}</option>
+            <option value=""> {{'label.sorting.none' | translate}}</option>
+          </select>
+        </div>
+        <div class="form-group" ng-show="sortField">
+          <select name="name" class="form-control" ng-model="sortOrder" ng-change="updateTranslations()">
+            <option value="" disabled selected>{{'label.sort.order' | translate}}</option>
+            <option value="ASC"> {{'label.sorting.ascending' | translate}}</option>
+            <option value="DESC"> {{'label.sorting.descending' | translate}}</option>
           </select>
         </div>
         <div class="text-muted">{{'label.criteria.panel.filtered' | translate:recordsCount}}</div>
@@ -77,6 +93,7 @@
     </div>
   </div>
 </div>
+
 
 <!--<a href="#" uib-tooltip="tooltip!!!">Pellentesque</a>
 <p>

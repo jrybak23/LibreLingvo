@@ -2,6 +2,8 @@ package org.libre.lingvo.services;
 
 import org.libre.lingvo.dto.*;
 import org.libre.lingvo.model.PartOfSpeech;
+import org.libre.lingvo.model.SortingOptions;
+import org.libre.lingvo.model.TranslationSortFieldOptions;
 
 /**
  * Created by igorek2312 on 29.10.16.
@@ -21,7 +23,9 @@ public interface TranslationService {
             Integer pageIndex,
             Integer maxRecords,
             String searchSubstring,
-            PartOfSpeech partOfSpeech
+            PartOfSpeech partOfSpeech,
+            TranslationSortFieldOptions sortField,
+            SortingOptions sortOrder
     );
 
     TranslationDetailDto getUserTranslationDetailDto(Long userId, Long translationId);

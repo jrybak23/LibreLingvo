@@ -19,7 +19,8 @@
     "angular-translate-loader-url": "^2.12.1",
     "angular-loading-bar": "^0.9.0",
     "angular-moment": "^1.0.0",
-    "angular-ui-tinymce": "^0.0.17"
+    "angular-ui-tinymce": "^0.0.17",
+    "bootswatch-dist": "lumen"
   },
   "devDependencies": {
     "angular-mocks": "^1.4.0"
@@ -30,8 +31,12 @@
     "bootstrap": {
       "main": [
         "less/bootstrap.less",
-        "dist/css/bootstrap.css",
         "dist/js/bootstrap.js"
+      ]
+    },
+    "bootswatch-dist": {
+      "main": [
+        "css/bootstrap.css"
       ]
     }
   }

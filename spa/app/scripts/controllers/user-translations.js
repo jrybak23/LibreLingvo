@@ -18,15 +18,19 @@ angular.module('libreLingvoApp')
     $scope.partOfSpeech = $stateParams['part-of-speech'];
     if ($scope.partOfSpeech)
       $scope.partOfSpeech = $scope.partOfSpeech.toUpperCase();
+    $scope.sortField=$stateParams['sort-field'];
+    $scope.sortOrder=$stateParams['sort-order'];
 
     $scope.updateTranslations = function () {
       Translations.get(
         {
           userId: 'me',
-          maxRecords: $scope.maxRecords,
-          pageIndex: $scope.pageIndex,
-          searchSubstring: $scope.searchSubstring,
-          partOfSpeech: $scope.partOfSpeech == 'ALL' ? null : $scope.partOfSpeech
+          'max-records': $scope.maxRecords,
+          'page-index': $scope.pageIndex,
+          'search-substring': $scope.searchSubstring,
+          'part-of-speech': $scope.partOfSpeech == 'ALL' ? null : $scope.partOfSpeech,
+          'sort-field':$scope.sortField,
+          'sort-order':($scope.sortField && !$scope.sortOrder)?'ASC':$scope.sortOrder
         },
         function (response) {
           $scope.translations = response.translations;
@@ -41,7 +45,9 @@ angular.module('libreLingvoApp')
             {
               'page-index': $scope.pageIndex,
               'search-substring': $scope.searchSubstring,
-              'part-of-speech': $scope.partOfSpeech
+              'part-of-speech': $scope.partOfSpeech,
+              'sort-field':$scope.sortField,
+              'sort-order':$scope.sortOrder
             },
             {
               notify: false

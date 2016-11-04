@@ -77,7 +77,7 @@ angular
       })
       .state({
         name: 'user-translations',
-        url: '/user-translations?page-index&search-substring&part-of-speech',
+        url: '/user-translations?page-index&search-substring&part-of-speech&sort-field&sort-order',
         templateUrl: 'views/user-translations.html',
         controller: 'UserTranslationsCtrl',
         controllerAs: 'userTranslations'

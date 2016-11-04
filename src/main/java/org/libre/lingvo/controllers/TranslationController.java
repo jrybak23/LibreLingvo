@@ -3,6 +3,8 @@ package org.libre.lingvo.controllers;
 import org.libre.lingvo.dto.*;
 import org.libre.lingvo.entities.User;
 import org.libre.lingvo.model.PartOfSpeech;
+import org.libre.lingvo.model.SortingOptions;
+import org.libre.lingvo.model.TranslationSortFieldOptions;
 import org.libre.lingvo.services.TranslationService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -34,14 +36,16 @@ public class TranslationController {
     @PreAuthorize("hasAuthority('ROLE_USER')")
     public TranslationsDto viewUserTranslations(
             @AuthenticationPrincipal User user,
-            @RequestParam(required = false, defaultValue = "1") Integer pageIndex,
-            @RequestParam(required = false, defaultValue = "20") Integer maxRecords,
-            @RequestParam(required = false, defaultValue = "") String searchSubstring,
-            @RequestParam(required = false) PartOfSpeech partOfSpeech,
+            @RequestParam(name = "page-index", required = false, defaultValue = "1") Integer pageIndex,
+            @RequestParam(name = "max-records", required = false, defaultValue = "20") Integer maxRecords,
+            @RequestParam(name = "search-substring", required = false, defaultValue = "") String searchSubstring,
+            @RequestParam(name = "part-of-speech", required = false) PartOfSpeech partOfSpeech,
+            @RequestParam(name = "sort-field", required = false) TranslationSortFieldOptions sortField,
+            @RequestParam(name = "sort-order", required = false) SortingOptions sortOrder,
 
-            @RequestParam(required = false) String sourceText,
-            @RequestParam(required = false) String sourceLangKey,
-            @RequestParam(required = false) String resultLangKey
+            @RequestParam(name = "source-text", required = false) String sourceText,
+            @RequestParam(name = "source-lang-key", required = false) String sourceLangKey,
+            @RequestParam(name = "result-lang-key", required = false) String resultLangKey
     ) {
         if (sourceText != null && sourceLangKey != null && resultLangKey != null)
             return translationService.checkForUserTranslations(
@@ -56,7 +60,9 @@ public class TranslationController {
                 pageIndex,
                 maxRecords,
                 searchSubstring,
-                partOfSpeech
+                partOfSpeech,
+                sortField,
+                sortOrder
         );
     }
 
@@ -78,14 +84,14 @@ public class TranslationController {
         return translationService.getUserTranslationDetailDto(user.getId(), translationId);
     }
 
-    @RequestMapping(value = "/users/me/translations/{translationId}",method = RequestMethod.PUT)
+    @RequestMapping(value = "/users/me/translations/{translationId}", method = RequestMethod.PUT)
     @PreAuthorize("hasAuthority('ROLE_USER')")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void editTranslation(
             @AuthenticationPrincipal User user,
             @RequestBody @Validated InputTranslationDto dto,
             @PathVariable Long translationId
-    ){
+    ) {
         translationService.updateTranslation(
                 user.getId(),
                 translationId,
@@ -93,14 +99,14 @@ public class TranslationController {
         );
     }
 
-    @RequestMapping(value = "/users/me/translations/{translationId}/note",method = RequestMethod.PUT)
+    @RequestMapping(value = "/users/me/translations/{translationId}/note", method = RequestMethod.PUT)
     @PreAuthorize("hasAuthority('ROLE_USER')")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void editTranslationNote(
             @AuthenticationPrincipal User user,
             @RequestBody @Validated TranslationNoteDto dto,
             @PathVariable Long translationId
-    ){
+    ) {
         translationService.updateTranslationNote(
                 user.getId(),
                 translationId,
@@ -115,6 +121,6 @@ public class TranslationController {
             @AuthenticationPrincipal User user,
             @PathVariable Long translationId
     ) {
-         translationService.deleteUserTranslation(user.getId(),translationId);
+        translationService.deleteUserTranslation(user.getId(), translationId);
     }
 }

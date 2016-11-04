@@ -1,7 +1,8 @@
 package org.libre.lingvo.dao;
 
+import com.google.common.cache.LoadingCache;
 import org.libre.lingvo.entities.Translation;
-import org.libre.lingvo.model.PartOfSpeech;
+import org.libre.lingvo.model.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Repository;
@@ -10,8 +11,7 @@ import javax.persistence.criteria.CriteriaQuery;
 import java.util.List;
 import java.util.Optional;
 
-import static org.libre.lingvo.model.ParametersNames.TRANSLATION_ID;
-import static org.libre.lingvo.model.ParametersNames.WORD_ID;
+import static org.libre.lingvo.model.ParameterNames.*;
 import static org.libre.lingvo.utils.optional.dao.OptionalDaoUtil.findOptional;
 
 /**
@@ -20,12 +20,7 @@ import static org.libre.lingvo.utils.optional.dao.OptionalDaoUtil.findOptional;
 @Repository
 public class TranslationDaoImpl extends GenericDaoImpl<Translation, Long> implements TranslationDao {
     @Autowired
-    @Qualifier("findFilteredUserTranslations")
-    private CriteriaQuery<Translation> findFilteredUserTranslations;
-
-    @Autowired
-    @Qualifier("countFilteredUserTranslations")
-    private CriteriaQuery<Long> countFilteredUserTranslations;
+    private LoadingCache<TranslationsCriteria, CriteriaQuery> filteredTranslationsQueries;
 
     @Autowired
     @Qualifier("countTotalUserTranslations")
@@ -48,13 +43,20 @@ public class TranslationDaoImpl extends GenericDaoImpl<Translation, Long> implem
             Long userId,
             String searchSubstring,
             PartOfSpeech partOfSpeech,
+            TranslationSortFieldOptions sortFieldOption,
+            SortingOptions sortingOption,
             Integer pageIndex,
             Integer maxRecords
     ) {
-        return entityManager.createQuery(findFilteredUserTranslations)
-                .setParameter("userId", userId)
-                .setParameter("searchSubstring", searchSubstring)
-                .setParameter("partOfSpeech", partOfSpeech)
+        CriteriaQuery<Translation> query = filteredTranslationsQueries.getUnchecked(new TranslationsCriteria(
+                ActionOptions.FIND,
+                sortFieldOption,
+                sortingOption
+        ));
+        return entityManager.createQuery(query)
+                .setParameter(USER_ID, userId)
+                .setParameter(SEARCH_SUBSTRING, searchSubstring)
+                .setParameter(PART_OF_SPEECH, partOfSpeech)
                 .setFirstResult((pageIndex - 1) * maxRecords)
                 .setMaxResults(maxRecords)
                 .getResultList();
@@ -66,7 +68,12 @@ public class TranslationDaoImpl extends GenericDaoImpl<Translation, Long> implem
             String searchSubstring,
             PartOfSpeech partOfSpeech
     ) {
-        return entityManager.createQuery(countFilteredUserTranslations)
+        CriteriaQuery<Long> query = filteredTranslationsQueries.getUnchecked(new TranslationsCriteria(
+                ActionOptions.COUNT,
+                null,
+                null
+        ));
+        return entityManager.createQuery(query)
                 .setParameter("userId", userId)
                 .setParameter("searchSubstring", searchSubstring)
                 .setParameter("partOfSpeech", partOfSpeech)

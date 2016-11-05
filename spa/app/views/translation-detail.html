@@ -45,7 +45,7 @@
     {{'label.part.of.speech' | translate}}:
   </div>
   <div class="col-sm-8 text-info">
-    <span>{{'label.part.of.speech.'+translation.partOfSpeech.toLowerCase().replace('_',".") | translate}}</span>
+    <span>{{'label.part.of.speech.'+translation.partOfSpeech.toLowerCase() | translate}}</span>
     <a ui-sref="translation.edit({translationId:translation.id})" class="pull-right">
       <i class="fa fa-pencil-square-o"></i>
     </a>

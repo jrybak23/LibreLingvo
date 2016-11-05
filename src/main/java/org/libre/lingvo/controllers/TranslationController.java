@@ -61,6 +61,8 @@ public class TranslationController {
                 maxRecords,
                 searchSubstring,
                 partOfSpeech,
+                sourceLangKey,
+                resultLangKey,
                 sortField,
                 sortOrder
         );

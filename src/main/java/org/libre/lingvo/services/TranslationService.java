@@ -24,6 +24,8 @@ public interface TranslationService {
             Integer maxRecords,
             String searchSubstring,
             PartOfSpeech partOfSpeech,
+            String sourceLangCode,
+            String resultLangCode,
             TranslationSortFieldOptions sortField,
             SortingOptions sortOrder
     );

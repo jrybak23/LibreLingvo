@@ -77,7 +77,7 @@ angular
       })
       .state({
         name: 'user-translations',
-        url: '/user-translations?page-index&search-substring&part-of-speech&sort-field&sort-order',
+        url: '/user-translations?page-index&search-substring&part-of-speech&sort-field&sort-order&source-lang-key&result-lang-key',
         templateUrl: 'views/user-translations.html',
         controller: 'UserTranslationsCtrl',
         controllerAs: 'userTranslations'
@@ -179,7 +179,6 @@ angular
 
 // update popover template for binding unsafe html
 angular.module("uib/template/popover/popover.html", []).run(function ($templateCache) {
-  console.log("cache");
   //$templateCache.removeAll();
 
   $templateCache.put("uib/template/popover/popover.html",

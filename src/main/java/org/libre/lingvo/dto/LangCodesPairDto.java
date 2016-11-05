@@ -3,14 +3,14 @@ package org.libre.lingvo.dto;
 /**
  * Created by igorek2312 on 05.11.16.
  */
-public class LangCodePairDto {
+public class LangCodesPairDto {
     private String source;
     private String result;
 
-    public LangCodePairDto() {
+    public LangCodesPairDto() {
     }
 
-    public LangCodePairDto(String source, String result) {
+    public LangCodesPairDto(String source, String result) {
         this.source = source;
         this.result = result;
     }

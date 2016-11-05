@@ -42,7 +42,6 @@ public class TranslationServiceImpl implements TranslationService {
     @Autowired
     TranslationDtoConverter translationDtoConverter;
 
-
     private Supplier<Word> getWordSupplier(String text, String langKey) {
         return () -> {
             Word word = new Word();
@@ -53,7 +52,7 @@ public class TranslationServiceImpl implements TranslationService {
         };
     }
 
-    private void checkIfUserIsOwnerOfTranslation(Long userId,Translation translation){
+    private void checkIfUserIsOwnerOfTranslation(Long userId, Translation translation) {
         if (!translation.getUser().getId().equals(userId))
             throw new CustomErrorException(CustomError.FORBIDDEN);
     }
@@ -137,6 +136,8 @@ public class TranslationServiceImpl implements TranslationService {
             Integer maxRecords,
             String searchSubstring,
             PartOfSpeech partOfSpeech,
+            String sourceLangCode,
+            String resultLangCode,
             TranslationSortFieldOptions sortField,
             SortingOptions sortOrder
     ) {
@@ -144,6 +145,8 @@ public class TranslationServiceImpl implements TranslationService {
                 userId,
                 searchSubstring,
                 partOfSpeech,
+                sourceLangCode,
+                resultLangCode,
                 sortField,
                 sortOrder,
                 pageIndex,
@@ -152,31 +155,41 @@ public class TranslationServiceImpl implements TranslationService {
                 .stream()
                 .map(translationDtoConverter::convertToTranslationDto)
                 .collect(Collectors.toList());
+
         Long filteredRecords = translationDao.countFilteredUserTranslations(
                 userId,
                 searchSubstring,
-                partOfSpeech
+                partOfSpeech,
+                sourceLangCode,
+                resultLangCode
         );
         Long totalRecords = translationDao.countTotalUserTranslations(userId);
+        List<LangCodesPairDto> langKeys = translationDao.getLangKeysByUserId(userId)
+                .stream()
+                .map(tuple -> new LangCodesPairDto((String) tuple.get(0),(String) tuple.get(1)))
+                .collect(Collectors.toList());
+        List<PartOfSpeech> partsOfSpeech = translationDao.getPartsOfSpeechByUserId(userId);
 
         TranslationsDto dto = new TranslationsDto();
         dto.setTranslations(translations);
         dto.setFilteredRecords(filteredRecords);
         dto.setTotalRecords(totalRecords);
+        dto.setLangCodesPairs(langKeys);
+        dto.setPartsOfSpeech(partsOfSpeech);
         return dto;
     }
 
     @Override
     public TranslationDetailDto getUserTranslationDetailDto(Long userId, Long translationId) {
         Translation translation = findOrThrowNotFound(translationDao, translationId);
-        checkIfUserIsOwnerOfTranslation(userId,translation);
+        checkIfUserIsOwnerOfTranslation(userId, translation);
         return translationDtoConverter.convertToTranslationDetailDto(translation);
     }
 
     @Override
     public TranslationNoteDto getUserTranslationNote(Long userId, Long translationId) {
         Translation translation = findOrThrowNotFound(translationDao, translationId);
-        checkIfUserIsOwnerOfTranslation(userId,translation);
+        checkIfUserIsOwnerOfTranslation(userId, translation);
         return new TranslationNoteDto(translation.getNote());
     }
 
@@ -200,7 +213,7 @@ public class TranslationServiceImpl implements TranslationService {
     @Override
     public void updateTranslation(Long userId, Long translationId, InputTranslationDto dto) {
         Translation translation = findOrThrowNotFound(translationDao, translationId);
-        checkIfUserIsOwnerOfTranslation(userId,translation);
+        checkIfUserIsOwnerOfTranslation(userId, translation);
 
         Word sourceWord = translation.getSourceWord();
         Word resultWord = translation.getResultWord();
@@ -233,7 +246,7 @@ public class TranslationServiceImpl implements TranslationService {
     @Override
     public void updateTranslationNote(Long userId, Long translationId, TranslationNoteDto dto) {
         Translation translation = findOrThrowNotFound(translationDao, translationId);
-        checkIfUserIsOwnerOfTranslation(userId,translation);
+        checkIfUserIsOwnerOfTranslation(userId, translation);
         translation.setNote(dto.getNote());
         translation.setLastModificationDate(new Date());
         translationDao.update(translation);
@@ -242,7 +255,7 @@ public class TranslationServiceImpl implements TranslationService {
     @Override
     public void deleteUserTranslation(Long userId, Long translationId) {
         Translation translation = findOrThrowNotFound(translationDao, translationId);
-        checkIfUserIsOwnerOfTranslation(userId,translation);
+        checkIfUserIsOwnerOfTranslation(userId, translation);
         safeWordDelete(translationId, translation.getSourceWord());
         safeWordDelete(translationId, translation.getResultWord());
 

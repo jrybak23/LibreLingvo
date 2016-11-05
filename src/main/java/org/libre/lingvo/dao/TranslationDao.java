@@ -5,6 +5,7 @@ import org.libre.lingvo.model.PartOfSpeech;
 import org.libre.lingvo.model.SortingOptions;
 import org.libre.lingvo.model.TranslationSortFieldOptions;
 
+import javax.persistence.Tuple;
 import java.util.List;
 import java.util.Optional;
 
@@ -16,6 +17,8 @@ public interface TranslationDao extends GenericDao<Translation, Long> {
             Long userId,
             String searchSubstring,
             PartOfSpeech partOfSpeech,
+            String sourceLangCode,
+            String resultLangCode,
             TranslationSortFieldOptions sortFieldOption,
             SortingOptions sortingOption,
             Integer pageIndex,
@@ -25,7 +28,9 @@ public interface TranslationDao extends GenericDao<Translation, Long> {
     Long countFilteredUserTranslations(
             Long userId,
             String searchSubstring,
-            PartOfSpeech partOfSpeech
+            PartOfSpeech partOfSpeech,
+            String sourceLangCode,
+            String resultLangCode
     );
 
     Long countTotalUserTranslations(Long userId);
@@ -47,4 +52,8 @@ public interface TranslationDao extends GenericDao<Translation, Long> {
     );
 
     Optional<Boolean> existsOtherTranslationsDependedOnWord(Long translationId, Long wordId);
+
+    List<Tuple> getLangKeysByUserId(Long userId);
+
+    List<PartOfSpeech> getPartsOfSpeechByUserId(Long userId);
 }

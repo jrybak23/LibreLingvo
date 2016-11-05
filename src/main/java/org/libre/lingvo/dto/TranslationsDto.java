@@ -1,5 +1,7 @@
 package org.libre.lingvo.dto;
 
+import org.libre.lingvo.model.PartOfSpeech;
+
 import java.util.List;
 
 /**
@@ -11,6 +13,10 @@ public class TranslationsDto {
     private Long filteredRecords;
 
     private Long totalRecords;
+
+    private List<LangCodesPairDto> langCodesPairs;
+
+    private List<PartOfSpeech> partsOfSpeech;
 
     public List<TranslationDto> getTranslations() {
         return translations;
@@ -34,5 +40,21 @@ public class TranslationsDto {
 
     public void setTotalRecords(Long totalRecords) {
         this.totalRecords = totalRecords;
+    }
+
+    public List<LangCodesPairDto> getLangCodesPairs() {
+        return langCodesPairs;
+    }
+
+    public void setLangCodesPairs(List<LangCodesPairDto> langCodesPairs) {
+        this.langCodesPairs = langCodesPairs;
+    }
+
+    public List<PartOfSpeech> getPartsOfSpeech() {
+        return partsOfSpeech;
+    }
+
+    public void setPartsOfSpeech(List<PartOfSpeech> partsOfSpeech) {
+        this.partsOfSpeech = partsOfSpeech;
     }
 }

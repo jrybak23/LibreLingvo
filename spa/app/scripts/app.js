@@ -141,8 +141,11 @@ angular
         responseError: function (response) {
           console.log(response);
           var messageBox = $injector.get('MessageBox');
-          if (response.status === -1)
-            messageBox.show('error.connection.refused', MessageType.ERROR);
+          if (response.status === -1) {
+            var translate=$injector.get('$translate');
+            alert(translate.instant('error.connection.refused'));
+          }
+            //messageBox.show('error.connection.refused', MessageType.ERROR);
           else if (response.data) {
             if (response.data.error_description === 'Bad credentials')
               messageBox.show('error.invalid.password', MessageType.ERROR);

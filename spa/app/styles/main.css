@@ -41,7 +41,7 @@ footer ul li {
 }
 
 #loading-bar .bar {
-  background: white;
+  background: deepskyblue;
   height: 4px;
 }
 
@@ -49,8 +49,8 @@ footer ul li {
   width: 10px;
   height: 10px;
   border: solid 2px transparent;
-  border-top-color: white;
-  border-left-color: white;
+  border-top-color: deepskyblue;
+  border-left-color: deepskyblue;
   border-radius: 5px;
 }
 

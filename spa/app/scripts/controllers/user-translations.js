@@ -8,7 +8,7 @@
  * Controller of the libreLingvoApp
  */
 angular.module('libreLingvoApp')
-  .controller('UserTranslationsCtrl', function ($scope, $state, $translate, $stateParams, MessageBox, Translations) {
+  .controller('UserTranslationsCtrl', function ($scope, $state, $translate, $stateParams, MessageBox, Translations, TTS) {
     $scope.hideAffix = false;
     $scope.maxRecords = 10;
     $scope.maxPagSize = 5;
@@ -28,6 +28,8 @@ angular.module('libreLingvoApp')
 
     $scope.sortField = $stateParams['sort-field'];
     $scope.sortOrder = $stateParams['sort-order'];
+    $scope.play=TTS.play;
+
 
     $scope.updateTranslations = function () {
       $scope.selectedTranslationIds = [];

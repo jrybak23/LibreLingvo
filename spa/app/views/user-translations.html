@@ -76,10 +76,18 @@
               <tbody>
               <tr ng-repeat="translation in translations">
                 <td uib-tooltip="{{'label.language.'+ translation.sourceWord.langKey | translate}}"
-                    tooltip-append-to-body="true">{{translation.sourceWord.text}}
+                    tooltip-append-to-body="true">
+                  <span ng-click="play(translation.sourceWord.langKey,translation.sourceWord.text)">
+                    <i class="fa fa-volume-up"></i>
+                  </span>
+                  <span>{{translation.sourceWord.text}}</span>
                 </td>
                 <td uib-tooltip="{{'label.language.'+ translation.resultWord.langKey | translate}}"
-                    tooltip-append-to-body="true">{{translation.resultWord.text}}
+                    tooltip-append-to-body="true">
+                  <span ng-click="play(translation.resultWord.langKey,translation.resultWord.text)">
+                    <i class="fa fa-volume-up"></i>
+                  </span>
+                  <span>{{translation.resultWord.text}}</span>
                 </td>
                 <td>
                   <a ng-show="translation.note" uib-popover="{{translation.note}}"

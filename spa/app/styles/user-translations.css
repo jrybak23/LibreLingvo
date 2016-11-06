@@ -1,37 +1,12 @@
-#user-translations .pagination{
-  margin: 0;
-}
-
-#criteria-panel, #criteria-panel .panel-body{
+#criteria-panel .panel-body {
   padding: 3px;
 }
 
-@media (min-width: 768px) {
-  #user-translations {
-    display: table;
-    height: 100%;
-    width: 100%;
-    box-sizing: border-box;
-  }
-
-  #user-translations .row {
-    height: 100%;
-    display: table-row;
-  }
-
-  #criteria-panel{
-    min-width: 200px;
-  }
-
-  #table-container{
-    width: 100%;
-    padding-bottom: 20px;
-  }
-
-  #user-translations .row .no-float {
-    display: table-cell;
-    float: none;
-  }
-
+#tool-panel .panel-body {
+  padding: 3px;
 }
 
+.affix {
+  top: 60px;
+  z-index: 1000000000;
+}

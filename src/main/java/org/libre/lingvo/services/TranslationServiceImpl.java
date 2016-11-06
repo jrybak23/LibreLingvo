@@ -261,4 +261,11 @@ public class TranslationServiceImpl implements TranslationService {
 
         translationDao.delete(translation);
     }
+
+    @Override
+    public void deleteUserTranslations(Long userId, List<Long> ids) {
+        ids.forEach(
+                id -> deleteUserTranslation(userId, id)
+        );
+    }
 }

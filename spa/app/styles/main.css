@@ -2,13 +2,10 @@
   display: none !important;
 }
 
-html, body, .container-fluid {
-  height: 100%;
-}
 
 .views-content {
   padding-top: 65px;
-  padding-bottom: 30px;
+  padding-bottom: 10px;
 }
 
 .views-content::after {
@@ -64,4 +61,9 @@ footer ul li {
 
 .popover{
   max-width: 600px !important;
+}
+
+input[type='checkbox']{
+    width: 32px;
+    height: 32px;
 }

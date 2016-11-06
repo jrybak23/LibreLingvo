@@ -1,104 +1,124 @@
 <div id="user-translations">
   <div class="row">
-    <div id="criteria-panel" class="panel panel-default no-float">
-      <div class="panel-body">
-        <div class="form-group">
-          <input ng-model="searchSubstring" ng-change="updateTranslations()" ng-model='searchSubstring'
-                 ng-model-options="{ debounce: 700 }"
-                 type="text" class="form-control" placeholder="{{'label.search.in.words' | translate}}">
+    <div class="col-sm-3">
+      <div id="criteria-panel" class="panel">
+        <div class="panel-body">
+          <div class="form-group">
+            <input ng-model="searchSubstring" ng-change="updateTranslations()" ng-model='searchSubstring'
+                   ng-model-options="{ debounce: 700 }"
+                   type="text" class="form-control" placeholder="{{'label.search.in.words' | translate}}">
+          </div>
+          <div class="form-group">
+            <select class="form-control" ng-model="langCodesPair" ng-change="updateTranslations()">
+              <option value="null" selected disabled> {{'label.translation.languages' | translate}}</option>
+              <option value="null"> {{'label.all' | translate}}</option>
+              <option ng-repeat="pair in langCodesPairs" value="{{pair}}">
+                {{'label.language.'+pair.source | translate}}->{{'label.language.'+pair.result | translate}}
+              </option>
+            </select>
+          </div>
+          <div class="form-group">
+            <select class="form-control" ng-model="partOfSpeech" ng-change="updateTranslations()">
+              <option value="ALL" selected disabled>{{'label.part.of.speech' | translate}}</option>
+              <option value="ALL"> {{'label.all' | translate}}</option>
+              <option ng-repeat="item in partsOfSpeech" value="{{item}}">
+                {{'label.part.of.speech.'+item.toLowerCase() | translate}}
+              </option>
+            </select>
+          </div>
+          <div class="form-group">
+            <select class="form-control" ng-model="sortField" ng-change="updateTranslations()">
+              <option value="" disabled selected>{{'label.sort' | translate}}</option>
+              <option value="SORT_SOURCE_TEXT"> {{'label.sorting.field.source.text' | translate}}</option>
+              <option value="SORT_RESULT_TEXT"> {{'label.sorting.field.result.text' | translate}}</option>
+              <option value="SORT_VIEWS"> {{'label.sorting.field.views' | translate}}</option>
+              <option value=""> {{'label.sorting.none' | translate}}</option>
+            </select>
+          </div>
+          <div class="form-group" ng-show="sortField">
+            <select class="form-control" ng-model="sortOrder" ng-change="updateTranslations()">
+              <option value="" disabled selected>{{'label.sort.order' | translate}}</option>
+              <option value="ASC"> {{'label.sorting.ascending' | translate}}</option>
+              <option value="DESC"> {{'label.sorting.descending' | translate}}</option>
+            </select>
+          </div>
+          <div class="text-muted">{{'label.criteria.panel.filtered' | translate:recordsCount}}</div>
         </div>
-        <div class="form-group">
-          <select class="form-control" ng-model="langCodesPair" ng-change="updateTranslations()">
-            <option value="null" selected disabled> {{'label.translation.languages' | translate}}</option>
-            <option value="null"> {{'label.all' | translate}}</option>
-            <option ng-repeat="pair in langCodesPairs" value="{{pair}}">
-              {{'label.language.'+pair.source | translate}}->{{'label.language.'+pair.result | translate}}
-            </option>
-          </select>
-        </div>
-        <div class="form-group">
-          <select class="form-control" ng-model="partOfSpeech" ng-change="updateTranslations()">
-            <option value="ALL" selected disabled>{{'label.part.of.speech' | translate}}</option>
-            <option value="ALL"> {{'label.all' | translate}}</option>
-            <option ng-repeat="item in partsOfSpeech" value="{{item}}">
-              {{'label.part.of.speech.'+item.toLowerCase() | translate}}
-            </option>
-          </select>
-        </div>
-        <div class="form-group">
-          <select class="form-control" ng-model="sortField" ng-change="updateTranslations()">
-            <option value="" disabled selected>{{'label.sort' | translate}}</option>
-            <option value="SORT_SOURCE_TEXT"> {{'label.sorting.field.source.text' | translate}}</option>
-            <option value="SORT_RESULT_TEXT"> {{'label.sorting.field.result.text' | translate}}</option>
-            <option value="SORT_VIEWS"> {{'label.sorting.field.views' | translate}}</option>
-            <option value=""> {{'label.sorting.none' | translate}}</option>
-          </select>
-        </div>
-        <div class="form-group" ng-show="sortField">
-          <select class="form-control" ng-model="sortOrder" ng-change="updateTranslations()">
-            <option value="" disabled selected>{{'label.sort.order' | translate}}</option>
-            <option value="ASC"> {{'label.sorting.ascending' | translate}}</option>
-            <option value="DESC"> {{'label.sorting.descending' | translate}}</option>
-          </select>
-        </div>
-        <div class="text-muted">{{'label.criteria.panel.filtered' | translate:recordsCount}}</div>
       </div>
     </div>
-    <div id="table-container" class="no-float">
-      <div class="table-responsive">
-        <table class="table table-hover">
-          <thead>
-          <tr>
-            <th>{{'label.source.word' | translate}}</th>
-            <th>{{'label.translation.word' | translate}}</th>
-            <th></th>
-            <th></th>
-            <th></th>
-            <th></th>
-          </tr>
-          </thead>
-          <tbody>
-          <tr ng-repeat="translation in translations">
-            <td uib-tooltip="{{'label.language.'+ translation.sourceWord.langKey | translate}}"
-                tooltip-append-to-body="true">{{translation.sourceWord.text}}
-            </td>
-            <td uib-tooltip="{{'label.language.'+ translation.resultWord.langKey | translate}}"
-                tooltip-append-to-body="true">{{translation.resultWord.text}}
-            </td>
-            <td>
-              <a ng-show="translation.note" uib-popover="{{translation.note}}"
-                 popover-trigger="'click'" popover-placement="bottom" popover-append-to-body="true">
-                <i class="fa fa-sticky-note"></i>
-              </a>
-            </td>
-            <td><a ui-sref="translation.detail({translationId:{{translation.id}}})"><i
-              class="fa fa-info-circle"></i></a></td>
-            <td><a ui-sref="translation.edit({translationId:{{translation.id}}})"><i
-              class="fa fa-pencil-square-o"></i></a>
-            </td>
-            <td>
-              <a ng-click="deleteTranslation(translation)"><i class="fa fa-times"></i></a>
-            </td>
-          </tr>
-          </tbody>
-        </table>
-
-        <div class="text-center">
-          <ul uib-pagination total-items="filteredRecords" ng-model="pageIndex" max-size="maxPagSize"
-              class="pagination-md" boundary-links="true" direction-links="false" first-text="&laquo;"
-              last-text="&raquo;" items-per-page="maxRecords" ng-change="updateTranslations()">
-          </ul>
+    <div class="col-sm-9">
+      <div class="row">
+        <div class="col-sm-12">
+          <div id="tool-panel" class="panel" data-spy="affix" data-offset-top="50" ng-hide="hideAffix">
+            <div class="panel-body">
+              <button ng-show="selectedTranslationIds.length" ng-click="deleteTranslations()" class="btn btn-danger">
+                <i class="fa fa-trash"></i>
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-sm-12">
+          <div id="t" class="table-responsive">
+            <table class="table table-hover">
+              <thead>
+              <tr>
+                <th>{{'label.source.word' | translate}}</th>
+                <th>{{'label.translation.word' | translate}}</th>
+                <th></th>
+                <th></th>
+                <th></th>
+                <th>
+                </th>
+              </tr>
+              </thead>
+              <tbody>
+              <tr ng-repeat="translation in translations">
+                <td uib-tooltip="{{'label.language.'+ translation.sourceWord.langKey | translate}}"
+                    tooltip-append-to-body="true">{{translation.sourceWord.text}}
+                </td>
+                <td uib-tooltip="{{'label.language.'+ translation.resultWord.langKey | translate}}"
+                    tooltip-append-to-body="true">{{translation.resultWord.text}}
+                </td>
+                <td>
+                  <a ng-show="translation.note" uib-popover="{{translation.note}}"
+                     popover-trigger="'click'" popover-placement="bottom" popover-append-to-body="true"
+                     uib-tooltip="{{'label.note' | translate}}"
+                     tooltip-append-to-body="true">
+                    <i class="fa fa-sticky-note"></i>
+                  </a>
+                </td>
+                <td>
+                  <a ui-sref="translation.detail({translationId:{{translation.id}}})"
+                     uib-tooltip="{{'label.view.detail' | translate}}"
+                     tooltip-append-to-body="true"><i class="fa fa-info-circle"></i>
+                  </a>
+                </td>
+                <td>
+                  <a ui-sref="translation.edit({translationId:{{translation.id}}})"
+                     uib-tooltip="{{'label.edit' | translate}}"
+                     tooltip-append-to-body="true">
+                    <i class="fa fa-pencil-square-o"></i>
+                  </a>
+                </td>
+                <td>
+                  <!--<a ng-click="deleteTranslation(translation)"><i class="fa fa-times"></i></a>-->
+                  <input class="form-control" type="checkbox"
+                         ng-checked="selection.indexOf(translation.id) > -1" ng-click="toggleSelection(translation.id)">
+                </td>
+              </tr>
+              </tbody>
+            </table>
+            <div class="text-center">
+              <ul uib-pagination total-items="filteredRecords" ng-model="pageIndex" max-size="maxPagSize"
+                  class="pagination-md" boundary-links="true" direction-links="false" first-text="&laquo;"
+                  last-text="&raquo;" items-per-page="maxRecords" ng-change="updateTranslations()">
+              </ul>
+            </div>
+          </div>
         </div>
       </div>
     </div>
   </div>
 </div>
-
-
-<!--<a href="#" uib-tooltip="tooltip!!!">Pellentesque</a>
- items-per-page="maxRecords"
-<p>
-  <button uib-popover="I appeared on mouse enter!" popover-trigger="'mouseenter'" type="button" class="btn btn-default">Mouseenter</button>
-</p>
-ng-click="viewTranslationDetail(translation.id)"-->
-

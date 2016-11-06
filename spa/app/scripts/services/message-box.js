@@ -8,7 +8,7 @@
  * Factory in the libreLingvoApp.
  */
 angular.module('libreLingvoApp')
-  .factory('MessageBox', function ($uibModal, $translate, MessageType) {
+  .factory('MessageBox', function ($uibModal, $translate, $q, MessageType) {
     var messageContent = "none";
     var messageTitle = "none";
     var panelClass = "panel-default";
@@ -64,7 +64,7 @@ angular.module('libreLingvoApp')
       show: function (content, messageType) {
         messageContent = content;
         messageType = messageType || MessageType.SUCCESS;
-        messageTitle =getTitle(messageType);
+        messageTitle = getTitle(messageType);
         panelClass = getPanelClass(messageType);
 
         messageModalOptions.templateUrl = 'views/modal-message.html';
@@ -81,7 +81,7 @@ angular.module('libreLingvoApp')
         messageContent = content;
         messageType = messageType || MessageType.WARNING;
         panelClass = getPanelClass(messageType);
-        messageTitle =  messageTitle =getTitle(messageType);
+        messageTitle = messageTitle = getTitle(messageType);
         messageModalOptions.templateUrl = 'views/general-question-modal.html';
         messageModalOptions.controller = 'GeneralQuestionModalCtrl';
         return $uibModal.open(messageModalOptions).result;

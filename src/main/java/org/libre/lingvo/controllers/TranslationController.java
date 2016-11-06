@@ -13,6 +13,8 @@ import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 /**
  * Created by igorek2312 on 29.10.16.
  */
@@ -124,5 +126,15 @@ public class TranslationController {
             @PathVariable Long translationId
     ) {
         translationService.deleteUserTranslation(user.getId(), translationId);
+    }
+
+    @RequestMapping(value = "/users/me/translations", method = RequestMethod.DELETE)
+    @PreAuthorize("hasAuthority('ROLE_USER')")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void deleteUserTranslations(
+            @AuthenticationPrincipal User user,
+            @RequestParam List<Long> ids
+    ) {
+        translationService.deleteUserTranslations(user.getId(), ids);
     }
 }

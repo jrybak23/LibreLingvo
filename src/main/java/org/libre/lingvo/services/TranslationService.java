@@ -5,6 +5,8 @@ import org.libre.lingvo.model.PartOfSpeech;
 import org.libre.lingvo.model.SortingOptions;
 import org.libre.lingvo.model.TranslationSortFieldOptions;
 
+import java.util.List;
+
 /**
  * Created by igorek2312 on 29.10.16.
  */
@@ -38,4 +40,6 @@ public interface TranslationService {
     void updateTranslationNote(Long userId, Long translationId, TranslationNoteDto dto);
 
     void deleteUserTranslation(Long userId, Long translationId);
+
+    void deleteUserTranslations(Long userId, List<Long> ids);
 }

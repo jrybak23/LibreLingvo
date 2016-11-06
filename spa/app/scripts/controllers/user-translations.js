@@ -9,7 +9,8 @@
  */
 angular.module('libreLingvoApp')
   .controller('UserTranslationsCtrl', function ($scope, $state, $translate, $stateParams, MessageBox, Translations) {
-    $scope.maxRecords = 5;
+    $scope.hideAffix = false;
+    $scope.maxRecords = 10;
     $scope.maxPagSize = 5;
 
     $scope.searchSubstring = $stateParams['search-substring'];
@@ -29,6 +30,7 @@ angular.module('libreLingvoApp')
     $scope.sortOrder = $stateParams['sort-order'];
 
     $scope.updateTranslations = function () {
+      $scope.selectedTranslationIds = [];
       var langCodesPair = JSON.parse($scope.langCodesPair);
       Translations.get(
         {
@@ -71,24 +73,38 @@ angular.module('libreLingvoApp')
       );
     };
 
-    $scope.deleteTranslation = function (translation) {
-      MessageBox.showGeneralQuestion('question.on.delete.translation').then(
+    $scope.deleteTranslations = function () {
+      $scope.hideAffix = true;
+      MessageBox.showGeneralQuestion('question.on.delete.translations').then(
         function () {
+          $scope.hideAffix = false;
           Translations.delete(
             {
               userId: 'me',
-              translationId: translation.id
+              ids: $scope.selectedTranslationIds
             },
             function () {
               $scope.updateTranslations();
+              $scope.selectedTranslationIds = [];
             },
             function (error) {
               if (error.data && error.data.errorCode === 404)
                 $scope.updateTranslations();
             }
           );
+        },
+        function () {
+          $scope.hideAffix = false;
         }
       );
+    };
+
+    $scope.toggleSelection = function toggleSelection(id) {
+      var index = $scope.selectedTranslationIds.indexOf(id);
+      if (index > -1)
+        $scope.selectedTranslationIds.splice(index, 1);
+      else
+        $scope.selectedTranslationIds.push(id);
     };
 
     setTimeout(function () {

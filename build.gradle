@@ -10,20 +10,29 @@ buildscript {
 	}
 }
 
+plugins {
+	id "at.comm_unity.gradle.plugins.jpamodelgen" version "1.1.1"
+}
+
 apply plugin: 'java'
 apply plugin: 'idea'
 apply plugin: 'eclipse'
 apply plugin: 'spring-boot'
+apply plugin: 'at.comm_unity.gradle.plugins.jpamodelgen'
 
 jar {
-	baseName = 'libre-lingvo'
-	version = '0.0.1-SNAPSHOT'
+	baseName = projectName
+	version = projectVersion
 }
-sourceCompatibility = 1.8
-targetCompatibility = 1.8
+
+group = projectGroup
+version = projectVersion
+sourceCompatibility = projectSourceCompatibility
+targetCompatibility = projectTargetCompatibility
 
 repositories {
 	mavenCentral()
+	maven { url "https://repository.jboss.org/nexus/content/repositories/releases" }
 }
 
 sourceSets {
@@ -45,6 +54,12 @@ sourceSets {
 	}
 }
 
+bootRepackage {
+	mainClass = 'org.libre.lingvo.LibreLingvoApplication'
+}
+
+def hibernateVersion = '5.2.3.Final'
+
 dependencies {
 	compile('org.springframework.boot:spring-boot-starter-data-jpa')
 	compile('org.springframework.boot:spring-boot-starter-data-rest')
@@ -52,7 +67,7 @@ dependencies {
 	compile('org.springframework.boot:spring-boot-starter-mail')
 	compile('org.springframework.boot:spring-boot-devtools')
 
-	compile group: 'org.hibernate', name: 'hibernate-jpamodelgen', version: '5.2.3.Final'
+	compile group: 'org.hibernate', name: 'hibernate-jpamodelgen', version: hibernateVersion
 	compile group: 'org.springframework.security.oauth', name: 'spring-security-oauth2', version: '2.0.11.RELEASE'
 	compile group: 'org.modelmapper', name: 'modelmapper', version: '+'
 	compile group: 'org.freemarker', name: 'freemarker', version: '2.3.23'
@@ -61,3 +76,17 @@ dependencies {
 	runtime('mysql:mysql-connector-java')
 	testCompile('org.springframework.boot:spring-boot-starter-test')
 }
+
+sourceSets {
+	generated {
+		java.srcDir "${buildDir}/generated/src/java/"
+	}
+}
+
+jpaModelgen {
+	library = "org.hibernate:hibernate-jpamodelgen:${hibernateVersion}"
+	jpaModelgenSourcesDir = "src/main/generated"
+}
+
+compileJava.options.compilerArgs += ["-proc:none"]
+

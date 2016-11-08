@@ -68,8 +68,8 @@ public class TranslationDaoImpl extends GenericDaoImpl<Translation, Long> implem
                 .setParameter(USER_ID, userId)
                 .setParameter(SEARCH_SUBSTRING, searchSubstring)
                 .setParameter(PART_OF_SPEECH, partOfSpeech)
-                .setParameter(SOURCE_LANG_KEY, sourceLangCode)
-                .setParameter(RESULT_LANG_KEY, resultLangCode)
+                .setParameter(SOURCE_LANG_CODE, sourceLangCode)
+                .setParameter(RESULT_LANG_CODE, resultLangCode)
                 .setFirstResult((pageIndex - 1) * maxRecords)
                 .setMaxResults(maxRecords)
                 .getResultList();
@@ -92,8 +92,8 @@ public class TranslationDaoImpl extends GenericDaoImpl<Translation, Long> implem
                 .setParameter(USER_ID, userId)
                 .setParameter(SEARCH_SUBSTRING, searchSubstring)
                 .setParameter(PART_OF_SPEECH, partOfSpeech)
-                .setParameter(SOURCE_LANG_KEY, sourceLangCode)
-                .setParameter(RESULT_LANG_KEY, resultLangCode)
+                .setParameter(SOURCE_LANG_CODE, sourceLangCode)
+                .setParameter(RESULT_LANG_CODE, resultLangCode)
                 .getSingleResult();
     }
 
@@ -116,9 +116,9 @@ public class TranslationDaoImpl extends GenericDaoImpl<Translation, Long> implem
         return findOptional(() -> entityManager.createQuery(existsSuchTranslation)
                 .setParameter(USER_ID, userId)
                 .setParameter(SOURCE_TEXT, sourceText)
-                .setParameter(SOURCE_LANG_KEY, sourceLangKey)
+                .setParameter(SOURCE_LANG_CODE, sourceLangKey)
                 .setParameter(RESULT_TEXT, resultText)
-                .setParameter(RESULT_LANG_KEY, resultLangKey)
+                .setParameter(RESULT_LANG_CODE, resultLangKey)
                 .setParameter(PART_OF_SPEECH, partOfSpeech)
                 .getSingleResult());
     }
@@ -133,8 +133,8 @@ public class TranslationDaoImpl extends GenericDaoImpl<Translation, Long> implem
         return entityManager.createQuery(findUserTranslationsForChecking)
                 .setParameter(USER_ID, userId)
                 .setParameter(SOURCE_TEXT, sourceText)
-                .setParameter(SOURCE_LANG_KEY, sourceLangKey)
-                .setParameter(RESULT_LANG_KEY, resultLangKey)
+                .setParameter(SOURCE_LANG_CODE, sourceLangKey)
+                .setParameter(RESULT_LANG_CODE, resultLangKey)
                 .getResultList();
     }
 

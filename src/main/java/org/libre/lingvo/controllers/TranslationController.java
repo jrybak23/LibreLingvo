@@ -19,7 +19,7 @@ import java.util.List;
  * Created by igorek2312 on 29.10.16.
  */
 @RestController
-@RequestMapping(value = "/api")
+@RequestMapping(value = "/api/v1")
 public class TranslationController {
     @Autowired
     private TranslationService translationService;
@@ -46,15 +46,15 @@ public class TranslationController {
             @RequestParam(name = "sort-order", required = false) SortingOptions sortOrder,
 
             @RequestParam(name = "source-text", required = false) String sourceText,
-            @RequestParam(name = "source-lang-key", required = false) String sourceLangKey,
-            @RequestParam(name = "result-lang-key", required = false) String resultLangKey
+            @RequestParam(name = "source-lang-code", required = false) String sourceLangCode,
+            @RequestParam(name = "result-lang-code", required = false) String resultLangCode
     ) {
-        if (sourceText != null && sourceLangKey != null && resultLangKey != null)
+        if (sourceText != null && sourceLangCode != null && resultLangCode != null)
             return translationService.checkForUserTranslations(
                     user.getId(),
                     sourceText,
-                    sourceLangKey,
-                    resultLangKey
+                    sourceLangCode,
+                    resultLangCode
             );
 
         return translationService.getUserTranslations(
@@ -63,8 +63,8 @@ public class TranslationController {
                 maxRecords,
                 searchSubstring,
                 partOfSpeech,
-                sourceLangKey,
-                resultLangKey,
+                sourceLangCode,
+                resultLangCode,
                 sortField,
                 sortOrder
         );
@@ -81,11 +81,11 @@ public class TranslationController {
 
     @RequestMapping(value = "/users/me/translations/{translationId}/note", method = RequestMethod.GET)
     @PreAuthorize("hasAuthority('ROLE_USER')")
-    public TranslationDetailDto viewTranslationNote(
+    public TranslationNoteDto viewTranslationNote(
             @AuthenticationPrincipal User user,
             @PathVariable Long translationId
     ) {
-        return translationService.getUserTranslationDetailDto(user.getId(), translationId);
+        return translationService.getUserTranslationNote(user.getId(), translationId);
     }
 
     @RequestMapping(value = "/users/me/translations/{translationId}", method = RequestMethod.PUT)

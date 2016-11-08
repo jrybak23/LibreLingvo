@@ -9,5 +9,5 @@
  */
 angular.module('libreLingvoApp')
   .factory('UserAuthorities', function ($resource, HostUrl) {
-    return $resource(HostUrl + "/api/users/me/authorities");
+    return $resource(HostUrl + "/api/v1/users/me/authorities");
   });

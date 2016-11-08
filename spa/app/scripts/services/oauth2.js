@@ -26,7 +26,7 @@ angular.module('libreLingvoApp')
 
     var logOutReq = {
       method: 'DELETE',
-      url: HostUrl + "/api/oauth/revoke-token"
+      url: HostUrl + "/api/v1/oauth/revoke-token"
     };
 
     var authorities = ['ROLE_ANONYMOUS'];

@@ -9,5 +9,5 @@
  */
 angular.module('libreLingvoApp')
   .factory('CancelUserEnabling', function ($resource, HostUrl) {
-    return $resource(HostUrl + '/api/users/cancel-enabling/:verificationToken', {verificationToken: '@id'});
+    return $resource(HostUrl + '/api/v1/users/cancel-enabling/:verificationToken', {verificationToken: '@id'});
   });

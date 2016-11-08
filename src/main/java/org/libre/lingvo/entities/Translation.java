@@ -33,7 +33,7 @@ public class Translation {
 
     private Boolean learned;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn
     private Folder folder;
 
@@ -46,7 +46,11 @@ public class Translation {
     private Date lastModificationDate;
 
     @Temporal(TemporalType.TIMESTAMP)
-    private Date learningDate;
+    private Date learnedDate;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn
+    private Lesson lesson;
 
     public void incrementViews(){
         views++;
@@ -132,11 +136,19 @@ public class Translation {
         this.lastModificationDate = lastModificationDate;
     }
 
-    public Date getLearningDate() {
-        return learningDate;
+    public Date getLearnedDate() {
+        return learnedDate;
     }
 
-    public void setLearningDate(Date learningDate) {
-        this.learningDate = learningDate;
+    public void setLearnedDate(Date learnedDate) {
+        this.learnedDate = learnedDate;
+    }
+
+    public Lesson getLesson() {
+        return lesson;
+    }
+
+    public void setLesson(Lesson lesson) {
+        this.lesson = lesson;
     }
 }

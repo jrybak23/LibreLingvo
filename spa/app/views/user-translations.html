@@ -49,8 +49,11 @@
     <div class="col-sm-9">
       <div class="row">
         <div class="col-sm-12">
-          <div id="tool-panel" class="panel" data-spy="affix" data-offset-top="50" ng-hide="hideAffix">
+          <div ui-scrollpoint="+20" id="tool-panel" class="panel" ng-hide="hideAffix">
             <div class="panel-body">
+              <button class="btn btn-info">
+                 <i class="fa fa-graduation-cap"></i>{{'label.learn.first.n.translation' | translate:interpol}}
+              </button>
               <button ng-show="selectedTranslationIds.length" ng-click="deleteTranslations()" class="btn btn-danger">
                 <i class="fa fa-trash"></i>
               </button>
@@ -69,22 +72,21 @@
                 <th></th>
                 <th></th>
                 <th></th>
-                <th>
-                </th>
+                <th><input type="checkbox" class="form-control" ng-model="checked" ng-click="toggleAllCheckboxes(checked  )"></th>
               </tr>
               </thead>
               <tbody>
               <tr ng-repeat="translation in translations">
-                <td uib-tooltip="{{'label.language.'+ translation.sourceWord.langKey | translate}}"
+                <td uib-tooltip="{{'label.language.'+ translation.sourceWord.langCode | translate}}"
                     tooltip-append-to-body="true">
-                  <span ng-click="play(translation.sourceWord.langKey,translation.sourceWord.text)">
+                  <span ng-click="play(translation.sourceWord.langCode,translation.sourceWord.text)">
                     <i class="fa fa-volume-up"></i>
                   </span>
                   <span>{{translation.sourceWord.text}}</span>
                 </td>
-                <td uib-tooltip="{{'label.language.'+ translation.resultWord.langKey | translate}}"
+                <td uib-tooltip="{{'label.language.'+ translation.resultWord.langCode | translate}}"
                     tooltip-append-to-body="true">
-                  <span ng-click="play(translation.resultWord.langKey,translation.resultWord.text)">
+                  <span ng-click="play(translation.resultWord.langCode,translation.resultWord.text)">
                     <i class="fa fa-volume-up"></i>
                   </span>
                   <span>{{translation.resultWord.text}}</span>
@@ -113,7 +115,7 @@
                 <td>
                   <!--<a ng-click="deleteTranslation(translation)"><i class="fa fa-times"></i></a>-->
                   <input class="form-control" type="checkbox"
-                         ng-checked="selection.indexOf(translation.id) > -1" ng-click="toggleSelection(translation.id)">
+                         ng-checked="selectedTranslationIds.indexOf(translation.id) > -1" ng-click="toggleSelection(translation.id)">
                 </td>
               </tr>
               </tbody>

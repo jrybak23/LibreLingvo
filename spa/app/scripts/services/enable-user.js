@@ -9,5 +9,5 @@
  */
 angular.module('libreLingvoApp')
   .factory('EnableUser', function ($resource, HostUrl) {
-    return $resource(HostUrl+'/api/users/enable/:verificationToken',{verificationToken:'@id'});
+    return $resource(HostUrl+'/api/v1/users/enable/:verificationToken',{verificationToken:'@id'});
   });

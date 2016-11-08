@@ -12,8 +12,8 @@ var partOfSpeechCombobox = {};
 var errorMessage = {};
 var sourceBox = $('#source');
 var resultBox = $('#result_box');
-var sourceLangKeyInput = $('input[name="sl"]').first();
-var resultLangKeyInput = $('input[name="tl"]').first();
+var sourceLangCodeInput = $('input[name="sl"]').first();
+var resultLangCodeInput = $('input[name="tl"]').first();
 //dto.definitionHtml = $('.gt-cd.gt-cd-md').html();
 var starButtonId = '#gt-pb-star';
 
@@ -33,9 +33,9 @@ $.get(chrome.extension.getURL('/templates/modal.html'), function (data) {
   submitSaveButton.onclick = function () {
     var translationDto = new TranslationDto(
       saveSourceBox.innerText,
-      sourceLangKeyInput.val(),
+      sourceLangCodeInput.val(),
       saveResultBox.value,
-      resultLangKeyInput.val(),
+      resultLangCodeInput.val(),
       partOfSpeechCombobox.value
     );
 
@@ -43,17 +43,20 @@ $.get(chrome.extension.getURL('/templates/modal.html'), function (data) {
       function (data) {
         setTranslationIsSaved(true);
         closeMainModal();
+        partOfSpeechCombobox.value = 'NOT_DEFINED';
       },
       function (error) {
         console.error(error);
-        if (error.description && error.description==='No access token')
-            window.location.href=BASE_URL;
+
+        if (error.description && error.description === 'No access token')
+          window.location.href = BASE_URL;
 
         if (error.responseText) {
           var err = JSON.parse(error.responseText);
           if (err.message)
             showErrorMessage(err.message);
         }
+        partOfSpeechCombobox.value = 'NOT_DEFINED';
       }
     );
 
@@ -114,12 +117,12 @@ var setTranslationIsSaved = function (saved) {
 
 var checkTranslation = function () {
   var source = sourceBox.val();
-  var sourceLangKey = sourceLangKeyInput.val();
-  var resultLangKey = resultBox.attr('lang');
+  var sourceLangCode = sourceLangCodeInput.val();
+  var resultLangCode = resultBox.attr('lang');
   saveSourceBox.innerText = source;
   saveResultBox.value = resultBox.text();
 
-  libreLingvoService.getUserTranslations(source, sourceLangKey, resultLangKey).then(
+  libreLingvoService.getUserTranslations(source, sourceLangCode, resultLangCode).then(
     function (data) {
       if (data.translations && data.translations.length)
         setTranslationIsSaved(true);

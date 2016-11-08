@@ -5,6 +5,7 @@ import org.libre.lingvo.dao.UserDao;
 import org.libre.lingvo.dto.FullUserDetailsDto;
 import org.libre.lingvo.dto.UserDetailsDto;
 import org.libre.lingvo.dto.UserRegistrationDto;
+import org.libre.lingvo.dto.UserUpdatingDto;
 import org.libre.lingvo.dto.exception.CustomError;
 import org.libre.lingvo.dto.exception.CustomErrorException;
 import org.libre.lingvo.entities.Role;
@@ -67,6 +68,15 @@ public class UserServiceImpl implements UserService {
 
         userDao.create(user);
         return user;
+    }
+
+    @Override
+    public void updateUser(Long userId,UserUpdatingDto dto) {
+        User user = findOrThrowNotFound(userDao, userId);
+        user.setName(dto.getName());
+        user.setTranslationsInOneLesson(dto.getTranslationsInOneExam());
+        user.setLessonPartsCount(dto.getExamPartsCount());
+        userDao.update(user);
     }
 
     @Override

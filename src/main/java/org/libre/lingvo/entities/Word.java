@@ -18,7 +18,7 @@ public class Word {
     private String text;
 
     @Column(length = 2)
-    private String langKey;
+    private String langCode;
 
     public Long getId() {
         return id;
@@ -36,12 +36,12 @@ public class Word {
         this.text = text;
     }
 
-    public String getLangKey() {
-        return langKey;
+    public String getLangCode() {
+        return langCode;
     }
 
-    public void setLangKey(String langKey) {
-        this.langKey = langKey;
+    public void setLangCode(String langCode) {
+        this.langCode = langCode;
     }
 
     @Override
@@ -52,14 +52,14 @@ public class Word {
         Word word = (Word) o;
 
         if (!text.equals(word.text)) return false;
-        return langKey.equals(word.langKey);
+        return langCode.equals(word.langCode);
 
     }
 
     @Override
     public int hashCode() {
         int result = text.hashCode();
-        result = 31 * result + langKey.hashCode();
+        result = 31 * result + langCode.hashCode();
         return result;
     }
 }

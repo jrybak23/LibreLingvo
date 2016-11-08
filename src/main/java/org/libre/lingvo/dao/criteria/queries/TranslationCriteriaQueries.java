@@ -41,14 +41,14 @@ public class TranslationCriteriaQueries extends AbstractCriteriaQueriesConfig {
                 ParameterExpression<String> searchSubstringPrm = cb.parameter(String.class, SEARCH_SUBSTRING);
                 Expression<String> searchSubstringPattern = cb.concat(cb.concat("%", searchSubstringPrm), "%");
                 ParameterExpression<PartOfSpeech> partOfSpeechPrm = cb.parameter(PartOfSpeech.class, PART_OF_SPEECH);
-                ParameterExpression<String> sourceLangKeyPrm = cb.parameter(String.class, SOURCE_LANG_KEY);
-                ParameterExpression<String> resultLangKeyPrm = cb.parameter(String.class, RESULT_LANG_KEY);
+                ParameterExpression<String> sourceLangKeyPrm = cb.parameter(String.class, SOURCE_LANG_CODE);
+                ParameterExpression<String> resultLangKeyPrm = cb.parameter(String.class, RESULT_LANG_CODE);
 
                 Path<Long> userIdPath = translationRoot.get(Translation_.user).get(User_.id);
                 Path<String> sourceTextPath = translationRoot.get(Translation_.sourceWord).get(Word_.text);
-                Path<String> sourceLangKeyPath = translationRoot.get(Translation_.sourceWord).get(Word_.langKey);
+                Path<String> sourceLangKeyPath = translationRoot.get(Translation_.sourceWord).get(Word_.langCode);
                 Path<String> resultTextPath = translationRoot.get(Translation_.resultWord).get(Word_.text);
-                Path<String> resultLangKeyPath = translationRoot.get(Translation_.resultWord).get(Word_.langKey);
+                Path<String> resultLangKeyPath = translationRoot.get(Translation_.resultWord).get(Word_.langCode);
                 Path<PartOfSpeech> partOfSpeechPath = translationRoot.get(Translation_.partOfSpeech);
                 Path<Integer> viewsPath = translationRoot.get(Translation_.views);
                 cq.where(
@@ -128,16 +128,16 @@ public class TranslationCriteriaQueries extends AbstractCriteriaQueriesConfig {
         Subquery<Translation> sq = cq.subquery(Translation.class);
         ParameterExpression<Long> userIdPrm = cb.parameter(Long.class, USER_ID);
         ParameterExpression<String> sourceTextPrm = cb.parameter(String.class, SOURCE_TEXT);
-        ParameterExpression<String> sourceLangKeyPrm = cb.parameter(String.class, SOURCE_LANG_KEY);
+        ParameterExpression<String> sourceLangKeyPrm = cb.parameter(String.class, SOURCE_LANG_CODE);
         ParameterExpression<String> resultTextPrm = cb.parameter(String.class, RESULT_TEXT);
-        ParameterExpression<String> resultLangKeyPrm = cb.parameter(String.class, RESULT_LANG_KEY);
+        ParameterExpression<String> resultLangKeyPrm = cb.parameter(String.class, RESULT_LANG_CODE);
         ParameterExpression<PartOfSpeech> partOfSpeechPrm = cb.parameter(PartOfSpeech.class, PART_OF_SPEECH);
         Root<Translation> translationRoot = sq.from(Translation.class);
         Path<Long> userIdPath = translationRoot.get(Translation_.user).get(User_.id);
         Path<String> sourceTextPath = translationRoot.get(Translation_.sourceWord).get(Word_.text);
-        Path<String> sourceLangKeyPath = translationRoot.get(Translation_.sourceWord).get(Word_.langKey);
+        Path<String> sourceLangKeyPath = translationRoot.get(Translation_.sourceWord).get(Word_.langCode);
         Path<String> resultTextPath = translationRoot.get(Translation_.resultWord).get(Word_.text);
-        Path<String> resultLangKeyPath = translationRoot.get(Translation_.resultWord).get(Word_.langKey);
+        Path<String> resultLangKeyPath = translationRoot.get(Translation_.resultWord).get(Word_.langCode);
         Path<PartOfSpeech> partOfSpeechPath = translationRoot.get(Translation_.partOfSpeech);
 
         sq.select(translationRoot);
@@ -165,12 +165,12 @@ public class TranslationCriteriaQueries extends AbstractCriteriaQueriesConfig {
         cq.select(translationRoot);
         ParameterExpression<Long> userIdPrm = cb.parameter(Long.class, USER_ID);
         ParameterExpression<String> sourceTextPrm = cb.parameter(String.class, SOURCE_TEXT);
-        ParameterExpression<String> sourceLangKeyPrm = cb.parameter(String.class, SOURCE_LANG_KEY);
-        ParameterExpression<String> resultLangKeyPrm = cb.parameter(String.class, RESULT_LANG_KEY);
+        ParameterExpression<String> sourceLangKeyPrm = cb.parameter(String.class, SOURCE_LANG_CODE);
+        ParameterExpression<String> resultLangKeyPrm = cb.parameter(String.class, RESULT_LANG_CODE);
         Path<Long> userIdPath = translationRoot.get(Translation_.user).get(User_.id);
         Path<String> sourceTextPath = translationRoot.get(Translation_.sourceWord).get(Word_.text);
-        Path<String> sourceLangKeyPath = translationRoot.get(Translation_.sourceWord).get(Word_.langKey);
-        Path<String> resultLangKeyPath = translationRoot.get(Translation_.resultWord).get(Word_.langKey);
+        Path<String> sourceLangKeyPath = translationRoot.get(Translation_.sourceWord).get(Word_.langCode);
+        Path<String> resultLangKeyPath = translationRoot.get(Translation_.resultWord).get(Word_.langCode);
         cq.where(
                 cb.and(
                         cb.equal(userIdPrm, userIdPath),
@@ -219,8 +219,8 @@ public class TranslationCriteriaQueries extends AbstractCriteriaQueriesConfig {
         Root<Translation> translationRoot = cq.from(Translation.class);
         ParameterExpression<Long> userIdPrm = cb.parameter(Long.class, USER_ID);
         Path<Long> userIdPath = translationRoot.get(Translation_.user).get(User_.id);
-        Path<String> sourceLangPath = translationRoot.get(Translation_.sourceWord).get(Word_.langKey);
-        Path<String> resultLangPath = translationRoot.get(Translation_.resultWord).get(Word_.langKey);
+        Path<String> sourceLangPath = translationRoot.get(Translation_.sourceWord).get(Word_.langCode);
+        Path<String> resultLangPath = translationRoot.get(Translation_.resultWord).get(Word_.langCode);
         cq.multiselect(sourceLangPath, resultLangPath);
         cq.distinct(true);
         cq.where(cb.equal(userIdPrm,userIdPath));

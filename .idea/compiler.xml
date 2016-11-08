@@ -21,6 +21,8 @@
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
+      <module name="libre-lingvo_generated" target="1.8" />
+      <module name="libre-lingvo_jpaModelgen" target="1.8" />
       <module name="libre-lingvo_main" target="1.8" />
       <module name="libre-lingvo_test" target="1.8" />
       <module name="librelingvo_main" target="1.8" />

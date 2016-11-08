@@ -25,7 +25,7 @@ import java.util.Set;
  */
 
 @RestController
-@RequestMapping(value = "/api")
+@RequestMapping(value = "/api/v1")
 public class UserController {
 
     @Autowired
@@ -44,6 +44,16 @@ public class UserController {
     @PreAuthorize("hasAuthority('ROLE_USER')")
     public UserDetailsDto getMyInfo(@AuthenticationPrincipal User user) {
         return userService.getUserDetails(user.getId());
+    }
+
+    @RequestMapping(value = "/users/me", method = RequestMethod.PUT)
+    @PreAuthorize("hasAuthority('ROLE_USER')")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void updateMyInfo(
+            @AuthenticationPrincipal User user,
+            @RequestBody UserUpdatingDto dto
+    ) {
+        userService.updateUser(user.getId(), dto);
     }
 
     @RequestMapping(value = "/users/me/authorities", method = RequestMethod.GET)
@@ -76,7 +86,10 @@ public class UserController {
 
     @RequestMapping(value = "/users", method = RequestMethod.POST)
     @ResponseStatus(HttpStatus.CREATED)
-    public CreatedResourceDto registerUser(HttpServletRequest request, @RequestBody @Validated UserRegistrationDto dto) {
+    public CreatedResourceDto registerUser(
+            HttpServletRequest request,
+            @RequestBody @Validated UserRegistrationDto dto
+    ) {
         String originUrl = request.getHeader("Origin");
 
         User user = userService.registerUser(dto);

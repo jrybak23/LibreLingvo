@@ -7,14 +7,14 @@ var HOST_URL = 'http://localhost:8080';
 var BASE_URL = 'http://localhost:9000';
 
 var TranslationDto = function (sourceText,
-                               sourceLangKey,
+                               sourceLangCode,
                                resultText,
-                               resultLangKey,
+                               resultLangCode,
                                partOfSpeech) {
   this.sourceText = sourceText;
-  this.sourceLangKey = sourceLangKey;
+  this.sourceLangCode = sourceLangCode;
   this.resultText = resultText;
-  this.resultLangKey = resultLangKey;
+  this.resultLangCode = resultLangCode;
   this.partOfSpeech = partOfSpeech;
   this.note = null;
 };
@@ -44,7 +44,7 @@ var sendAjaxRequest = function (message) {
 
 var libreLingvoService = {
   viewAuthorities: function () {
-    var requestSettings = new RequestSettings('GET', HOST_URL + '/api/users/me/authorities');
+    var requestSettings = new RequestSettings('GET', HOST_URL + '/api/v1/users/me/authorities');
     var message = {
       action: 'sendAjaxRequest',
       requestSettings: requestSettings
@@ -52,13 +52,13 @@ var libreLingvoService = {
 
     return sendAjaxRequest(message);
   },
-  getUserTranslations: function (sourceText, sourceLangKey, resultLangKey) {
+  getUserTranslations: function (sourceText, sourceLangCode, resultLangCode) {
 
     var requestSettings = new RequestSettings(
       'GET',
-      HOST_URL + '/api/users/me/translations?source-text='+sourceText+
-      '&source-lang-key='+sourceLangKey+
-      '&result-lang-key='+resultLangKey
+      HOST_URL + '/api/v1/users/me/translations?source-text='+sourceText+
+      '&source-lang-code='+sourceLangCode+
+      '&result-lang-code='+resultLangCode
     );
 
     var message = {
@@ -71,7 +71,7 @@ var libreLingvoService = {
   saveTranslation: function (translationDto) {
     var requestSettings = new RequestSettings(
       'POST',
-      HOST_URL + '/api/users/me/translations',
+      HOST_URL + '/api/v1/users/me/translations',
       JSON.stringify(translationDto)
     );
 

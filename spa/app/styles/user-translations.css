@@ -6,7 +6,8 @@
   padding: 3px;
 }
 
-.affix {
-  top: 60px;
-  z-index: 100000000000;
+#tool-panel.ui-scrollpoint {
+  position:fixed;
+  top:60px;
+  z-index: 1000000;
 }

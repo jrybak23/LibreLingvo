@@ -9,7 +9,7 @@
  */
 angular.module('libreLingvoApp')
   .factory('Translations', function (HostUrl, $resource) {
-    return $resource(HostUrl + "/api/users/:userId/translations/:translationId",
+    return $resource(HostUrl + "/api/v1/users/:userId/translations/:translationId",
       {
         userId: '@id'
       },

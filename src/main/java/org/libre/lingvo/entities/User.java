@@ -26,22 +26,28 @@ public class User implements Serializable {
 
     private String password;
 
-    private Boolean enabled=false;
+    private Boolean enabled = false;
 
-    private Boolean nonLocked=true;
+    private Boolean nonLocked = true;
 
-    @OneToMany(mappedBy = "pk.user", cascade = CascadeType.ALL,fetch = FetchType.EAGER)
-    private Set<UserRole> userRoles=new HashSet<>();
+    @OneToMany(mappedBy = "pk.user", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    private Set<UserRole> userRoles = new HashSet<>();
 
-    @OneToOne(mappedBy = "user", cascade = CascadeType.REMOVE,fetch = FetchType.LAZY)
+    @OneToOne(mappedBy = "user", cascade = CascadeType.REMOVE, fetch = FetchType.LAZY)
     private VerificationToken verificationToken;
 
-    @OneToOne(cascade = CascadeType.ALL,fetch = FetchType.LAZY, optional = false)
+    @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY, optional = false)
     @JoinColumn
     private Folder rootFolder;
 
+    private Integer translationsInOneLesson = 15;
+
+    private Integer lessonPartsCount = 3;
+
+    private Integer minutesBetweenLessonParts = 10;
+
     public User() {
-        Folder root=new Folder();
+        Folder root = new Folder();
         root.setName("root");
         setRootFolder(root);
         root.setUser(this);
@@ -52,8 +58,8 @@ public class User implements Serializable {
         this.id = user.getId();
         this.email = user.getEmail();
         this.password = user.getPassword();
-        this.enabled=user.isEnabled();
-        this.nonLocked=user.isNonLocked();
+        this.enabled = user.isEnabled();
+        this.nonLocked = user.isNonLocked();
         this.userRoles = user.getUserRoles();
     }
 
@@ -129,5 +135,29 @@ public class User implements Serializable {
 
     public void setRootFolder(Folder rootFolder) {
         this.rootFolder = rootFolder;
+    }
+
+    public Integer getTranslationsInOneLesson() {
+        return translationsInOneLesson;
+    }
+
+    public void setTranslationsInOneLesson(Integer translationsInOneLesson) {
+        this.translationsInOneLesson = translationsInOneLesson;
+    }
+
+    public Integer getLessonPartsCount() {
+        return lessonPartsCount;
+    }
+
+    public void setLessonPartsCount(Integer lessonPartsCount) {
+        this.lessonPartsCount = lessonPartsCount;
+    }
+
+    public Integer getMinutesBetweenLessonParts() {
+        return minutesBetweenLessonParts;
+    }
+
+    public void setMinutesBetweenLessonParts(Integer minutesBetweenLessonParts) {
+        this.minutesBetweenLessonParts = minutesBetweenLessonParts;
     }
 }

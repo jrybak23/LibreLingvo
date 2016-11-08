@@ -6,7 +6,7 @@ package org.libre.lingvo.dto;
 public class InputWordDto {
     private String text;
 
-    private String langKey;
+    private String langCode;
 
     public String getText() {
         return text;
@@ -16,11 +16,11 @@ public class InputWordDto {
         this.text = text;
     }
 
-    public String getLangKey() {
-        return langKey;
+    public String getLangCode() {
+        return langCode;
     }
 
-    public void setLangKey(String langKey) {
-        this.langKey = langKey;
+    public void setLangCode(String langCode) {
+        this.langCode = langCode;
     }
 }

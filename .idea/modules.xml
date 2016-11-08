@@ -3,6 +3,8 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/libre-lingvo.iml" filepath="$PROJECT_DIR$/.idea/modules/libre-lingvo.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/libre-lingvo_generated.iml" filepath="$PROJECT_DIR$/.idea/modules/libre-lingvo_generated.iml" group="libre-lingvo" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/libre-lingvo_jpaModelgen.iml" filepath="$PROJECT_DIR$/.idea/modules/libre-lingvo_jpaModelgen.iml" group="libre-lingvo" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/libre-lingvo_main.iml" filepath="$PROJECT_DIR$/.idea/modules/libre-lingvo_main.iml" group="libre-lingvo" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/libre-lingvo_test.iml" filepath="$PROJECT_DIR$/.idea/modules/libre-lingvo_test.iml" group="libre-lingvo" />
     </modules>

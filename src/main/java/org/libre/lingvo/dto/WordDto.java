@@ -8,7 +8,7 @@ public class WordDto {
 
     private String text;
 
-    private String langKey;
+    private String langCode;
 
     public Long getId() {
         return id;
@@ -26,11 +26,11 @@ public class WordDto {
         this.text = text;
     }
 
-    public String getLangKey() {
-        return langKey;
+    public String getLangCode() {
+        return langCode;
     }
 
-    public void setLangKey(String langKey) {
-        this.langKey = langKey;
+    public void setLangCode(String langCode) {
+        this.langCode = langCode;
     }
 }

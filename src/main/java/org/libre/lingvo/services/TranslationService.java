@@ -16,8 +16,8 @@ public interface TranslationService {
     TranslationsDto checkForUserTranslations(
             Long userId,
             String sourceText,
-            String sourceLangKey,
-            String resultLangKey
+            String sourceLangCode,
+            String resultLangCode
     );
 
     TranslationsDto getUserTranslations(

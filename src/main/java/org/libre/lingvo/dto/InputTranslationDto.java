@@ -14,14 +14,14 @@ public class InputTranslationDto {
     private String sourceText;
 
     @Size(min = 2, max = 2)
-    private String sourceLangKey;
+    private String sourceLangCode;
 
     @NotBlank(message = "{NotBlank.addedTranslationDto.resultText}")
     @Size(max = 300, message = "{Size.addedTranslationDto.resultText}")
     private String resultText;
 
     @Size(min = 2, max = 2)
-    private String resultLangKey;
+    private String resultLangCode;
 
     private PartOfSpeech partOfSpeech;
 
@@ -35,12 +35,12 @@ public class InputTranslationDto {
         this.sourceText = sourceText;
     }
 
-    public String getSourceLangKey() {
-        return sourceLangKey;
+    public String getSourceLangCode() {
+        return sourceLangCode;
     }
 
-    public void setSourceLangKey(String sourceLangKey) {
-        this.sourceLangKey = sourceLangKey;
+    public void setSourceLangCode(String sourceLangCode) {
+        this.sourceLangCode = sourceLangCode;
     }
 
     public String getResultText() {
@@ -51,12 +51,12 @@ public class InputTranslationDto {
         this.resultText = resultText;
     }
 
-    public String getResultLangKey() {
-        return resultLangKey;
+    public String getResultLangCode() {
+        return resultLangCode;
     }
 
-    public void setResultLangKey(String resultLangKey) {
-        this.resultLangKey = resultLangKey;
+    public void setResultLangCode(String resultLangCode) {
+        this.resultLangCode = resultLangCode;
     }
 
     public PartOfSpeech getPartOfSpeech() {

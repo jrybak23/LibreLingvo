@@ -1,17 +1,44 @@
 <form class="form-horizontal" ng-submit="saveChanges()">
   <div class="form-group">
-    <label for="Email" class="col-sm-1 control-label">Email:</label>
-    <div class="col-sm-7">
-      <span class="text-info" id="Email">{{user.email}}</span>
+    <label for="Email" class="col-sm-2 control-label">Email:</label>
+    <div class="col-sm-5">
+      <input id="Email" type="email" class="form-control" ng-model="user.email" readonly>
     </div>
   </div>
 
   <div class="form-group">
-    <label for="Name" class="col-sm-1 control-label">{{'label.name'|translate}}:</label>
-    <div class="col-sm-7">
+    <label for="Name" class="col-sm-2 control-label">{{'label.name'|translate}}:</label>
+    <div class="col-sm-5">
       <input type="text" class="form-control" id="Name" placeholder="Name" ng-model="user.name">
     </div>
   </div>
 
-  <button type="submit" class="btn btn-primary">{{'label.save.changes' | translate}}</button>
+  <div class="form-group">
+    <label for="WordsInOneLesson" class="col-sm-2 control-label">{{'label.words.in.one.lesson' | translate}}:</label>
+    <div class="col-sm-5">
+      <input type="number" class="form-control" id="WordsInOneLesson"
+             ng-model="user.translationsInOneLesson">
+    </div>
+  </div>
+
+  <div class="form-group">
+    <label for="LessonPartsCount" class="col-sm-2 control-label">{{'label.lesson.parts.count' | translate}}:</label>
+    <div class="col-sm-5">
+      <input ng-model="user.lessonPartsCount" type="number" class="form-control" id="LessonPartsCount">
+    </div>
+  </div>
+
+  <div class="form-group">
+    <label for="MinutesBetweenLessonParts" class="col-sm-2 control-label">{{'label.minutes.between.lesson.parts'|
+      translate}}:</label>
+    <div class="col-sm-5">
+      <input ng-model="user.minutesBetweenLessonParts" type="number" class="form-control" id="MinutesBetweenLessonParts">
+    </div>
+  </div>
+
+  <div class="form-group">
+    <div class="col-sm-5">
+      <button type="submit" class="btn btn-primary">{{'label.save.changes' | translate}}</button>
+    </div>
+  </div>
 </form>

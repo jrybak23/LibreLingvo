@@ -46,7 +46,7 @@ public class TranslationServiceImpl implements TranslationService {
         return () -> {
             Word word = new Word();
             word.setText(text);
-            word.setLangKey(langKey);
+            word.setLangCode(langKey);
             wordDao.create(word);
             return word;
         };
@@ -70,8 +70,8 @@ public class TranslationServiceImpl implements TranslationService {
 
         String sourceText = dto.getSourceText().trim();
         String resultText = dto.getResultText().trim();
-        String sourceLangKey = dto.getSourceLangKey();
-        String resultLangKey = dto.getResultLangKey();
+        String sourceLangKey = dto.getSourceLangCode();
+        String resultLangKey = dto.getResultLangCode();
 
         Boolean exists = translationDao.existsSuchTranslation(
                 userId,
@@ -106,14 +106,14 @@ public class TranslationServiceImpl implements TranslationService {
     public TranslationsDto checkForUserTranslations(
             Long userId,
             String sourceText,
-            String sourceLangKey,
-            String resultLangKey
+            String sourceLangCode,
+            String resultLangCode
     ) {
         List<TranslationDto> translations = translationDao.findSuchTranslations(
                 userId,
                 sourceText.trim(),
-                sourceLangKey,
-                resultLangKey
+                sourceLangCode,
+                resultLangCode
         )
                 .stream()
                 .map(translation -> {
@@ -164,7 +164,7 @@ public class TranslationServiceImpl implements TranslationService {
                 resultLangCode
         );
         Long totalRecords = translationDao.countTotalUserTranslations(userId);
-        List<LangCodesPairDto> langKeys = translationDao.getLangKeysByUserId(userId)
+        List<LangCodesPairDto> langCodes = translationDao.getLangKeysByUserId(userId)
                 .stream()
                 .map(tuple -> new LangCodesPairDto((String) tuple.get(0),(String) tuple.get(1)))
                 .collect(Collectors.toList());
@@ -174,7 +174,7 @@ public class TranslationServiceImpl implements TranslationService {
         dto.setTranslations(translations);
         dto.setFilteredRecords(filteredRecords);
         dto.setTotalRecords(totalRecords);
-        dto.setLangCodesPairs(langKeys);
+        dto.setLangCodesPairs(langCodes);
         dto.setPartsOfSpeech(partsOfSpeech);
         return dto;
     }
@@ -201,7 +201,7 @@ public class TranslationServiceImpl implements TranslationService {
     }
 
     private Word safeWordUpdate(Long translationId, String newWordText, String newWordLangKey, Word word) {
-        if (!(word.getText().equals(newWordText) && word.getLangKey().equals(newWordLangKey))) {
+        if (!(word.getText().equals(newWordText) && word.getLangCode().equals(newWordLangKey))) {
             safeWordDelete(translationId, word);
 
             return wordDao.findByTextAndLangKey(newWordText, newWordLangKey)
@@ -224,14 +224,14 @@ public class TranslationServiceImpl implements TranslationService {
         Word updatedSourceWord = safeWordUpdate(
                 translation.getId(),
                 dto.getSourceText(),
-                dto.getSourceLangKey(),
+                dto.getSourceLangCode(),
                 sourceWord
         );
 
         Word updatedResultWord = safeWordUpdate(
                 translation.getId(),
                 dto.getResultText(),
-                dto.getResultLangKey(),
+                dto.getResultLangCode(),
                 resultWord
         );
 

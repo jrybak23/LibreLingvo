@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.RestController;
  * Created by igorek2312 on 06.10.16.
  */
 @RestController
-@RequestMapping(value = "/api")
+@RequestMapping(value = "/api/v1/")
 public class EmailVerificationController {
 
     @Autowired

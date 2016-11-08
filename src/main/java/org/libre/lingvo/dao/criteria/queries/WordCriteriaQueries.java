@@ -22,7 +22,7 @@ public class WordCriteriaQueries extends AbstractCriteriaQueriesConfig {
         ParameterExpression<String> textParameter = cb.parameter(String.class, "text");
         ParameterExpression<String> langKeyParameter = cb.parameter(String.class, "langKey");
         Path<String> textPath = wordRoot.get(Word_.text);
-        Path<String> langKeyPath = wordRoot.get(Word_.langKey);
+        Path<String> langKeyPath = wordRoot.get(Word_.langCode);
         cq.select(wordRoot);
         cq.where(
                 cb.and(

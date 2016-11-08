@@ -24,7 +24,8 @@ angular
     'pascalprecht.translate',
     'angular-loading-bar',
     'ui.tinymce',
-    'angularMoment'
+    'angularMoment',
+    'ui.scrollpoint'
   ])
   .constant('GRUNT_SERVE_URL', 'http://localhost:9000')
   .constant('TOMCAT_URL', 'http://localhost:8080')
@@ -77,7 +78,7 @@ angular
       })
       .state({
         name: 'user-translations',
-        url: '/user-translations?page-index&search-substring&part-of-speech&sort-field&sort-order&source-lang-key&result-lang-key',
+        url: '/user-translations?page-index&search-substring&part-of-speech&sort-field&sort-order&source-lang-code&result-lang-code',
         templateUrl: 'views/user-translations.html',
         controller: 'UserTranslationsCtrl',
         controllerAs: 'userTranslations'

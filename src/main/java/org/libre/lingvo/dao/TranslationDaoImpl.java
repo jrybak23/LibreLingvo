@@ -54,7 +54,7 @@ public class TranslationDaoImpl extends GenericDaoImpl<Translation, Long> implem
             PartOfSpeech partOfSpeech,
             String sourceLangCode,
             String resultLangCode,
-            TranslationSortFieldOptions sortFieldOption,
+            Boolean learned, TranslationSortFieldOptions sortFieldOption,
             SortingOptions sortingOption,
             Integer pageIndex,
             Integer maxRecords
@@ -70,6 +70,7 @@ public class TranslationDaoImpl extends GenericDaoImpl<Translation, Long> implem
                 .setParameter(PART_OF_SPEECH, partOfSpeech)
                 .setParameter(SOURCE_LANG_CODE, sourceLangCode)
                 .setParameter(RESULT_LANG_CODE, resultLangCode)
+                .setParameter(LEARNED,learned)
                 .setFirstResult((pageIndex - 1) * maxRecords)
                 .setMaxResults(maxRecords)
                 .getResultList();
@@ -81,8 +82,8 @@ public class TranslationDaoImpl extends GenericDaoImpl<Translation, Long> implem
             String searchSubstring,
             PartOfSpeech partOfSpeech,
             String sourceLangCode,
-            String resultLangCode
-    ) {
+            String resultLangCode,
+            Boolean learned) {
         CriteriaQuery<Long> query = filteredTranslationsQueries.getUnchecked(new TranslationsCriteria(
                 ActionOptions.COUNT,
                 null,
@@ -94,6 +95,7 @@ public class TranslationDaoImpl extends GenericDaoImpl<Translation, Long> implem
                 .setParameter(PART_OF_SPEECH, partOfSpeech)
                 .setParameter(SOURCE_LANG_CODE, sourceLangCode)
                 .setParameter(RESULT_LANG_CODE, resultLangCode)
+                .setParameter(LEARNED, learned)
                 .getSingleResult();
     }
 

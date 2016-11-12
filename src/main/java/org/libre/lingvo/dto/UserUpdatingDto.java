@@ -11,14 +11,14 @@ public class UserUpdatingDto {
     @Size(max = 15, message = "{Size.userRegistrationDto.name}")
     private String name;
 
-    @Range(min = 5, max = 100)
-    private Integer translationsInOneExam = 15;
+    @Range(min = 5, max = 40)
+    private Integer translationsInOneLesson;
 
     @Range(min = 2, max = 1000)
-    private Integer examPartsCount = 3;
+    private Integer lessonPartsCount;
 
-    @Range(min = 1, max = 60)
-    private Integer minutesBetweenExamParts = 10;
+    @Range(min = 1, max = 120)
+    private Integer minutesBetweenLessonParts;
 
     public String getName() {
         return name;
@@ -28,27 +28,27 @@ public class UserUpdatingDto {
         this.name = name;
     }
 
-    public Integer getTranslationsInOneExam() {
-        return translationsInOneExam;
+    public Integer getTranslationsInOneLesson() {
+        return translationsInOneLesson;
     }
 
-    public void setTranslationsInOneExam(Integer translationsInOneExam) {
-        this.translationsInOneExam = translationsInOneExam;
+    public void setTranslationsInOneLesson(Integer translationsInOneLesson) {
+        this.translationsInOneLesson = translationsInOneLesson;
     }
 
-    public Integer getExamPartsCount() {
-        return examPartsCount;
+    public Integer getLessonPartsCount() {
+        return lessonPartsCount;
     }
 
-    public void setExamPartsCount(Integer examPartsCount) {
-        this.examPartsCount = examPartsCount;
+    public void setLessonPartsCount(Integer lessonPartsCount) {
+        this.lessonPartsCount = lessonPartsCount;
     }
 
-    public Integer getMinutesBetweenExamParts() {
-        return minutesBetweenExamParts;
+    public Integer getMinutesBetweenLessonParts() {
+        return minutesBetweenLessonParts;
     }
 
-    public void setMinutesBetweenExamParts(Integer minutesBetweenExamParts) {
-        this.minutesBetweenExamParts = minutesBetweenExamParts;
+    public void setMinutesBetweenLessonParts(Integer minutesBetweenLessonParts) {
+        this.minutesBetweenLessonParts = minutesBetweenLessonParts;
     }
 }

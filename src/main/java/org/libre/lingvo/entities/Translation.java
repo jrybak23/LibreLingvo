@@ -31,7 +31,7 @@ public class Translation {
     @Column(nullable = false)
     private PartOfSpeech partOfSpeech;
 
-    private Boolean learned;
+    private Boolean learned=false;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn

@@ -13,7 +13,7 @@ public interface GenericDao<T,ID> {
 
     Optional<T> getOne(ID id);
 
-    List<T> findByIds(List<ID> ids);
+    List<T> getByIds(List<ID> ids);
 
     void create(T entity);
 

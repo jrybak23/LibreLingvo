@@ -11,7 +11,7 @@ angular.module('libreLingvoApp')
   .controller('UserTranslationsCtrl',
     function ($scope, $state, $translate, $stateParams, MessageBox, Translations, TTS, Users) {
       Users.get({'userId': 'me'}, function (response) {
-        $scope.maxRecords = response.translationsInOneExam;
+        $scope.maxRecords = response.translationsInOneLesson;
       });
 
       $scope.hideAffix = false;
@@ -32,7 +32,11 @@ angular.module('libreLingvoApp')
 
       $scope.sortField = $stateParams['sort-field'];
       $scope.sortOrder = $stateParams['sort-order'];
+      $scope.learned = $stateParams['learned'] || 'false';
+
       $scope.play = TTS.play;
+
+      $scope.selectedTranslationIds = [];
 
       $scope.toggleAllCheckboxes = function (toggle) {
         if (toggle) {
@@ -41,15 +45,19 @@ angular.module('libreLingvoApp')
           });
         }
         else
-          $scope.selectedTranslationIds = [];
-
-        console.log(toggle, $scope.selectedTranslationIds);
+          $scope.selectedTranslationIds.length = 0;
       };
 
+      $scope.interpol = {};
+
+      $scope.$watch('selectedTranslationIds.length', function (val) {
+        $scope.interpol.selectedTranslationsCount = val;
+      });
 
       $scope.updateTranslations = function () {
         $scope.selectedTranslationIds = [];
         var langCodesPair = JSON.parse($scope.langCodesPair);
+
         Translations.get(
           {
             userId: 'me',
@@ -60,7 +68,8 @@ angular.module('libreLingvoApp')
             'source-lang-code': langCodesPair ? langCodesPair.source : null,
             'result-lang-code': langCodesPair ? langCodesPair.result : null,
             'sort-field': $scope.sortField,
-            'sort-order': ($scope.sortField && !$scope.sortOrder) ? 'ASC' : $scope.sortOrder
+            'sort-order': ($scope.sortField && !$scope.sortOrder) ? 'ASC' : $scope.sortOrder,
+            'learned': $scope.learned == 'ALL' ? null : $scope.learned
           },
           function (response) {
             $scope.translations = response.translations;
@@ -75,7 +84,7 @@ angular.module('libreLingvoApp')
             $scope.langCodesPairs = response.langCodesPairs;
             $scope.partsOfSpeech = response.partsOfSpeech;
 
-            $scope.interpol={'translationsCount':$scope.translations.length};
+            $scope.interpol.translationsCount = $scope.translations.length;
 
             $state.transitionTo('user-translations',
               {
@@ -85,7 +94,8 @@ angular.module('libreLingvoApp')
                 'source-lang-code': langCodesPair ? langCodesPair.source : null,
                 'result-lang-code': langCodesPair ? langCodesPair.result : null,
                 'sort-field': $scope.sortField,
-                'sort-order': $scope.sortOrder
+                'sort-order': $scope.sortOrder,
+                'learned': $scope.learned
               },
               {
                 notify: false

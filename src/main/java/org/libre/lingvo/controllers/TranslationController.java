@@ -44,6 +44,7 @@ public class TranslationController {
             @RequestParam(name = "part-of-speech", required = false) PartOfSpeech partOfSpeech,
             @RequestParam(name = "sort-field", required = false) TranslationSortFieldOptions sortField,
             @RequestParam(name = "sort-order", required = false) SortingOptions sortOrder,
+            @RequestParam(name = "learned", required = false) Boolean learned,
 
             @RequestParam(name = "source-text", required = false) String sourceText,
             @RequestParam(name = "source-lang-code", required = false) String sourceLangCode,
@@ -65,9 +66,9 @@ public class TranslationController {
                 partOfSpeech,
                 sourceLangCode,
                 resultLangCode,
+                learned,
                 sortField,
-                sortOrder
-        );
+                sortOrder);
     }
 
     @RequestMapping(value = "/users/me/translations/{translationId}", method = RequestMethod.GET)

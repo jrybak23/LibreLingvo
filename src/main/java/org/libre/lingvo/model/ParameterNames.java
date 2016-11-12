@@ -13,5 +13,6 @@ public final class ParameterNames {
     public static final String RESULT_LANG_CODE = "resultLangCode";
     public static final String SEARCH_SUBSTRING = "searchSubstring";
     public static final String PART_OF_SPEECH = "partOfSpeech";
+    public static final String LEARNED = "learned";
 
 }

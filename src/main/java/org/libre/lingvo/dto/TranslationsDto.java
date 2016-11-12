@@ -8,7 +8,7 @@ import java.util.List;
  * Created by igorek2312 on 30.10.16.
  */
 public class TranslationsDto {
-    private List<TranslationDto> translations;
+    private List<TranslationListItemDto> translations;
 
     private Long filteredRecords;
 
@@ -18,11 +18,11 @@ public class TranslationsDto {
 
     private List<PartOfSpeech> partsOfSpeech;
 
-    public List<TranslationDto> getTranslations() {
+    public List<TranslationListItemDto> getTranslations() {
         return translations;
     }
 
-    public void setTranslations(List<TranslationDto> translations) {
+    public void setTranslations(List<TranslationListItemDto> translations) {
         this.translations = translations;
     }
 

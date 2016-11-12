@@ -2,10 +2,14 @@ package org.libre.lingvo.controllers;
 
 import org.libre.lingvo.dto.CreatedResourceDto;
 import org.libre.lingvo.dto.LessonCreationDto;
+import org.libre.lingvo.dto.LessonDto;
 import org.libre.lingvo.dto.LessonItemDto;
+import org.libre.lingvo.entities.User;
+import org.libre.lingvo.services.LessonService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.security.core.userdetails.User;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -16,34 +20,51 @@ import java.util.List;
 @RestController
 @RequestMapping(value = "/api/v1")
 public class LessonController {
-    @RequestMapping(value = "/user/me/lessons", method = RequestMethod.GET)
-    public List<LessonItemDto> getUserExams(@AuthenticationPrincipal User user) {
-        return null;
+    @Autowired
+    private LessonService lessonService;
+
+    @RequestMapping(value = "/users/me/lessons", method = RequestMethod.GET)
+    @PreAuthorize("hasAuthority('ROLE_USER')")
+    public List<LessonItemDto> getUserLessons(@AuthenticationPrincipal User user) {
+        return lessonService.getUserLessons(user.getId());
     }
 
-    @RequestMapping(value = "/user/me/lessons", method = RequestMethod.POST)
+    @RequestMapping(value = "/users/me/lessons/{lessonId}", method = RequestMethod.GET)
+    @PreAuthorize("hasAuthority('ROLE_USER')")
+    public LessonDto getUserLesson(
+            @AuthenticationPrincipal User user,
+            @PathVariable Long lessonId
+    ) {
+        return lessonService.getLesson(user.getId(), lessonId);
+    }
+
+    @RequestMapping(value = "/users/me/lessons", method = RequestMethod.POST)
+    @PreAuthorize("hasAuthority('ROLE_USER')")
     @ResponseStatus(HttpStatus.CREATED)
-    public CreatedResourceDto createExam(
+    public CreatedResourceDto createLesson(
             @AuthenticationPrincipal User user,
             @RequestBody LessonCreationDto lessonCreationDto
     ) {
-        return null;
+        return lessonService.createLesson(user.getId(), lessonCreationDto.getTranslationIds());
     }
 
-    @RequestMapping(value = "/user/me/lessons/{lessonId}/exam-part", method = RequestMethod.PUT)
-    public void increaseExamPart(
-            @AuthenticationPrincipal User user,
-            @PathVariable Long lessonId
-    ) {
-
-    }
-
-    @RequestMapping(value = "/user/me/lessons/{lessonId}", method = RequestMethod.DELETE)
+    @RequestMapping(value = "/users/me/lessons/{lessonId}/lesson-part", method = RequestMethod.PUT)
+    @PreAuthorize("hasAuthority('ROLE_USER')")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void deleteExam(
+    public void increaseLessonPart(
             @AuthenticationPrincipal User user,
             @PathVariable Long lessonId
     ) {
+        lessonService.goNextPartOfLesson(user.getId(), lessonId);
+    }
 
+    @RequestMapping(value = "/users/me/lessons/{lessonId}", method = RequestMethod.DELETE)
+    @PreAuthorize("hasAuthority('ROLE_USER')")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void deleteLessons(
+            @AuthenticationPrincipal User user,
+            @PathVariable Long lessonId
+    ) {
+        lessonService.deleteLesson(user.getId(), lessonId);
     }
 }

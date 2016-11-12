@@ -2,6 +2,7 @@ package org.libre.lingvo.entities;
 
 import javax.persistence.*;
 import java.util.Date;
+import java.util.HashSet;
 import java.util.Set;
 
 /**
@@ -13,15 +14,15 @@ public class Lesson {
     @GeneratedValue
     private Long id;
 
-    private Integer completedPartsOfExam;
+    private Integer completedPartsOfLesson=0;
 
-    private Integer maxPartsOfExam;
+    private Integer maxPartsOfLesson;
 
     @Temporal(TemporalType.TIMESTAMP)
-    private Date waitUnitNextExamPart;
+    private Date waitUnitNextLessonPart;
 
-    @OneToMany(mappedBy = "lesson")
-    private Set<Translation> translations;
+    @OneToMany(mappedBy = "lesson",cascade = {CascadeType.MERGE, CascadeType.PERSIST})
+    private Set<Translation> translations=new HashSet<>();
 
     public Long getId() {
         return id;
@@ -31,28 +32,36 @@ public class Lesson {
         this.id = id;
     }
 
-    public Integer getCompletedPartsOfExam() {
-        return completedPartsOfExam;
+    public void increaseCompletedPartsOfLesson(){
+        completedPartsOfLesson++;
     }
 
-    public void setCompletedPartsOfExam(Integer completedPartsOfExam) {
-        this.completedPartsOfExam = completedPartsOfExam;
+    public Boolean isCompleted(){
+        return completedPartsOfLesson.equals(maxPartsOfLesson);
     }
 
-    public Integer getMaxPartsOfExam() {
-        return maxPartsOfExam;
+    public Integer getCompletedPartsOfLesson() {
+        return completedPartsOfLesson;
     }
 
-    public void setMaxPartsOfExam(Integer maxPartsOfExam) {
-        this.maxPartsOfExam = maxPartsOfExam;
+    public void setCompletedPartsOfLesson(Integer completedPartsOfLesson) {
+        this.completedPartsOfLesson = completedPartsOfLesson;
     }
 
-    public Date getWaitUnitNextExamPart() {
-        return waitUnitNextExamPart;
+    public Integer getMaxPartsOfLesson() {
+        return maxPartsOfLesson;
     }
 
-    public void setWaitUnitNextExamPart(Date waitUnitNextExamPart) {
-        this.waitUnitNextExamPart = waitUnitNextExamPart;
+    public void setMaxPartsOfLesson(Integer maxPartsOfLesson) {
+        this.maxPartsOfLesson = maxPartsOfLesson;
+    }
+
+    public Date getWaitUnitNextLessonPart() {
+        return waitUnitNextLessonPart;
+    }
+
+    public void setWaitUnitNextLessonPart(Date waitUnitNextLessonPart) {
+        this.waitUnitNextLessonPart = waitUnitNextLessonPart;
     }
 
     public Set<Translation> getTranslations() {

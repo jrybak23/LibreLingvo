@@ -78,7 +78,7 @@ angular
       })
       .state({
         name: 'user-translations',
-        url: '/user-translations?page-index&search-substring&part-of-speech&sort-field&sort-order&source-lang-code&result-lang-code',
+        url: '/user-translations?page-index&search-substring&part-of-speech&sort-field&sort-order&source-lang-code&result-lang-code&learned',
         templateUrl: 'views/user-translations.html',
         controller: 'UserTranslationsCtrl',
         controllerAs: 'userTranslations'
@@ -121,6 +121,13 @@ angular
         templateUrl: 'views/translation.html',
         controller: 'TranslationCtrl',
         controllerAs: 'translation'
+      })
+      .state({
+        name: 'lesson',
+        url: '/lesson/:lessonId',
+        templateUrl: 'views/lesson.html',
+        controller: 'LessonCtrl',
+        controllerAs: 'lesson'
       });
 
     $urlRouterProvider

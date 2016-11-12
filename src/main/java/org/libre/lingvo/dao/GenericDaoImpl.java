@@ -47,7 +47,7 @@ public class GenericDaoImpl <T, ID extends Serializable> implements GenericDao<T
     }
 
     @Override
-    public List<T> findByIds(List<ID> ids) {
+    public List<T> getByIds(List<ID> ids) {
         Query query = entityManager.createQuery("SELECT e FROM "+daoType.getName()+" e WHERE e.id in :ids");
         query.setParameter("ids", ids);
         return query.getResultList();

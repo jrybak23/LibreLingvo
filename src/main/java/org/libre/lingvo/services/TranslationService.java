@@ -28,7 +28,8 @@ public interface TranslationService {
             PartOfSpeech partOfSpeech,
             String sourceLangCode,
             String resultLangCode,
-            TranslationSortFieldOptions sortField,
+
+            Boolean learned, TranslationSortFieldOptions sortField,
             SortingOptions sortOrder
     );
 

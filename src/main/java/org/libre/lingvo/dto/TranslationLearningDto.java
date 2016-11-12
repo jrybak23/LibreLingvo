@@ -3,9 +3,9 @@ package org.libre.lingvo.dto;
 import org.libre.lingvo.model.PartOfSpeech;
 
 /**
- * Created by igorek2312 on 29.10.16.
+ * Created by igorek2312 on 12.11.16.
  */
-public class TranslationDto {
+public class TranslationLearningDto {
     private Long id;
 
     private WordDto sourceWord;
@@ -15,8 +15,6 @@ public class TranslationDto {
     private PartOfSpeech partOfSpeech;
 
     private String note;
-
-    private Boolean learned;
 
     public Long getId() {
         return id;
@@ -57,12 +55,5 @@ public class TranslationDto {
     public void setNote(String note) {
         this.note = note;
     }
-
-    public Boolean getLearned() {
-        return learned;
-    }
-
-    public void setLearned(Boolean learned) {
-        this.learned = learned;
-    }
 }
+

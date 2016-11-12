@@ -109,7 +109,7 @@ public class TranslationServiceImpl implements TranslationService {
             String sourceLangCode,
             String resultLangCode
     ) {
-        List<TranslationDto> translations = translationDao.findSuchTranslations(
+        List<TranslationListItemDto> translations = translationDao.findSuchTranslations(
                 userId,
                 sourceText.trim(),
                 sourceLangCode,
@@ -138,20 +138,20 @@ public class TranslationServiceImpl implements TranslationService {
             PartOfSpeech partOfSpeech,
             String sourceLangCode,
             String resultLangCode,
-            TranslationSortFieldOptions sortField,
+            Boolean learned, TranslationSortFieldOptions sortField,
             SortingOptions sortOrder
     ) {
-        List<TranslationDto> translations = translationDao.findFilteredUserTranslations(
+        List<TranslationListItemDto> translations = translationDao.findFilteredUserTranslations(
                 userId,
                 searchSubstring,
                 partOfSpeech,
                 sourceLangCode,
                 resultLangCode,
+                learned,
                 sortField,
                 sortOrder,
                 pageIndex,
-                maxRecords
-        )
+                maxRecords)
                 .stream()
                 .map(translationDtoConverter::convertToTranslationDto)
                 .collect(Collectors.toList());
@@ -161,7 +161,8 @@ public class TranslationServiceImpl implements TranslationService {
                 searchSubstring,
                 partOfSpeech,
                 sourceLangCode,
-                resultLangCode
+                resultLangCode,
+                learned
         );
         Long totalRecords = translationDao.countTotalUserTranslations(userId);
         List<LangCodesPairDto> langCodes = translationDao.getLangKeysByUserId(userId)

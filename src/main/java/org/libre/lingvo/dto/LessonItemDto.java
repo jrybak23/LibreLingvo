@@ -1,5 +1,7 @@
 package org.libre.lingvo.dto;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+
 import java.util.Date;
 
 /**
@@ -10,7 +12,8 @@ public class LessonItemDto {
 
     private String title;
 
-    private Date untilNextLessonPart;
+    @JsonFormat(pattern = "MM.dd.yyyy HH:mm:ss")
+    private Date waitUnitNextLessonPart;
 
     public Long getId() {
         return id;
@@ -28,11 +31,11 @@ public class LessonItemDto {
         this.title = title;
     }
 
-    public Date getUntilNextLessonPart() {
-        return untilNextLessonPart;
+    public Date getWaitUnitNextLessonPart() {
+        return waitUnitNextLessonPart;
     }
 
-    public void setUntilNextLessonPart(Date untilNextLessonPart) {
-        this.untilNextLessonPart = untilNextLessonPart;
+    public void setWaitUnitNextLessonPart(Date waitUnitNextLessonPart) {
+        this.waitUnitNextLessonPart = waitUnitNextLessonPart;
     }
 }

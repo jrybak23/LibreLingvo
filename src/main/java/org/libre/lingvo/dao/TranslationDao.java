@@ -19,7 +19,7 @@ public interface TranslationDao extends GenericDao<Translation, Long> {
             PartOfSpeech partOfSpeech,
             String sourceLangCode,
             String resultLangCode,
-            TranslationSortFieldOptions sortFieldOption,
+            Boolean learned, TranslationSortFieldOptions sortFieldOption,
             SortingOptions sortingOption,
             Integer pageIndex,
             Integer maxRecords
@@ -30,8 +30,8 @@ public interface TranslationDao extends GenericDao<Translation, Long> {
             String searchSubstring,
             PartOfSpeech partOfSpeech,
             String sourceLangCode,
-            String resultLangCode
-    );
+            String resultLangCode,
+            Boolean learned);
 
     Long countTotalUserTranslations(Long userId);
 

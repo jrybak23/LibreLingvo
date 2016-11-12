@@ -3,10 +3,7 @@ package org.libre.lingvo.dao.criteria.queries;
 import com.google.common.cache.CacheBuilder;
 import com.google.common.cache.CacheLoader;
 import com.google.common.cache.LoadingCache;
-import org.libre.lingvo.entities.Translation;
-import org.libre.lingvo.entities.Translation_;
-import org.libre.lingvo.entities.User_;
-import org.libre.lingvo.entities.Word_;
+import org.libre.lingvo.entities.*;
 import org.libre.lingvo.model.ActionOptions;
 import org.libre.lingvo.model.PartOfSpeech;
 import org.libre.lingvo.model.TranslationsCriteria;
@@ -43,6 +40,7 @@ public class TranslationCriteriaQueries extends AbstractCriteriaQueriesConfig {
                 ParameterExpression<PartOfSpeech> partOfSpeechPrm = cb.parameter(PartOfSpeech.class, PART_OF_SPEECH);
                 ParameterExpression<String> sourceLangKeyPrm = cb.parameter(String.class, SOURCE_LANG_CODE);
                 ParameterExpression<String> resultLangKeyPrm = cb.parameter(String.class, RESULT_LANG_CODE);
+                ParameterExpression<Boolean> learnedPrm = cb.parameter(Boolean.class, LEARNED);
 
                 Path<Long> userIdPath = translationRoot.get(Translation_.user).get(User_.id);
                 Path<String> sourceTextPath = translationRoot.get(Translation_.sourceWord).get(Word_.text);
@@ -51,6 +49,9 @@ public class TranslationCriteriaQueries extends AbstractCriteriaQueriesConfig {
                 Path<String> resultLangKeyPath = translationRoot.get(Translation_.resultWord).get(Word_.langCode);
                 Path<PartOfSpeech> partOfSpeechPath = translationRoot.get(Translation_.partOfSpeech);
                 Path<Integer> viewsPath = translationRoot.get(Translation_.views);
+                Path<Lesson> lessonPath = translationRoot.get(Translation_.lesson);
+                Path<Boolean> learnedPath = translationRoot.get(Translation_.learned);
+
                 cq.where(
                         cb.and(
                                 cb.equal(userIdPrm, userIdPath),
@@ -69,6 +70,11 @@ public class TranslationCriteriaQueries extends AbstractCriteriaQueriesConfig {
                                 cb.or(
                                         cb.equal(resultLangKeyPrm,resultLangKeyPath),
                                         cb.isNull(resultLangKeyPrm)
+                                ),
+                                cb.isNull(lessonPath),
+                                cb.or(
+                                        cb.equal(learnedPrm,learnedPath),
+                                        cb.isNull(learnedPrm)
                                 )
                         )
                 );
@@ -239,4 +245,5 @@ public class TranslationCriteriaQueries extends AbstractCriteriaQueriesConfig {
         cq.distinct(true);
         return cq;
     }
+
 }

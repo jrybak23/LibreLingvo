@@ -74,8 +74,8 @@ public class UserServiceImpl implements UserService {
     public void updateUser(Long userId,UserUpdatingDto dto) {
         User user = findOrThrowNotFound(userDao, userId);
         user.setName(dto.getName());
-        user.setTranslationsInOneLesson(dto.getTranslationsInOneExam());
-        user.setLessonPartsCount(dto.getExamPartsCount());
+        user.setTranslationsInOneLesson(dto.getTranslationsInOneLesson());
+        user.setLessonPartsCount(dto.getLessonPartsCount());
         userDao.update(user);
     }
 

@@ -12,7 +12,7 @@ public class LessonItemDto {
 
     private String title;
 
-    @JsonFormat(pattern = "MM.dd.yyyy HH:mm:ss")
+  @JsonFormat(pattern = "MM.dd.yyyy HH:mm:ss")
     private Date waitUnitNextLessonPart;
 
     public Long getId() {

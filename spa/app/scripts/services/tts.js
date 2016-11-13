@@ -27,6 +27,8 @@ angular.module('libreLingvoApp')
       utterance.lang = 'en';
     }
 
+    var unsupportedLangs=['uk'];
+
     return {
       play: function (langCode, text) {
         if (SpeechSynthesisUtterance) {
@@ -34,6 +36,9 @@ angular.module('libreLingvoApp')
           utterance.text = text;
           speechSynthesis.speak(utterance);
         }
+      },
+      supports:function (langCode) {
+          return !(unsupportedLangs.indexOf(langCode)>-1) && SpeechSynthesisUtterance;
       }
     };
   });

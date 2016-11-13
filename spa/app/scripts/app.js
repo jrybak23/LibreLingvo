@@ -25,7 +25,8 @@ angular
     'angular-loading-bar',
     'ui.tinymce',
     'angularMoment',
-    'ui.scrollpoint'
+    'ui.scrollpoint',
+    'timer'
   ])
   .constant('GRUNT_SERVE_URL', 'http://localhost:9000')
   .constant('TOMCAT_URL', 'http://localhost:8080')
@@ -128,6 +129,20 @@ angular
         templateUrl: 'views/lesson.html',
         controller: 'LessonCtrl',
         controllerAs: 'lesson'
+      })
+      .state({
+        name: 'lesson.view',
+        url: '/view',
+        templateUrl: 'views/lesson-view.html',
+        controller: 'LessonViewCtrl',
+        controllerAs: 'lessonView'
+      })
+      .state({
+        name: 'lesson.exam',
+        url: '/exam',
+        templateUrl: 'views/lesson-exam.html',
+        controller: 'LessonExamCtrl',
+        controllerAs: 'lessonExam'
       });
 
     $urlRouterProvider

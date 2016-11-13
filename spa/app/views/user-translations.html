@@ -46,7 +46,7 @@
             <select class="form-control" ng-model="learned" ng-change="updateTranslations()">
               <option value="ALL"> {{'label.all' | translate}}</option>
               <option value="true"> {{'label.learned' | translate}}</option>
-              <option value="false" > {{'label.not.learned' | translate}}</option>
+              <option value="false"> {{'label.not.learned' | translate}}</option>
             </select>
           </div>
           <div class="text-muted">{{'label.criteria.panel.filtered' | translate:recordsCount}}</div>
@@ -58,10 +58,10 @@
         <div class="col-sm-12">
           <div ui-scrollpoint="+20" id="tool-panel" class="panel" ng-hide="hideAffix">
             <div class="panel-body">
-              <button class="btn btn-info">
+              <button class="btn btn-info" ng-click="learnTranslations(false)">
                 <i class="fa fa-graduation-cap"></i>{{'label.learn.current.n.translations' | translate:interpol}}
               </button>
-              <button class="btn btn-info" ng-show="selectedTranslationIds.length">
+              <button class="btn btn-info" ng-show="selectedTranslationIds.length" ng-click="learnTranslations(true)">
                 <i class="fa fa-graduation-cap"></i>{{'label.learn.selected.n.translations' | translate:interpol}}
               </button>
               <button ng-show="selectedTranslationIds.length" ng-click="deleteTranslations()" class="btn btn-danger">
@@ -91,14 +91,16 @@
               <tr ng-repeat="translation in translations">
                 <td uib-tooltip="{{'label.language.'+ translation.sourceWord.langCode | translate}}"
                     tooltip-append-to-body="true">
-                  <span ng-click="play(translation.sourceWord.langCode,translation.sourceWord.text)">
+                  <span ng-show="supports(translation.sourceWord.langCode)"
+                        ng-click="play(translation.sourceWord.langCode,translation.sourceWord.text)">
                     <i class="fa fa-volume-up"></i>
                   </span>
                   <span>{{translation.sourceWord.text}}</span>
                 </td>
                 <td uib-tooltip="{{'label.language.'+ translation.resultWord.langCode | translate}}"
                     tooltip-append-to-body="true">
-                  <span ng-click="play(translation.resultWord.langCode,translation.resultWord.text)">
+                  <span ng-show="supports(translation.resultWord.langCode)"
+                    ng-click="play(translation.resultWord.langCode,translation.resultWord.text)">
                     <i class="fa fa-volume-up"></i>
                   </span>
                   <span>{{translation.resultWord.text}}</span>

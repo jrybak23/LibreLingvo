@@ -51,7 +51,7 @@ public class UserController {
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void updateMyInfo(
             @AuthenticationPrincipal User user,
-            @RequestBody UserUpdatingDto dto
+            @RequestBody @Validated UserUpdatingDto dto
     ) {
         userService.updateUser(user.getId(), dto);
     }

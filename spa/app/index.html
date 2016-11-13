@@ -56,9 +56,21 @@
       <li class="dropdown">
         <a class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true"
            aria-expanded="false"><i class="fa fa-bell"></i> <span class="caret"></span></a>
-        <ul class="dropdown-menu">
-          <li><a href="#">Action</a></li>
-          <li><a href="#">Another action</a></li>
+        <ul id="lessons-dropdown" class="dropdown-menu">
+          <li ng-repeat="lesson in lessons | orderBy:'waitUnitNextLessonPart'"
+              ng-init="diff=(lesson.waitUnitNextLessonPart | amUtc | amLocal | amDifference : null : 'seconds')"
+              ng-class="diff>0?'bg-warning':'bg-info'">
+
+            <a ng-show="diff>0">
+              {{$index+1}}.{{'label.wait' | translate}}
+              <timer countdown="diff" interval="1000">{{hours}}:{{minutes}}:{{seconds}}</timer>
+            </a>
+
+            <a ui-sref="lesson({lessonId:lesson.id})" ng-show="diff<0">
+              {{$index+1}}.<i class="fa fa-graduation-cap"></i>{{'label.move.on.next.lesson.part' | translate}}
+            </a>
+          </li>
+
           <li role="separator" class="visible-xs divider"></li>
         </ul>
       </li>
@@ -75,6 +87,7 @@
     </ul>
   </div>
 </nav>
+
 
 <section class="container-fluid views-content">
   <ui-view></ui-view>
@@ -138,6 +151,8 @@
 <script src="bower_components/tinymce/tinymce.js"></script>
 <script src="bower_components/angular-ui-tinymce/src/tinymce.js"></script>
 <script src="bower_components/angular-ui-scrollpoint/dist/scrollpoint.js"></script>
+<script src="bower_components/humanize-duration/humanize-duration.js"></script>
+<script src="bower_components/angular-timer/dist/angular-timer.js"></script>
 <!-- endbower -->
 <!-- endbuild -->
 
@@ -170,6 +185,9 @@
 <script src="scripts/services/translation-note.js"></script>
 <script src="scripts/services/tts.js"></script>
 <script src="scripts/controllers/lesson.js"></script>
+<script src="scripts/services/lessons.js"></script>
+<script src="scripts/controllers/lesson-view.js"></script>
+<script src="scripts/controllers/lesson-exam.js"></script>
 <!-- endbuild -->
 </body>
 </html>

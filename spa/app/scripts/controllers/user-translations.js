@@ -9,7 +9,7 @@
  */
 angular.module('libreLingvoApp')
   .controller('UserTranslationsCtrl',
-    function ($scope, $state, $translate, $stateParams, MessageBox, Translations, TTS, Users) {
+    function ($scope, $state, $translate, $stateParams, MessageBox, Translations, TTS, Users, Lessons) {
       Users.get({'userId': 'me'}, function (response) {
         $scope.maxRecords = response.translationsInOneLesson;
       });
@@ -35,6 +35,7 @@ angular.module('libreLingvoApp')
       $scope.learned = $stateParams['learned'] || 'false';
 
       $scope.play = TTS.play;
+      $scope.supports = TTS.supports;
 
       $scope.selectedTranslationIds = [];
 
@@ -126,6 +127,24 @@ angular.module('libreLingvoApp')
           },
           function () {
             $scope.hideAffix = false;
+          }
+        );
+      };
+
+      $scope.learnTranslations = function (nTranslations) {
+        var translationIds = nTranslations
+          ? $scope.selectedTranslationIds
+          : $scope.translations.map(function (translation) {
+          return translation.id;
+        });
+
+        Lessons.save(
+          {},
+          {
+            translationIds: translationIds
+          },
+          function (response) {
+            $state.go('lesson',{lessonId:response.id});
           }
         );
       };

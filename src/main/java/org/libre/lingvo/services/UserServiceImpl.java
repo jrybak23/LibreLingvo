@@ -71,11 +71,12 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public void updateUser(Long userId,UserUpdatingDto dto) {
+    public void updateUser(Long userId, UserUpdatingDto dto) {
         User user = findOrThrowNotFound(userDao, userId);
         user.setName(dto.getName());
         user.setTranslationsInOneLesson(dto.getTranslationsInOneLesson());
         user.setLessonPartsCount(dto.getLessonPartsCount());
+        user.setMinutesBetweenLessonParts(dto.getMinutesBetweenLessonParts());
         userDao.update(user);
     }
 
@@ -83,5 +84,4 @@ public class UserServiceImpl implements UserService {
     public void deleteNotEnabledUsersWithExpiredTokens() {
         userDao.deleteNotEnabledUsersWithExpiredTokens();
     }
-
 }

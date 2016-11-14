@@ -69,5 +69,18 @@
     {{translation.lastModificationDate | amUtc | amLocal | amDateFormat:'DD.MM.YYYY HH:mm:ss'}}
   </div>
 </div>
+<hr>
+<div class="row">
+  <div class="col-sm-4 text-muted">
+    {{'label.translations.is.learned' | translate}}:
+  </div>
+  <div class="col-sm-8 text-info">
+    {{translation.learned?'label.yes':'label.no' | translate}}
+    <a ui-sref="translation.edit({translationId:translation.id})" class="pull-right">
+      <i class="fa fa-pencil-square-o"></i>
+    </a>
+  </div>
+</div>
+
 
 

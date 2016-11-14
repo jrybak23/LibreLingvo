@@ -27,6 +27,8 @@ public class InputTranslationDto {
 
     private String note;
 
+    private Boolean learned;
+
     public String getSourceText() {
         return sourceText;
     }
@@ -73,5 +75,13 @@ public class InputTranslationDto {
 
     public void setNote(String note) {
         this.note = note;
+    }
+
+    public Boolean getLearned() {
+        return learned;
+    }
+
+    public void setLearned(Boolean learned) {
+        this.learned = learned;
     }
 }

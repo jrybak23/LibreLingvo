@@ -131,18 +131,16 @@ angular
         controllerAs: 'lesson'
       })
       .state({
-        name: 'lesson.view',
-        url: '/view',
-        templateUrl: 'views/lesson-view.html',
-        controller: 'LessonViewCtrl',
-        controllerAs: 'lessonView'
-      })
-      .state({
         name: 'lesson.exam',
         url: '/exam',
         templateUrl: 'views/lesson-exam.html',
-        controller: 'LessonExamCtrl',
-        controllerAs: 'lessonExam'
+        controller: 'LessonExamCtrl'
+      })
+      .state({
+        name: 'lesson.view',
+        url: '/view',
+        templateUrl: 'views/lesson-view.html',
+        controller: 'LessonViewCtrl'
       });
 
     $urlRouterProvider
@@ -165,10 +163,10 @@ angular
           console.log(response);
           var messageBox = $injector.get('MessageBox');
           if (response.status === -1) {
-            var translate=$injector.get('$translate');
-            alert(translate.instant('error.connection.refused'));
-          }
+            //var translate = $injector.get('$translate');
+            //alert(translate.instant('error.connection.refused'));
             //messageBox.show('error.connection.refused', MessageType.ERROR);
+          }
           else if (response.data) {
             if (response.data.error_description === 'Bad credentials')
               messageBox.show('error.invalid.password', MessageType.ERROR);
@@ -200,7 +198,72 @@ angular
     $translateProvider.preferredLanguage('en');
     $translateProvider.fallbackLanguage('en');
     $translateProvider.useSanitizeValueStrategy('escapeParameters');
-  });
+  })
+  .run(function ($rootScope,
+                 amUtcFilter,
+                 amLocalFilter,
+                 amDifferenceFilter,
+                 Lessons,
+                 NotificationType,
+                 Oauth2
+  ) {
+    $rootScope.lessonsUpdating = false;
+
+    $rootScope.updateLessons = function () {
+      if (!$rootScope.lessonsUpdating) {
+        $rootScope.lessonsUpdating = true;
+        return Lessons.query(
+          function (respose) {
+            $rootScope.lessons = respose;
+            $rootScope.lessonsUpdating = false;
+
+            $rootScope.lessons.forEach(function (lesson) {
+              lesson.diffInSeconds = amDifferenceFilter(
+                amLocalFilter(
+                  amUtcFilter(lesson.waitUnitNextLessonPart)
+                ), null, 'seconds'
+              );
+            });
+
+            $rootScope.$watch('lessons', function () {
+              var lessonsAvailable = $rootScope.lessons.find(function (lesson) {
+                return lesson.diffInSeconds < 0;
+              });
+
+              if (lessonsAvailable) {
+                $rootScope.notification = NotificationType.LESSON_AVAILABLE;
+                return;
+              }
+
+              var lessonNotAvailable = $rootScope.lessons.find(function (lesson) {
+                return lesson.diffInSeconds > 0;
+              });
+
+              if (lessonNotAvailable) {
+                $rootScope.notification = NotificationType.LESSON_NOT_AVAILABLE;
+                return;
+              }
+
+              $rootScope.notification = NotificationType.NO_LESSONS;
+            });
+
+          },
+          function () {
+            $rootScope.lessonsUpdating = false;
+          }
+        ).$promise;
+      }
+    };
+
+    $rootScope.updateLessons();
+  })
+  .constant('NotificationType',
+    {
+      LESSON_AVAILABLE: 1,
+      LESSON_NOT_AVAILABLE: 2,
+      NO_LESSONS: 3
+    }
+  );
 
 
 // update popover template for binding unsafe html
@@ -216,4 +279,3 @@ angular.module("uib/template/popover/popover.html", []).run(function ($templateC
     "");
 });
 
-$('.dropdown-toggle').dropdown();

@@ -1,0 +1,9 @@
+#view-lesson,#pass-exam .thumbnail{
+  overflow: auto;
+}
+
+#pass-exam ul li {
+  cursor: pointer;
+  padding-left: 5px;
+  font-size: 16px;
+}

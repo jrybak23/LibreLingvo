@@ -1,13 +1,48 @@
-<div class="panel panel-primary">
+<div id="view-lesson" class="panel panel-primary">
   <div class="panel-heading">
     <h3 class="panel-title">{{'label.remember.translation' | translate}}</h3>
   </div>
   <div class="panel-body">
-    Panel body ...
+    <div class="row">
+      <div class="col-xs-6">
+        <div class="thumbnail"
+             uib-tooltip="{{'label.language.'+ sourceLangCode | translate}}">
+           <span ng-show="supports(sourceLangCode)"
+                 ng-click="play(sourceLangCode,sourceText)">
+                    <i class="fa fa-volume-up"></i>
+            </span>
+          {{sourceText}}
+        </div>
+      </div>
+      <div class="col-xs-6">
+        <div class="thumbnail"
+             uib-tooltip="{{'label.language.'+ resultLangCode | translate}}">
+          <span ng-show="supports(resultLangCode)"
+                ng-click="play(resultLangCode,resultText)">
+                    <i class="fa fa-volume-up"></i>
+          </span>
+          {{resultText}}
+        </div>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-xs-12 text-center text-primary">
+        <span ng-show="lesson.translations[index].note" uib-popover="{{lesson.translations[index].note}}"
+              popover-trigger="'click'" popover-placement="bottom" popover-append-to-body="true"
+              uib-tooltip="{{'label.note' | translate}}"
+              tooltip-append-to-body="true">
+                    <i class="fa fa-sticky-note"></i>
+        </span>
+        <span class="text-muted" ng-show="partOfSpeech!=='NOT_DEFINED'">
+          {{'label.part.of.speech.'+partOfSpeech.toLowerCase() | translate}}
+        </span>
+      </div>
+    </div>
+
   </div>
   <div class="panel-footer clearfix">
-    <button class="btn btn-default pull-left">{{'label.back' | translate}}</button>
-    <button class="btn btn-default pull-right">{{'label.next' | translate}}</button>
+    <button ng-click="back()" class="btn btn-default pull-left">{{'label.back' | translate}}</button>
+    <button ng-click="next()" class="btn btn-default pull-right">{{'label.next' | translate}}</button>
   </div>
 </div>
 

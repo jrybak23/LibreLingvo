@@ -38,7 +38,7 @@ angular.module('libreLingvoApp')
         }
       },
       supports:function (langCode) {
-          return !(unsupportedLangs.indexOf(langCode)>-1) && SpeechSynthesisUtterance;
+          return langCode && !(unsupportedLangs.indexOf(langCode)>-1) && SpeechSynthesisUtterance;
       }
     };
   });

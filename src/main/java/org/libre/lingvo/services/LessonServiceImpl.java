@@ -108,10 +108,14 @@ public class LessonServiceImpl implements LessonService {
                         trn.setLesson(null);
                     });
         else {
-            Calendar calendar = Calendar.getInstance();
-            calendar.setTime(new Timestamp(calendar.getTime().getTime()));
-            calendar.add(Calendar.MINUTE, user.getMinutesBetweenLessonParts());
-            lesson.setWaitUnitNextLessonPart(new Date(calendar.getTime().getTime()));
+            if (lesson.getCompletedPartsOfLesson().equals(1))
+                lesson.setWaitUnitNextLessonPart(new Date());
+            else {
+                Calendar calendar = Calendar.getInstance();
+                calendar.setTime(new Timestamp(calendar.getTime().getTime()));
+                calendar.add(Calendar.MINUTE, user.getMinutesBetweenLessonParts());
+                lesson.setWaitUnitNextLessonPart(new Date(calendar.getTime().getTime()));
+            }
         }
         lessonDao.update(lesson);
 

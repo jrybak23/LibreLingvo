@@ -32,6 +32,7 @@
               <option value="SORT_SOURCE_TEXT"> {{'label.sorting.field.source.text' | translate}}</option>
               <option value="SORT_RESULT_TEXT"> {{'label.sorting.field.result.text' | translate}}</option>
               <option value="SORT_VIEWS"> {{'label.sorting.field.views' | translate}}</option>
+              <option value="SORT_MODIFICATION_DATE"> {{'label.sorting.modification.date' | translate}}</option>
               <option value=""> {{'label.sorting.none' | translate}}</option>
             </select>
           </div>
@@ -58,7 +59,7 @@
         <div class="col-sm-12">
           <div ui-scrollpoint="+20" id="tool-panel" class="panel" ng-hide="hideAffix">
             <div class="panel-body">
-              <button class="btn btn-info" ng-click="learnTranslations(false)">
+              <button class="btn btn-info" ng-click="learnTranslations(false)" ng-show="translations.length">
                 <i class="fa fa-graduation-cap"></i>{{'label.learn.current.n.translations' | translate:interpol}}
               </button>
               <button class="btn btn-info" ng-show="selectedTranslationIds.length" ng-click="learnTranslations(true)">
@@ -151,3 +152,4 @@
     </div>
   </div>
 </div>
+

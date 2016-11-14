@@ -83,7 +83,16 @@ input[type='checkbox'] {
   color: white;
 }
 
+#lessons-dropdown i {
+  color: white;
+}
+
+#lessons-dropdown span {
+  white-space: nowrap;
+}
+
 .col-centered {
   float: none;
   margin: 0 auto;
 }
+

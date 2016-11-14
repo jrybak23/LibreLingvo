@@ -12,6 +12,7 @@ import org.springframework.context.annotation.Configuration;
 
 import javax.persistence.Tuple;
 import javax.persistence.criteria.*;
+import java.util.Date;
 
 import static org.libre.lingvo.model.ParameterNames.*;
 
@@ -49,6 +50,7 @@ public class TranslationCriteriaQueries extends AbstractCriteriaQueriesConfig {
                 Path<String> resultLangKeyPath = translationRoot.get(Translation_.resultWord).get(Word_.langCode);
                 Path<PartOfSpeech> partOfSpeechPath = translationRoot.get(Translation_.partOfSpeech);
                 Path<Integer> viewsPath = translationRoot.get(Translation_.views);
+                Path<Date> modificationDatePath = translationRoot.get(Translation_.lastModificationDate);
                 Path<Lesson> lessonPath = translationRoot.get(Translation_.lesson);
                 Path<Boolean> learnedPath = translationRoot.get(Translation_.learned);
 
@@ -64,16 +66,16 @@ public class TranslationCriteriaQueries extends AbstractCriteriaQueriesConfig {
                                         cb.isNull(partOfSpeechPrm)
                                 ),
                                 cb.or(
-                                        cb.equal(sourceLangKeyPrm,sourceLangKeyPath),
+                                        cb.equal(sourceLangKeyPrm, sourceLangKeyPath),
                                         cb.isNull(sourceLangKeyPrm)
                                 ),
                                 cb.or(
-                                        cb.equal(resultLangKeyPrm,resultLangKeyPath),
+                                        cb.equal(resultLangKeyPrm, resultLangKeyPath),
                                         cb.isNull(resultLangKeyPrm)
                                 ),
                                 cb.isNull(lessonPath),
                                 cb.or(
-                                        cb.equal(learnedPrm,learnedPath),
+                                        cb.equal(learnedPrm, learnedPath),
                                         cb.isNull(learnedPrm)
                                 )
                         )
@@ -90,6 +92,9 @@ public class TranslationCriteriaQueries extends AbstractCriteriaQueriesConfig {
                             break;
                         case SORT_VIEWS:
                             sortingPath = viewsPath;
+                            break;
+                        case SORT_MODIFICATION_DATE:
+                            sortingPath = modificationDatePath;
                             break;
                     }
 
@@ -229,12 +234,12 @@ public class TranslationCriteriaQueries extends AbstractCriteriaQueriesConfig {
         Path<String> resultLangPath = translationRoot.get(Translation_.resultWord).get(Word_.langCode);
         cq.multiselect(sourceLangPath, resultLangPath);
         cq.distinct(true);
-        cq.where(cb.equal(userIdPrm,userIdPath));
+        cq.where(cb.equal(userIdPrm, userIdPath));
         return cq;
     }
 
     @Bean
-    public CriteriaQuery<PartOfSpeech> getPartsOfSpeechByUserId(){
+    public CriteriaQuery<PartOfSpeech> getPartsOfSpeechByUserId() {
         CriteriaQuery<PartOfSpeech> cq = cb.createQuery(PartOfSpeech.class);
         Root<Translation> translationRoot = cq.from(Translation.class);
         ParameterExpression<Long> userIdPrm = cb.parameter(Long.class, USER_ID);

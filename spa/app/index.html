@@ -17,103 +17,22 @@
   <link rel="stylesheet" href="styles/main.css">
   <link rel="stylesheet" href="styles/user-translations.css">
   <link rel="stylesheet" href="styles/edit-translations.css">
+  <link rel="stylesheet" href="styles/lessons.css">
   <!-- endbuild -->
 </head>
-<body ng-app="libreLingvoApp" ng-controller="IndexCtrl" ng-cloak>
+<body ng-app="libreLingvoApp" ng-cloak>
 <!--[if lte IE 8]>
 <p class="browsehappy">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade
   your browser</a> to improve your experience.</p>
 <![endif]-->
 
-<!-- Add your site or application content here -->
-<nav class="navbar navbar-default navbar-fixed-top" role="navigation">
-  <!-- Brand and toggle get grouped for better mobile display -->
-  <div class="navbar-header">
-    <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-ex1-collapse">
-      <span class="sr-only">Toggle navigation</span>
-      <span class="icon-bar"></span>
-      <span class="icon-bar"></span>
-      <span class="icon-bar"></span>
-    </button>
-    <a class="navbar-brand" href="#/">LibreLingvo</a>
-  </div>
-
-  <!-- Collect the nav links, forms, and other content for toggling -->
-  <div class="collapse navbar-collapse" ng-class="windowWidth<768?'navbar-ex1-collapse':''">
-    <ul class="nav navbar-nav">
-      <li ui-sref-active="active" data-toggle="collapse" data-target=".navbar-ex1-collapse"><a ui-sref="main"><i
-        class="fa fa-home"></i>{{'label.home' | translate}}</a></li>
-    </ul>
-    <ul class="nav navbar-nav navbar-right" ng-show="isAnnonymos">
-      <li ui-sref-active="active"><a ui-sref="log-in" data-toggle="collapse"
-                                     data-target=".navbar-ex1-collapse"><i
-        class="fa fa-sign-in"></i>{{'label.log.in' | translate}}</a></li>
-      <li ui-sref-active="active"><a ui-sref="sign-up" data-toggle="collapse"
-                                     data-target=".navbar-ex1-collapse"><i
-        class="fa fa-user-plus"></i>{{'label.sign.up' | translate}}</a></li>
-    </ul>
-    <ul class="nav navbar-nav navbar-right" ng-show="hasUserAuthority">
-      <li class="dropdown">
-        <a class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true"
-           aria-expanded="false"><i class="fa fa-bell"></i> <span class="caret"></span></a>
-        <ul id="lessons-dropdown" class="dropdown-menu">
-          <li ng-repeat="lesson in lessons | orderBy:'waitUnitNextLessonPart'"
-              ng-init="diff=(lesson.waitUnitNextLessonPart | amUtc | amLocal | amDifference : null : 'seconds')"
-              ng-class="diff>0?'bg-warning':'bg-info'">
-
-            <a ng-show="diff>0">
-              {{$index+1}}.{{'label.wait' | translate}}
-              <timer countdown="diff" interval="1000">{{hours}}:{{minutes}}:{{seconds}}</timer>
-            </a>
-
-            <a ui-sref="lesson({lessonId:lesson.id})" ng-show="diff<0">
-              {{$index+1}}.<i class="fa fa-graduation-cap"></i>{{'label.move.on.next.lesson.part' | translate}}
-            </a>
-          </li>
-
-          <li role="separator" class="visible-xs divider"></li>
-        </ul>
-      </li>
-      <li ui-sref-active="active">
-        <a ui-sref="user-translations" ui-sref="profile" data-toggle="collapse"
-           data-target=".navbar-ex1-collapse"><i class="fa fa-language"></i> {{'label.translations' | translate}}</a>
-      </li>
-      <li ui-sref-active="active"><a ui-sref="profile" data-toggle="collapse"
-                                     data-target=".navbar-ex1-collapse"><i
-        class="fa fa-user"></i>{{'label.profile' | translate}}</a></li>
-      <li><a ng-click="logOut()" ui-sref="main" data-toggle="collapse"
-             data-target=".navbar-ex1-collapse"><i class="fa fa-sign-out"></i>{{'label.sign.out'
-        | translate}}</a></li>
-    </ul>
-  </div>
-</nav>
-
+<div ng-controller="NavBarCtrl" ng-include="'views/navbar.html'"></div>
 
 <section class="container-fluid views-content">
   <ui-view></ui-view>
 </section>
 
-<footer class="footer panel-footer navbar-fixed-bottom">
-  <ul>
-    <li>
-      <div class="btn-group" data-toggle="buttons">
-        <label class="btn btn-primary" ng-click="changeLanguage('en')">
-          <input type="radio" name="options"> English
-        </label>
-        <label class="btn btn-primary" ng-click="changeLanguage('uk')">
-          <input type="radio" name="options"> Українська
-        </label>
-      </div>
-    </li>
-
-    <li class="pull-right hidden-xs">
-      <a href="https://translate.google.com/">Google translate</a>
-    </li>
-    <li class="pull-right hidden-xs">
-      <a href="">Chrome plugin |</a>
-    </li>
-  </ul>
-</footer>
+<div ng-controller="FooterCtrl" ng-include="'views/footer.html'"></div>
 
 <!-- Google Analytics: change UA-XXXXX-X to be your site's ID -->
 <script>
@@ -164,7 +83,6 @@
 <script src="scripts/services/oauth2.js"></script>
 <script src="scripts/services/message-box.js"></script>
 <script src="scripts/controllers/modal-message.js"></script>
-<script src="scripts/controllers/index.js"></script>
 <script src="scripts/services/user-authorities.js"></script>
 <script src="scripts/controllers/profile.js"></script>
 <script src="scripts/directives/wjvalidationerror.js"></script>
@@ -188,6 +106,8 @@
 <script src="scripts/services/lessons.js"></script>
 <script src="scripts/controllers/lesson-view.js"></script>
 <script src="scripts/controllers/lesson-exam.js"></script>
+<script src="scripts/controllers/navbar.js"></script>
+<script src="scripts/controllers/footer.js"></script>
 <!-- endbuild -->
 </body>
 </html>

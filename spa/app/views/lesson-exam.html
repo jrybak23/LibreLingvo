@@ -1,13 +1,71 @@
-<div class="panel panel-primary">
+<div id="pass-exam" class="panel panel-primary">
   <div class="panel-heading">
     <h3 class="panel-title">{{'label.choose.variant' | translate}}</h3>
   </div>
   <div class="panel-body">
-    Panel body ...
+    <div class="row">
+      <div class="col-xs-5">
+        <ul class="list-group"
+            uib-tooltip="{{'label.language.'+ (reverse?resultLangCode:sourceLangCode) | translate}}">
+          <li class="list-group-item">
+            <span ng-show="supports(reverse?resultLangCode:sourceLangCode)"
+                  ng-click="play(reverse?resultLangCode:sourceLangCode,reverse?resultText:sourceText)">
+                    <i class="fa fa-volume-up"></i>
+            </span>
+            {{reverse?resultText:sourceText}}
+          </li>
+        </ul>
+      </div>
+      <div class="col-xs-5">
+        <ul class="list-group"
+            uib-tooltip="{{'label.language.'+ (reverse?sourceLangCode:resultLangCode) | translate}}">
+          <li ng-repeat="variant in variants" class="list-group-item"
+              ng-class="{
+                active: hover,
+                'list-group-item-success':rightVariant(variant) && showAnswers,
+                'list-group-item-danger':!rightVariant(variant) && showAnswers
+              }"
+              ng-mouseenter="hover = true"
+              ng-mouseleave="hover = false"
+              ng-click="answer(variant)">
+            {{reverse?variant.sourceWord.text:variant.resultWord.text}}
+          </li>
+        </ul>
+      </div>
+      <div class="col-xs-1">
+        <ul class="list-group">
+          <li ng-repeat="variant in variants" class="list-group-item"
+              ng-class="{active: hover}"
+              ng-mouseenter="hover = true"
+              ng-mouseleave="hover = false">
+            <span ng-show="supports(reverse?variant.sourceWord.langCode:variant.resultWord.langCode)"
+              ng-click="play(reverse?variant.sourceWord.langCode:variant.resultWord.langCode,reverse?variant.sourceWord.text:variant.resultWord.text)">
+                    <i class="fa fa-volume-up"></i>
+            </span>
+            <span class="text-muted" ng-hide="supports(reverse?variant.sourceWord.langCode:variant.resultWord.langCode)">
+              <span class="glyphicon glyphicon-volume-off"></span>
+            </span>
+          </li>
+        </ul>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-xs-12 text-center text-primary">
+        <span ng-show="lesson.translations[index].note" uib-popover="{{lesson.translations[index].note}}"
+              popover-trigger="'click'" popover-placement="bottom" popover-append-to-body="true"
+              uib-tooltip="{{'label.note' | translate}}"
+              tooltip-append-to-body="true">
+                    <i class="fa fa-sticky-note"></i>
+        </span>
+        <span class="text-muted" ng-show="partOfSpeech!=='NOT_DEFINED'">
+          {{'label.part.of.speech.'+partOfSpeech.toLowerCase() | translate}}
+        </span>
+      </div>
+    </div>
   </div>
   <div class="panel-footer">
-    <uib-progressbar class="progress-striped active" max="200" value="166" type="info">
-      <i>166 / 200</i>
+    <uib-progressbar class="progress-striped active" max="lesson.translations.length" value="index" type="info">
+      <i>{{index}} / {{lesson.translations.length}}</i>
     </uib-progressbar>
   </div>
 </div>

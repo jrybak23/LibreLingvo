@@ -240,6 +240,7 @@ public class TranslationServiceImpl implements TranslationService {
         translation.setResultWord(updatedResultWord);
         translation.setPartOfSpeech(dto.getPartOfSpeech());
         translation.setLastModificationDate(new Date());
+        translation.setLearned(dto.getLearned());
 
         translationDao.update(translation);
     }

@@ -6,5 +6,6 @@ package org.libre.lingvo.model;
 public enum TranslationSortFieldOptions {
     SORT_SOURCE_TEXT,
     SORT_RESULT_TEXT,
-    SORT_VIEWS
+    SORT_VIEWS,
+    SORT_MODIFICATION_DATE
 }

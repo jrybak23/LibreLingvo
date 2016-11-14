@@ -31,7 +31,7 @@ angular.module('libreLingvoApp')
           "resultText" : $scope.translation.resultWord.text,
           "resultLangCode" : $scope.translation.resultWord.langCode,
           "partOfSpeech" : $scope.translation.partOfSpeech,
-          "note" : null
+          "learned" : $scope.translation.learned
         }
       );
     }

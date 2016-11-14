@@ -1,0 +1,73 @@
+<!-- Add your site or application content here -->
+<nav class="navbar navbar-default navbar-fixed-top" role="navigation">
+
+  <!-- Brand and toggle get grouped for better mobile display -->
+  <div class="navbar-header">
+    <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-ex1-collapse">
+      <span class="sr-only">Toggle navigation</span>
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+    </button>
+    <a class="navbar-brand" href="#/">LibreLingvo</a>
+  </div>
+
+  <!-- Collect the nav links, forms, and other content for toggling -->
+  <div class="collapse navbar-collapse" ng-class="windowWidth<768?'navbar-ex1-collapse':''">
+    <ul class="nav navbar-nav">
+      <li ui-sref-active="active" data-toggle="collapse" data-target=".navbar-ex1-collapse"><a ui-sref="main"><i
+        class="fa fa-home"></i>{{'label.home' | translate}}</a></li>
+    </ul>
+    <ul class="nav navbar-nav navbar-right" ng-show="isAnnonymos">
+      <li ui-sref-active="active"><a ui-sref="log-in" data-toggle="collapse"
+                                     data-target=".navbar-ex1-collapse"><i
+        class="fa fa-sign-in"></i>{{'label.log.in' | translate}}</a></li>
+      <li ui-sref-active="active"><a ui-sref="sign-up" data-toggle="collapse"
+                                     data-target=".navbar-ex1-collapse"><i
+        class="fa fa-user-plus"></i>{{'label.sign.up' | translate}}</a></li>
+    </ul>
+    <ul class="nav navbar-nav navbar-right" ng-show="hasUserAuthority">
+      <li class="dropdown">
+        <a  class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true"
+           aria-expanded="false"><i ng-class="getBellClass()" class="fa fa-bell"></i><span class="caret"></span></a>
+        <ul id="lessons-dropdown" class="dropdown-menu">
+          <li ng-repeat="lesson in lessons | orderBy:'waitUnitNextLessonPart'"
+              ng-class="lesson.diffInSeconds>0?'bg-warning':'bg-info'">
+            <span>
+            <a ng-show="lesson.diffInSeconds>0">
+              {{$index+1}}.{{'label.wait' | translate}}
+              <timer countdown="lesson.diffInSeconds" interval="1000">{{hours}}:{{minutes}}:{{seconds}}</timer>
+            </a>
+
+            <a ui-sref="lesson({lessonId:lesson.id})" ng-show="lesson.diffInSeconds<0">
+              {{$index+1}}.<i class="fa fa-graduation-cap"></i>{{'label.move.on.next.lesson.part' | translate}}
+            </a>
+
+            <i ng-click="deleteLesson(lesson)" class="fa fa-times"></i>
+            </span>
+          </li>
+          <li ng-show="!lessons.length">
+              {{'label.no.lesson.notifications' | translate}}
+          </li>
+          <li role="separator" class="visible-xs divider"></li>
+        </ul>
+      </li>
+      <li ui-sref-active="active">
+        <a ui-sref="user-translations" ui-sref="profile" data-toggle="collapse" data-target=".navbar-ex1-collapse">
+          <i class="fa fa-language"></i> {{'label.translations' | translate}}
+        </a>
+      </li>
+      <li ui-sref-active="active">
+        <a ui-sref="profile" data-toggle="collapse" data-target=".navbar-ex1-collapse">
+          <i class="fa fa-user"></i>{{'label.profile' | translate}}
+        </a>
+      </li>
+      <li><a ng-click="logOut()" ui-sref="main" data-toggle="collapse" data-target=".navbar-ex1-collapse">
+        <i class="fa fa-sign-out"></i>{{'label.sign.out' | translate}}
+      </a>
+      </li>
+    </ul>
+  </div>
+</nav>
+
+

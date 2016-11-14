@@ -57,7 +57,16 @@
       </select>
     </div>
   </div>
+  <hr>
+  <div class="row">
+    <div class="col-xs-1">
+      <input type="checkbox" class="form-control" ng-model="translation.learned">
+    </div>
+    <div class="col-xs-11">
+      {{'label.i.already.know.translation' | translate}}
+    </div>
+  </div>
+  <hr>
   <button type="submit" class="btn btn-primary">{{'label.save.changes' | translate}}</button>
 </form>
-
 

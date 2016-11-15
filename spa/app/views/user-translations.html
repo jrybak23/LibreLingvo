@@ -56,8 +56,8 @@
     </div>
     <div class="col-sm-9">
       <div class="row">
-        <div class="col-sm-12">
-          <div ui-scrollpoint="+20" id="tool-panel" class="panel" ng-hide="hideAffix">
+        <div class="col-sm-12" id="tool-panel-container">
+          <div ui-scrollpoint="-45" id="tool-panel" class="panel" ng-hide="hideAffix">
             <div class="panel-body">
               <button class="btn btn-info" ng-click="learnTranslations(false)" ng-show="translations.length">
                 <i class="fa fa-graduation-cap"></i>{{'label.learn.current.n.translations' | translate:interpol}}
@@ -152,4 +152,5 @@
     </div>
   </div>
 </div>
+
 

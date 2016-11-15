@@ -200,13 +200,14 @@ angular
     $translateProvider.useSanitizeValueStrategy('escapeParameters');
   })
   .run(function ($rootScope,
+                 $q,
                  amUtcFilter,
                  amLocalFilter,
                  amDifferenceFilter,
                  Lessons,
                  NotificationType,
-                 Oauth2
-  ) {
+                 Users,
+                 Oauth2) {
     $rootScope.lessonsUpdating = false;
 
     $rootScope.updateLessons = function () {
@@ -246,16 +247,16 @@ angular
 
               $rootScope.notification = NotificationType.NO_LESSONS;
             });
-
           },
           function () {
             $rootScope.lessonsUpdating = false;
-          }
-        ).$promise;
+          });
       }
     };
 
-    $rootScope.updateLessons();
+    $rootScope.updateAuthoritiesPromise.then(function () {
+      $rootScope.updateLessons();
+    });
   })
   .constant('NotificationType',
     {

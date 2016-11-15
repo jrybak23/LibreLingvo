@@ -40,11 +40,13 @@ public class User implements Serializable {
     @JoinColumn
     private Folder rootFolder;
 
-    private Integer translationsInOneLesson = 15;
+    private int translationsInOneLesson = 15;
 
-    private Integer lessonPartsCount = 3;
+    private int lessonPartsCount = 3;
 
-    private Integer minutesBetweenLessonParts = 10;
+    private int minutesBetweenLessonParts = 10;
+
+    private boolean autoPlayDuringLesson=true;
 
     public User() {
         Folder root = new Folder();
@@ -137,27 +139,35 @@ public class User implements Serializable {
         this.rootFolder = rootFolder;
     }
 
-    public Integer getTranslationsInOneLesson() {
+    public int getTranslationsInOneLesson() {
         return translationsInOneLesson;
     }
 
-    public void setTranslationsInOneLesson(Integer translationsInOneLesson) {
+    public void setTranslationsInOneLesson(int translationsInOneLesson) {
         this.translationsInOneLesson = translationsInOneLesson;
     }
 
-    public Integer getLessonPartsCount() {
+    public int getLessonPartsCount() {
         return lessonPartsCount;
     }
 
-    public void setLessonPartsCount(Integer lessonPartsCount) {
+    public void setLessonPartsCount(int lessonPartsCount) {
         this.lessonPartsCount = lessonPartsCount;
     }
 
-    public Integer getMinutesBetweenLessonParts() {
+    public int getMinutesBetweenLessonParts() {
         return minutesBetweenLessonParts;
     }
 
-    public void setMinutesBetweenLessonParts(Integer minutesBetweenLessonParts) {
+    public void setMinutesBetweenLessonParts(int minutesBetweenLessonParts) {
         this.minutesBetweenLessonParts = minutesBetweenLessonParts;
+    }
+
+    public boolean isAutoPlayDuringLesson() {
+        return autoPlayDuringLesson;
+    }
+
+    public void setAutoPlayDuringLesson(boolean autoPlayDuringLesson) {
+        this.autoPlayDuringLesson = autoPlayDuringLesson;
     }
 }

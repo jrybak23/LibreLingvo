@@ -20,6 +20,8 @@ public class UserUpdatingDto {
     @Range(min = 1, max = 120)
     private Integer minutesBetweenLessonParts;
 
+    private boolean autoPlayDuringLesson=true;
+
     public String getName() {
         return name;
     }
@@ -50,5 +52,13 @@ public class UserUpdatingDto {
 
     public void setMinutesBetweenLessonParts(Integer minutesBetweenLessonParts) {
         this.minutesBetweenLessonParts = minutesBetweenLessonParts;
+    }
+
+    public boolean isAutoPlayDuringLesson() {
+        return autoPlayDuringLesson;
+    }
+
+    public void setAutoPlayDuringLesson(boolean autoPlayDuringLesson) {
+        this.autoPlayDuringLesson = autoPlayDuringLesson;
     }
 }

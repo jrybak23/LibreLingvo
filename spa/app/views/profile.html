@@ -32,7 +32,16 @@
     <label for="MinutesBetweenLessonParts" class="col-sm-2 control-label">{{'label.minutes.between.lesson.parts'|
       translate}}:</label>
     <div class="col-sm-5">
-      <input ng-model="user.minutesBetweenLessonParts" type="number" class="form-control" id="MinutesBetweenLessonParts">
+      <input ng-model="user.minutesBetweenLessonParts" type="number" class="form-control"
+             id="MinutesBetweenLessonParts">
+    </div>
+  </div>
+
+  <div class="form-group">
+    <label for="AutoPlay" class="col-sm-2 control-label">{{'label.pronounce.words' | translate}}:</label>
+    <div class="col-sm-5">
+      <input ng-model="user.autoPlayDuringLesson" type="checkbox" class="form-control" id="AutoPlay"
+             placeholder="AutoPlay">
     </div>
   </div>
 

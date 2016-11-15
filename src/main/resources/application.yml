@@ -8,6 +8,7 @@ hibernate:
   show_sql: "true"
   format_sql: "true"
   entitymanager.packagesToScan: org.libre.lingvo.entities
+  profiles.active: "dev"
 ---
 spring:
   profiles: dev, cloud

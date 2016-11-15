@@ -29,9 +29,6 @@ public class UserDaoTest {
     @Autowired
     private UserDao userDao;
 
-    @Autowired
-    private VerificationTokenDao verificationTokenDao;
-
 
     @Test
     public void testFindByEmailSubstring(){

@@ -77,6 +77,7 @@ public class UserServiceImpl implements UserService {
         user.setTranslationsInOneLesson(dto.getTranslationsInOneLesson());
         user.setLessonPartsCount(dto.getLessonPartsCount());
         user.setMinutesBetweenLessonParts(dto.getMinutesBetweenLessonParts());
+        user.setAutoPlayDuringLesson(dto.isAutoPlayDuringLesson());
         userDao.update(user);
     }
 

@@ -6,6 +6,10 @@
   padding: 3px;
 }
 
+#tool-panel-container{
+  height: 50px;
+}
+
 @media screen and (min-width: 768px) {
   #tool-panel.ui-scrollpoint {
     position:fixed;

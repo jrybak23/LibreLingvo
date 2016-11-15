@@ -8,7 +8,7 @@
  * Controller of the libreLingvoApp
  */
 angular.module('libreLingvoApp')
-  .controller('LessonCtrl', function ($scope, $state, $stateParams, Lessons, TTS) {
+  .controller('LessonCtrl', function ($scope, $state, $stateParams, Lessons, TTS, Users) {
     $scope.lessonPromise = Lessons.get(
       {
         lessonId: $stateParams.lessonId
@@ -23,6 +23,10 @@ angular.module('libreLingvoApp')
         }
       }
     ).$promise;
+
+    Users.get({'userId': 'me'}, function (response) {
+      $scope.autoPlay = response.autoPlayDuringLesson;
+    });
 
     $scope.index = 0;
     $scope.play = TTS.play;

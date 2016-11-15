@@ -397,6 +397,56 @@ module.exports = function (grunt) {
           cwd: 'bower_components/components-font-awesome',
           src: 'fonts/*',
           dest: '<%= yeoman.dist %>'
+        }, {
+          expand: true,
+          cwd: 'bower_components/tinymce/themes/modern/',
+          src: ['**'],
+          dest: '<%= yeoman.dist %>/scripts/themes/modern/'
+        }, {
+          expand: true,
+          cwd: 'bower_components/tinymce/skins/',
+          src: ['**'],
+          dest: '<%= yeoman.dist %>/scripts/skins/'
+        }, {
+          expand: true,
+          cwd: 'bower_components/tinymce/plugins/link/',
+          src: ['**'],
+          dest: '<%= yeoman.dist %>/scripts/plugins/link/'
+        },{
+          expand: true,
+          cwd: 'bower_components/tinymce/plugins/autolink/',
+          src: ['**'],
+          dest: '<%= yeoman.dist %>/scripts/plugins/autolink/'
+        },{
+          expand: true,
+          cwd: 'bower_components/tinymce/plugins/image/',
+          src: ['**'],
+          dest: '<%= yeoman.dist %>/scripts/plugins/image/'
+        },{
+          expand: true,
+          cwd: 'bower_components/tinymce/plugins/charmap/',
+          src: ['**'],
+          dest: '<%= yeoman.dist %>/scripts/plugins/charmap/'
+        },{
+          expand: true,
+          cwd: 'bower_components/tinymce/plugins/print/',
+          src: ['**'],
+          dest: '<%= yeoman.dist %>/scripts/plugins/print/'
+        },{
+          expand: true,
+          cwd: 'bower_components/tinymce/plugins/advlist/',
+          src: ['**'],
+          dest: '<%= yeoman.dist %>/scripts/plugins/advlist/'
+        },{
+          expand: true,
+          cwd: 'bower_components/tinymce/plugins/lists/',
+          src: ['**'],
+          dest: '<%= yeoman.dist %>/scripts/plugins/lists/'
+        },{
+          expand: true,
+          cwd: 'bower_components/tinymce/plugins/preview/',
+          src: ['**'],
+          dest: '<%= yeoman.dist %>/scripts/plugins/preview/'
         }]
       },
       styles: {

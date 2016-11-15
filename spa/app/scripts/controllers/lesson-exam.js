@@ -8,7 +8,7 @@
  * Controller of the libreLingvoApp
  */
 angular.module('libreLingvoApp')
-  .controller('LessonExamCtrl', function ($scope, $state,$timeout,$rootScope, Lessons) {
+  .controller('LessonExamCtrl', function ($scope, $state, $timeout, $rootScope, Lessons) {
     var n = 5;
     $scope.reverse = false;
     $scope.showAnswers = false;
@@ -43,7 +43,11 @@ angular.module('libreLingvoApp')
       if ($scope.showAnswers) return;
       var translations = $scope.lesson.translations;
       if (variant === translations[$scope.index]) {
-        if (translations[$scope.index + 1]){
+        if (translations[$scope.index + 1]) {
+          var langCode = variant.sourceWord.langCode;
+          if ($scope.autoPlay && $scope.reverse && $scope.supports(langCode))
+            $scope.play(langCode, variant.sourceWord.text);
+
           $scope.index++;
           $scope.setVariants();
         }
@@ -72,11 +76,15 @@ angular.module('libreLingvoApp')
         }
       }
       else {
-        $scope.showAnswers=true;
+        console.log($scope.sourceLangCode,$scope.sourceText);
+        if ($scope.autoPlay && $scope.reverse && $scope.supports($scope.sourceLangCode))
+          $scope.play($scope.sourceLangCode, $scope.sourceText);
+
+        $scope.showAnswers = true;
         $timeout(function () {
-            $scope.showAnswers=false;
-            $scope.index = 0;
-            $scope.setVariants();
+          $scope.showAnswers = false;
+          $scope.index = 0;
+          $scope.setVariants();
         }, 2000);
       }
     };
@@ -85,18 +93,23 @@ angular.module('libreLingvoApp')
       function () {
         $scope.setVariants();
 
-        $scope.$watch('index',function () {
-          console.log($scope.index);
+        $scope.$watch('index', function () {
           $scope.sourceText = $scope.lesson.translations[$scope.index].sourceWord.text;
           $scope.sourceLangCode = $scope.lesson.translations[$scope.index].sourceWord.langCode;
           $scope.resultText = $scope.lesson.translations[$scope.index].resultWord.text;
           $scope.resultLangCode = $scope.lesson.translations[$scope.index].resultWord.langCode;
           $scope.partOfSpeech = $scope.lesson.translations[$scope.index].partOfSpeech;
+
+          var langCode = $scope.reverse ? $scope.resultLangCode : $scope.sourceLangCode;
+          var text = $scope.reverse ? $scope.resultText : $scope.sourceText;
+
+          if ($scope.autoPlay && $scope.supports(langCode))
+            $scope.play(langCode, text);
         });
       }
     );
 
     $scope.rightVariant = function (variant) {
-      return variant===$scope.lesson.translations[$scope.index];
+      return variant === $scope.lesson.translations[$scope.index];
     }
   });

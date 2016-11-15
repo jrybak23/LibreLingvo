@@ -58,7 +58,7 @@ bootRepackage {
 	mainClass = 'org.libre.lingvo.LibreLingvoApplication'
 }
 
-def hibernateVersion = '5.2.3.Final'
+def hibernateVersion = '5.2.4.Final'
 
 dependencies {
 	compile('org.springframework.boot:spring-boot-starter-data-jpa')
@@ -79,7 +79,8 @@ dependencies {
 
 sourceSets {
 	generated {
-		java.srcDir "${buildDir}/generated/src/java/"
+		/*java.srcDir "${buildDir}/generated/src/java/"*/
+		java.srcDir "${buildDir}/src/main/generated"
 	}
 }
 

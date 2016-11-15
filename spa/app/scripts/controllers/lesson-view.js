@@ -8,8 +8,8 @@
  * Controller of the libreLingvoApp
  */
 angular.module('libreLingvoApp')
-  .controller('LessonViewCtrl', function ($scope, $state, $stateParams, Lessons, TTS, MessageBox,MessageType) {
-     $scope.next = function () {
+  .controller('LessonViewCtrl', function ($scope, $state, $stateParams, Lessons, MessageBox, MessageType) {
+    $scope.next = function () {
       if ($scope.lesson.translations[$scope.index + 1])
         $scope.index++;
       else
@@ -36,13 +36,15 @@ angular.module('libreLingvoApp')
 
     $scope.lessonPromise.then(
       function () {
-        $scope.$watch('index',function () {
-          console.log($scope.index);
+        $scope.$watch('index', function () {
           $scope.sourceText = $scope.lesson.translations[$scope.index].sourceWord.text;
           $scope.sourceLangCode = $scope.lesson.translations[$scope.index].sourceWord.langCode;
           $scope.resultText = $scope.lesson.translations[$scope.index].resultWord.text;
           $scope.resultLangCode = $scope.lesson.translations[$scope.index].resultWord.langCode;
           $scope.partOfSpeech = $scope.lesson.translations[$scope.index].partOfSpeech;
+
+          if ($scope.autoPlay && $scope.supports($scope.sourceLangCode))
+            $scope.play($scope.sourceLangCode, $scope.sourceText);
         });
       }
     );

@@ -16,6 +16,8 @@ public class UserDetailsDto {
 
     private Integer minutesBetweenLessonParts;
 
+    private boolean autoPlayDuringLesson=true;
+
     public Long getId() {
         return id;
     }
@@ -62,5 +64,13 @@ public class UserDetailsDto {
 
     public void setMinutesBetweenLessonParts(Integer minutesBetweenLessonParts) {
         this.minutesBetweenLessonParts = minutesBetweenLessonParts;
+    }
+
+    public boolean isAutoPlayDuringLesson() {
+        return autoPlayDuringLesson;
+    }
+
+    public void setAutoPlayDuringLesson(boolean autoPlayDuringLesson) {
+        this.autoPlayDuringLesson = autoPlayDuringLesson;
     }
 }

@@ -29,7 +29,7 @@ angular.module('libreLingvoApp')
           "note" : $scope.note
         }
       );
-    }
+    };
 
     $scope.tinymceOptions = {
       onChange: function(e) {

@@ -8,18 +8,16 @@
  * Controller of the libreLingvoApp
  */
 angular.module('libreLingvoApp')
-  .controller('LogInCtrl', function ($scope, $state, $rootScope, Oauth2) {
-    $rootScope.updateAuthoritiesPromise.then(
-      function (resp) {
-        if ($rootScope.hasUserAuthority)
-          $state.go('user-translations');
-      }
-    );
+  .controller('LogInCtrl', function ($scope, $state, $rootScope, $q, Oauth2) {
+    Oauth2.afterUpdateAuthoritiesCallback(function () {
+      if ($rootScope.hasUserAuthority)
+        $state.go('user-translations');
+    });
 
     $scope.submitAuthorization = function () {
       Oauth2.logIn($scope.email, $scope.password).then(
         function () {
-          $state.go('profile');
+          $state.go('user-translations');
         }
       );
     }

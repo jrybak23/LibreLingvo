@@ -9,7 +9,17 @@
  */
 angular.module('libreLingvoApp')
   .controller('UserTranslationsCtrl',
-    function ($scope, $state, $translate, $stateParams,$rootScope, MessageBox, Translations, TTS, Users, Lessons) {
+    function ($scope,
+              $state,
+              $translate,
+              $stateParams,
+              $rootScope,
+              MessageBox,
+              Translations,
+              TTS,
+              Users,
+              Lessons,
+              LessonsUpdater) {
       Users.get({'userId': 'me'}, function (response) {
         $scope.maxRecords = response.translationsInOneLesson;
       });
@@ -144,9 +154,9 @@ angular.module('libreLingvoApp')
             translationIds: translationIds
           },
           function (response) {
-            $rootScope.updateLessons().then(
+            LessonsUpdater.updateLessons().then(
               function () {
-                $state.go('lesson',{lessonId:response.id});
+                $state.go('lesson', {lessonId: response.id});
               }
             );
           }

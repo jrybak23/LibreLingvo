@@ -8,7 +8,7 @@
  * Controller of the libreLingvoApp
  */
 angular.module('libreLingvoApp')
-  .controller('LessonExamCtrl', function ($scope, $state, $timeout, $rootScope, Lessons) {
+  .controller('LessonExamCtrl', function ($scope, $state, $timeout, $rootScope, Lessons, LessonsUpdater) {
     var n = 5;
     $scope.reverse = false;
     $scope.showAnswers = false;
@@ -60,7 +60,7 @@ angular.module('libreLingvoApp')
               },
               {},
               function () {
-                $rootScope.updateLessons().then(
+                LessonsUpdater.updateLessons().then(
                   function () {
                     $state.go('user-translations');
                   }
@@ -100,11 +100,8 @@ angular.module('libreLingvoApp')
           $scope.resultLangCode = $scope.lesson.translations[$scope.index].resultWord.langCode;
           $scope.partOfSpeech = $scope.lesson.translations[$scope.index].partOfSpeech;
 
-          var langCode = $scope.reverse ? $scope.resultLangCode : $scope.sourceLangCode;
-          var text = $scope.reverse ? $scope.resultText : $scope.sourceText;
-
-          if ($scope.autoPlay && $scope.supports(langCode))
-            $scope.play(langCode, text);
+          if ($scope.autoPlay && !$scope.reverse && $scope.supports($scope.sourceLangCode))
+            $scope.play($scope.sourceLangCode, $scope.sourceText);
         });
       }
     );

@@ -2,7 +2,9 @@ package org.libre.lingvo.dto;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import org.libre.lingvo.model.PartOfSpeech;
+import org.springframework.format.annotation.DateTimeFormat;
 
+import java.time.format.DateTimeFormatter;
 import java.util.Date;
 
 /**
@@ -23,7 +25,8 @@ public class TranslationDetailDto {
 
     private Integer views;
 
-    @JsonFormat(pattern = "MM.dd.yyyy HH:mm:ss")
+    //@JsonFormat(pattern = "MM.dd.yyyy HH:mm:ss")
+    @JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss'Z'")
     private Date lastModificationDate;
 
     @JsonFormat(pattern = "MM.dd.yyyy HH:mm:ss")

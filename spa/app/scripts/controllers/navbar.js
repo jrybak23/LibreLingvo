@@ -10,6 +10,7 @@ angular.module('libreLingvoApp')
                                       Oauth2,
                                       MessageBox,
                                       Lessons,
+                                      LessonsUpdater,
                                       NotificationType) {
 
     var w = angular.element($window);
@@ -32,7 +33,8 @@ angular.module('libreLingvoApp')
     };
 
     $scope.$on('timer-stopped', function (event, args) {
-      $rootScope.updateLessons();
+      console.log('timer-stopped');
+      LessonsUpdater.updateLessons();
     });
 
     $scope.deleteLesson = function (lesson) {

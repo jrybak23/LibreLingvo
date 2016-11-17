@@ -201,70 +201,18 @@ angular
   })
   .run(function ($rootScope,
                  $q,
-                 amUtcFilter,
-                 amLocalFilter,
-                 amDifferenceFilter,
-                 Lessons,
-                 NotificationType,
-                 Users,
+                 LessonsUpdater,
                  Oauth2) {
-    $rootScope.lessonsUpdating = false;
 
-    $rootScope.updateLessons = function () {
-      if (!$rootScope.lessonsUpdating) {
-        $rootScope.lessonsUpdating = true;
-        return Lessons.query(
-          function (respose) {
-            $rootScope.lessons = respose;
-            $rootScope.lessonsUpdating = false;
+    Oauth2.updateAuthoritiesCallback(function (authorities) {
+      $rootScope.hasUserAuthority = authorities.indexOf('ROLE_USER') > -1;
+      $rootScope.hasAdminAuthority = authorities.indexOf('ROLE_ADMIN') > -1;
+      $rootScope.isAnnonymos = authorities.indexOf('ROLE_ANONYMOUS') > -1;
 
-            $rootScope.lessons.forEach(function (lesson) {
-              lesson.diffInSeconds = amDifferenceFilter(
-                amLocalFilter(
-                  amUtcFilter(lesson.waitUnitNextLessonPart)
-                ), null, 'seconds'
-              );
-            });
-
-            $rootScope.$watch('lessons', function () {
-              var lessonsAvailable = $rootScope.lessons.find(function (lesson) {
-                return lesson.diffInSeconds < 0;
-              });
-
-              if (lessonsAvailable) {
-                $rootScope.notification = NotificationType.LESSON_AVAILABLE;
-                return;
-              }
-
-              var lessonNotAvailable = $rootScope.lessons.find(function (lesson) {
-                return lesson.diffInSeconds > 0;
-              });
-
-              if (lessonNotAvailable) {
-                $rootScope.notification = NotificationType.LESSON_NOT_AVAILABLE;
-                return;
-              }
-
-              $rootScope.notification = NotificationType.NO_LESSONS;
-            });
-          },
-          function () {
-            $rootScope.lessonsUpdating = false;
-          });
-      }
-    };
-
-    $rootScope.updateAuthoritiesPromise.then(function () {
-      $rootScope.updateLessons();
+      if ($rootScope.hasUserAuthority)
+        LessonsUpdater.updateLessons();
     });
-  })
-  .constant('NotificationType',
-    {
-      LESSON_AVAILABLE: 1,
-      LESSON_NOT_AVAILABLE: 2,
-      NO_LESSONS: 3
-    }
-  );
+  });
 
 
 // update popover template for binding unsafe html

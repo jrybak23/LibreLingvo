@@ -447,6 +447,11 @@ module.exports = function (grunt) {
           cwd: 'bower_components/tinymce/plugins/preview/',
           src: ['**'],
           dest: '<%= yeoman.dist %>/scripts/plugins/preview/'
+        },{
+          expand: true,
+          cwd: 'bower_components/tinymce/plugins/autoresize/',
+          src: ['**'],
+          dest: '<%= yeoman.dist %>/scripts/plugins/autoresize/'
         }]
       },
       styles: {

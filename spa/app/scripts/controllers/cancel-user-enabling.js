@@ -8,9 +8,9 @@
  * Controller of the libreLingvoApp
  */
 angular.module('libreLingvoApp')
-  .controller('CancelUserEnablingCtrl', function ($scope, $state, $stateParams, CancelUserEnabling) {
+  .controller('CancelUserEnablingCtrl', function ($scope, $state, $stateParams, VerificationTokens) {
     if ($stateParams.verificationToken) {
       $state.go('main');
-      CancelUserEnabling.get({verificationToken: $stateParams.verificationToken});
+      VerificationTokens.delete({verificationToken: $stateParams.verificationToken});
     }
   });

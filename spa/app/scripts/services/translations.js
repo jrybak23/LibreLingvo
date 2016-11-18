@@ -9,9 +9,10 @@
  */
 angular.module('libreLingvoApp')
   .factory('Translations', function (HostUrl, $resource) {
-    return $resource(HostUrl + "/api/v1/users/:userId/translations/:translationId",
+    return $resource(HostUrl + "/api/v1/users/:userId/translations/:translationId/:field",
       {
-        userId: '@id'
+        userId: '@id',
+        field: '@fieldName'
       },
       {
         update: {method: 'PUT'}

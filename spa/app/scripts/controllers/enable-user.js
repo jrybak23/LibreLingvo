@@ -8,10 +8,15 @@
  * Controller of the libreLingvoApp
  */
 angular.module('libreLingvoApp')
-  .controller('EnableUserCtrl', function ($scope, $state, $stateParams, EnableUser, MessageBox) {
+  .controller('EnableUserCtrl', function ($scope, $state, $stateParams, VerificationTokens, MessageBox) {
     if ($stateParams.verificationToken) {
       $state.go('log-in');
-      EnableUser.get({verificationToken: $stateParams.verificationToken},
+      VerificationTokens.update(
+        {
+          verificationToken: $stateParams.verificationToken,
+          field:'enabled'
+        },
+        {},
         function () {
           MessageBox.show('message.success.user.enabling')
         });

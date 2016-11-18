@@ -65,6 +65,7 @@ public class VerificationTokenServiceImpl implements VerificationTokenService {
     @Override
     public void enableUser(String tokenUuid) {
         Optional<VerificationToken> verificationToken = verificationTokenDao.find(tokenUuid);
+
         VerificationToken token = verificationToken.orElseThrow(
                 () -> new CustomErrorException(CustomError.NO_VERIFICATION_TOKEN_WITH_SUCH_UUID)
         );

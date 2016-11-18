@@ -8,12 +8,13 @@
  * Controller of the libreLingvoApp
  */
 angular.module('libreLingvoApp')
-  .controller('NoteDetailCtrl', function ($scope,$stateParams,TranslationNote) {
+  .controller('NoteDetailCtrl', function ($scope,$stateParams,Translations) {
     $scope.translationId=$stateParams.translationId;
-    TranslationNote.get(
+    Translations.get(
       {
         userId: 'me',
-        translationId: $stateParams.translationId
+        translationId: $stateParams.translationId,
+        field: 'note'
       },
       function (response) {
         $scope.note = response.note;

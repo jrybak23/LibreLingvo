@@ -74,7 +74,8 @@
       </div>
       <div class="row">
         <div class="col-sm-12">
-          <div id="t" class="table-responsive">
+          <span ng-hide="translations.length">{{'label.no.translations.found' | translate}}</span>
+          <div class="table-responsive" ng-show="translations.length">
             <table class="table table-hover">
               <thead>
               <tr>
@@ -85,7 +86,7 @@
                 <th></th>
                 <th></th>
                 <th><input type="checkbox" class="form-control" ng-model="checked"
-                           ng-click="toggleAllCheckboxes(checked  )"></th>
+                           ng-click="toggleAllCheckboxes(checked)"></th>
               </tr>
               </thead>
               <tbody>
@@ -101,7 +102,7 @@
                 <td uib-tooltip="{{'label.language.'+ translation.resultWord.langCode | translate}}"
                     tooltip-append-to-body="true">
                   <span ng-show="supports(translation.resultWord.langCode)"
-                    ng-click="play(translation.resultWord.langCode,translation.resultWord.text)">
+                        ng-click="play(translation.resultWord.langCode,translation.resultWord.text)">
                     <i class="fa fa-volume-up"></i>
                   </span>
                   <span>{{translation.resultWord.text}}</span>

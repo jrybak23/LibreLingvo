@@ -11,20 +11,19 @@ import org.springframework.web.bind.annotation.RestController;
  * Created by igorek2312 on 06.10.16.
  */
 @RestController
-@RequestMapping(value = "/api/v1/")
+@RequestMapping(value = "/api/v1")
 public class EmailVerificationController {
 
     @Autowired
     private VerificationTokenService verificationTokenService;
 
-    @RequestMapping(value = "/users/enable/{tokenUuid}", method = RequestMethod.GET)
+    @RequestMapping(value = "/verification-tokens/{tokenUuid}/user/enabled", method = RequestMethod.PUT)
     public void enableUser(@PathVariable String tokenUuid){
         verificationTokenService.enableUser(tokenUuid);
     }
 
-    @RequestMapping(value = "/users/cancel-enabling/{tokenUuid}", method = RequestMethod.GET)
+    @RequestMapping(value = "/verification-tokens/{tokenUuid}/user", method = RequestMethod.DELETE)
     public void cancelUserEnabling(@PathVariable String tokenUuid){
         verificationTokenService.cancelUserEnabling(tokenUuid);
     }
-
 }

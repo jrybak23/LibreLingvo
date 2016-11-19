@@ -108,7 +108,7 @@ public class LessonServiceImpl implements LessonService {
                         trn.setLesson(null);
                     });
         else {
-            if (lesson.getCompletedPartsOfLesson().equals(1))
+            if (lesson.getCompletedPartsOfLesson()==1)
                 lesson.setWaitUnitNextLessonPart(new Date());
             else {
                 Calendar calendar = Calendar.getInstance();

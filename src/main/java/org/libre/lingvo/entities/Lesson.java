@@ -12,47 +12,47 @@ import java.util.Set;
 public class Lesson {
     @Id
     @GeneratedValue
-    private Long id;
+    private long id;
 
-    private Integer completedPartsOfLesson=0;
+    private int completedPartsOfLesson = 0;
 
-    private Integer maxPartsOfLesson;
+    private int maxPartsOfLesson;
 
     @Temporal(TemporalType.TIMESTAMP)
     private Date waitUnitNextLessonPart;
 
-    @OneToMany(mappedBy = "lesson",cascade = {CascadeType.MERGE, CascadeType.PERSIST})
-    private Set<Translation> translations=new HashSet<>();
+    @OneToMany(mappedBy = "lesson", cascade = {CascadeType.MERGE, CascadeType.PERSIST})
+    private Set<Translation> translations = new HashSet<>();
 
-    public Long getId() {
+    public long getId() {
         return id;
     }
 
-    public void setId(Long id) {
+    public void setId(long id) {
         this.id = id;
     }
 
-    public void increaseCompletedPartsOfLesson(){
+    public void increaseCompletedPartsOfLesson() {
         completedPartsOfLesson++;
     }
 
-    public Boolean isCompleted(){
-        return completedPartsOfLesson.equals(maxPartsOfLesson);
+    public Boolean isCompleted() {
+        return completedPartsOfLesson == maxPartsOfLesson;
     }
 
-    public Integer getCompletedPartsOfLesson() {
+    public int getCompletedPartsOfLesson() {
         return completedPartsOfLesson;
     }
 
-    public void setCompletedPartsOfLesson(Integer completedPartsOfLesson) {
+    public void setCompletedPartsOfLesson(int completedPartsOfLesson) {
         this.completedPartsOfLesson = completedPartsOfLesson;
     }
 
-    public Integer getMaxPartsOfLesson() {
+    public int getMaxPartsOfLesson() {
         return maxPartsOfLesson;
     }
 
-    public void setMaxPartsOfLesson(Integer maxPartsOfLesson) {
+    public void setMaxPartsOfLesson(int maxPartsOfLesson) {
         this.maxPartsOfLesson = maxPartsOfLesson;
     }
 

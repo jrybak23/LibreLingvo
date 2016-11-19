@@ -16,4 +16,6 @@ public interface UserDao extends GenericDao<User,Long> {
     void deleteNotEnabledUsersWithExpiredTokens();
 
     boolean existWithEmail(String email);
+
+    List<User> findUsers(int pageIndex, int maxRecords);
 }

@@ -10,5 +10,42 @@
     <schema id="5" name="performance_schema"/>
     <schema id="6" name="qwerty"/>
     <schema id="7" name="sys"/>
+    <schema id="8" name="web-labs"/>
+    <table id="9" parent="1" name="products"/>
+    <column id="10" parent="9" name="id">
+      <mandatory>1</mandatory>
+      <data-type>int(11)|0</data-type>
+      <sequence-identity>1</sequence-identity>
+    </column>
+    <column id="11" parent="9" name="name">
+      <mandatory>1</mandatory>
+      <data-type>char(30)|0</data-type>
+    </column>
+    <column id="12" parent="9" name="price">
+      <mandatory>1</mandatory>
+      <data-type>float|0</data-type>
+    </column>
+    <index id="13" parent="9" name="products_id_uindex">
+      <columns>id</columns>
+      <desc-columns></desc-columns>
+      <unique>1</unique>
+    </index>
+    <index id="14" parent="9" name="products_name_uindex">
+      <columns>name</columns>
+      <desc-columns></desc-columns>
+      <unique>1</unique>
+    </index>
+    <key id="15" parent="9" name="PRIMARY">
+      <columns>id</columns>
+      <primary>1</primary>
+    </key>
+    <key id="16" parent="9" name="products_id_uindex">
+      <columns>id</columns>
+      <underlying-index>products_id_uindex</underlying-index>
+    </key>
+    <key id="17" parent="9" name="products_name_uindex">
+      <columns>name</columns>
+      <underlying-index>products_name_uindex</underlying-index>
+    </key>
   </database-model>
 </dataSource>

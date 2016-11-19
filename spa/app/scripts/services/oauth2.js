@@ -10,7 +10,7 @@
 angular.module('libreLingvoApp')
   .factory('Oauth2', function (HostUrl, $http, $cookies, $httpParamSerializer, $q, $state, UserAuthorities) {
     var accessTokenData = {grant_type: "password"};
-    var encoded = btoa("clientapp:123456");
+    var encoded = btoa("webapp:123456");
 
     if ($cookies.get("access_token"))
       $http.defaults.headers.common.Authorization = 'Bearer ' + $cookies.get("access_token");

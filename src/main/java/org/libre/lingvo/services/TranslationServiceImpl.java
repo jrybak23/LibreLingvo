@@ -53,7 +53,7 @@ public class TranslationServiceImpl implements TranslationService {
     }
 
     private void checkIfUserIsOwnerOfTranslation(Long userId, Translation translation) {
-        if (!translation.getUser().getId().equals(userId))
+        if (!(translation.getUser().getId()==userId))
             throw new CustomErrorException(CustomError.FORBIDDEN);
     }
 
@@ -148,8 +148,8 @@ public class TranslationServiceImpl implements TranslationService {
                 sourceLangCode,
                 resultLangCode,
                 learned,
-                sortField,
-                sortOrder,
+                sortField==null ? TranslationSortFieldOptions.SORT_MODIFICATION_DATE:sortField,
+                sortOrder==null ? SortingOptions.DESC:sortOrder,
                 pageIndex,
                 maxRecords)
                 .stream()

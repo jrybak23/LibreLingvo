@@ -141,11 +141,24 @@ angular
         url: '/view',
         templateUrl: 'views/lesson-view.html',
         controller: 'LessonViewCtrl'
+      })
+      .state({
+        name: 'admin',
+        url: '/admin',
+        templateUrl: 'views/admin.html',
+        controller: 'AdminCtrl',
+        controllerAs: 'admin'
+      })
+      .state({
+        name: 'admin.users',
+        url: '/users',
+        templateUrl: 'views/users.html',
+        controller: 'UsersCtrl',
+        controllerAs: 'users'
       });
 
     $urlRouterProvider
       .otherwise('/log-in');
-
   })
   .config(function ($httpProvider, MessageType) {
     $httpProvider.interceptors.push(function ($q, $injector) {

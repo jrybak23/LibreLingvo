@@ -12,7 +12,7 @@ import javax.persistence.Id;
 public class Word {
     @Id
     @GeneratedValue
-    private Long id;
+    private long id;
 
     @Column(length = 300)
     private String text;
@@ -20,11 +20,11 @@ public class Word {
     @Column(length = 2)
     private String langCode;
 
-    public Long getId() {
+    public long getId() {
         return id;
     }
 
-    public void setId(Long id) {
+    public void setId(long id) {
         this.id = id;
     }
 

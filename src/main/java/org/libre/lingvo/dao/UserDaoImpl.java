@@ -34,6 +34,10 @@ public class UserDaoImpl extends GenericDaoImpl<User, Long> implements UserDao {
     @Qualifier("existsUserWithEmail")
     private CriteriaQuery<Boolean> existsUserWithEmail;
 
+    @Autowired
+    @Qualifier("findUsers")
+    private CriteriaQuery<User> findUsers;
+
     @Override
     public Optional<User> findByEmail(String email) {
         return findOptional(() -> entityManager.createQuery(findUserByEmailCriteriaQuery)
@@ -44,7 +48,7 @@ public class UserDaoImpl extends GenericDaoImpl<User, Long> implements UserDao {
     public List<User> findByEmailSubstring(String emailSubstring, Integer pageIndex, Integer maxRecords) {
         return entityManager.createQuery(findUsersByEmailSubstring)
                 .setParameter("emailSubstring", emailSubstring)
-                .setFirstResult(pageIndex-1)
+                .setFirstResult((pageIndex - 1) * maxRecords)
                 .setMaxResults(maxRecords)
                 .getResultList();
     }
@@ -52,10 +56,8 @@ public class UserDaoImpl extends GenericDaoImpl<User, Long> implements UserDao {
     @Override
     public void deleteNotEnabledUsersWithExpiredTokens() {
         entityManager.createQuery(findNotEnabledUsersWithExpiredTokens)
-                .setParameter("currentDate",new Date())
-                .getResultList()
-                .stream()
-                .forEach(entityManager::remove);
+                .setParameter("currentDate", new Date())
+                .getResultList().forEach(entityManager::remove);
     }
 
     @Override
@@ -63,5 +65,13 @@ public class UserDaoImpl extends GenericDaoImpl<User, Long> implements UserDao {
         return entityManager.createQuery(existsUserWithEmail)
                 .setParameter("email",email)
                 .getSingleResult();
+    }
+
+    @Override
+    public List<User> findUsers(int pageIndex, int maxRecords) {
+        return entityManager.createQuery(findUsers)
+                .setFirstResult((pageIndex - 1) * maxRecords)
+                .setMaxResults(maxRecords)
+                .getResultList();
     }
 }

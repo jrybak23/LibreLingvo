@@ -97,7 +97,7 @@ public class OAuth2ServerConfiguration {
         public void configure(ClientDetailsServiceConfigurer clients) throws Exception {
             clients
                     .inMemory()
-                    .withClient("clientapp")
+                    .withClient("webapp")
                     .authorizedGrantTypes("password")
                     .scopes("use")
                     .resourceIds(RESOURCE_ID)

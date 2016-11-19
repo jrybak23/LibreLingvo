@@ -1,26 +1,24 @@
 package org.libre.lingvo.dto;
 
 /**
- * Created by igorek2312 on 10.09.16.
+ * Created by igorek2312 on 18.11.16.
  */
-public class FullUserDetailsDto {
-    private long id;
+public class UserItemDto {
+    private Long id;
 
     private String email;
 
     private String name;
 
-    private int translationsCount;
-
     private boolean enabled;
 
     private boolean nonLocked;
 
-    public long getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(long id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
@@ -38,14 +36,6 @@ public class FullUserDetailsDto {
 
     public void setName(String name) {
         this.name = name;
-    }
-
-    public int getTranslationsCount() {
-        return translationsCount;
-    }
-
-    public void setTranslationsCount(int translationsCount) {
-        this.translationsCount = translationsCount;
     }
 
     public boolean isEnabled() {

@@ -16,7 +16,7 @@ public class User implements Serializable {
 
     @Id
     @GeneratedValue
-    private Long id;
+    private long id;
 
     @NotEmpty
     @Column(unique = true, nullable = false)
@@ -26,9 +26,9 @@ public class User implements Serializable {
 
     private String password;
 
-    private Boolean enabled = false;
+    private boolean enabled = false;
 
-    private Boolean nonLocked = true;
+    private boolean nonLocked = true;
 
     @OneToMany(mappedBy = "pk.user", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     private Set<UserRole> userRoles = new HashSet<>();
@@ -65,11 +65,11 @@ public class User implements Serializable {
         this.userRoles = user.getUserRoles();
     }
 
-    public Long getId() {
+    public long getId() {
         return id;
     }
 
-    public void setId(Long id) {
+    public void setId(long id) {
         this.id = id;
     }
 
@@ -115,11 +115,11 @@ public class User implements Serializable {
         this.enabled = enabled;
     }
 
-    public Boolean isNonLocked() {
+    public boolean isNonLocked() {
         return nonLocked;
     }
 
-    public void setNonLocked(Boolean nonLocked) {
+    public void setNonLocked(boolean nonLocked) {
         this.nonLocked = nonLocked;
     }
 

@@ -72,4 +72,12 @@ public class UserCriteriaQueries extends AbstractCriteriaQueriesConfig {
         return cq;
     }
 
+    @Bean
+    public CriteriaQuery<User> findUsers(){
+        CriteriaQuery<User> cq = cb.createQuery(User.class);
+        Root<User> userRoot = cq.from(User.class);
+        cq.select(userRoot);
+        return cq;
+    }
+
 }

@@ -2,10 +2,7 @@ package org.libre.lingvo.services;
 
 import org.libre.lingvo.dao.RoleDao;
 import org.libre.lingvo.dao.UserDao;
-import org.libre.lingvo.dto.FullUserDetailsDto;
-import org.libre.lingvo.dto.UserDetailsDto;
-import org.libre.lingvo.dto.UserRegistrationDto;
-import org.libre.lingvo.dto.UserUpdatingDto;
+import org.libre.lingvo.dto.*;
 import org.libre.lingvo.dto.exception.CustomError;
 import org.libre.lingvo.dto.exception.CustomErrorException;
 import org.libre.lingvo.entities.Role;
@@ -13,6 +10,8 @@ import org.libre.lingvo.entities.User;
 import org.libre.lingvo.entities.UserRole;
 import org.libre.lingvo.utils.dto.converters.UserDtoConverter;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.oauth2.common.OAuth2AccessToken;
+import org.springframework.security.oauth2.provider.token.TokenStore;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -39,17 +38,25 @@ public class UserServiceImpl implements UserService {
     @Autowired
     private UserDtoConverter userDtoConverter;
 
+    @Autowired
+    private TokenStore tokenStore;
+
+    private void deleteAccessTokens(String username){
+        tokenStore.findTokensByClientIdAndUserName("webapp", username)
+                .forEach(tokenStore::removeAccessToken);
+    }
+
     @Override
-    public UserDetailsDto getUserDetails(Long userId) {
+    public UserDetailsDto getUserDetails(long userId) {
         User user = findOrThrowNotFound(userDao, userId);
         return userDtoConverter.convertToUserDetailsDto(user);
     }
 
     @Override
-    public List<FullUserDetailsDto> getAllFullUserDetail() {
-        return userDao.findAll()
+    public List<UserItemDto> getUserItems(int pageIndex, int maxRecords) {
+        return userDao.findUsers(pageIndex, maxRecords)
                 .stream()
-                .map(user -> userDtoConverter.convertToFullUserDetailsDto(user))
+                .map(user -> userDtoConverter.convertToUserItemDto(user))
                 .collect(Collectors.toList());
     }
 
@@ -82,7 +89,30 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    public void updateFullUserInfo(long userId, FullUserDetailsDto dto) {
+        User user = findOrThrowNotFound(userDao, userId);
+        user.setEnabled(dto.isEnabled());
+        user.setNonLocked(dto.isNonLocked());
+        userDao.update(user);
+        if (!dto.isNonLocked())
+         deleteAccessTokens(user.getEmail());
+    }
+
+    @Override
+    public void deleteUser(long userId) {
+        User user = findOrThrowNotFound(userDao, userId);
+        userDao.delete(user);
+        deleteAccessTokens(user.getEmail());
+    }
+
+    @Override
     public void deleteNotEnabledUsersWithExpiredTokens() {
         userDao.deleteNotEnabledUsersWithExpiredTokens();
+    }
+
+    @Override
+    public void revokeToken(String tokenValue) {
+        OAuth2AccessToken accessToken = tokenStore.readAccessToken(tokenValue);
+        tokenStore.removeAccessToken(accessToken);
     }
 }

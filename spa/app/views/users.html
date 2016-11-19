@@ -1,0 +1,21 @@
+<div class="table-responsive">
+	<table class="table table-hover">
+		<thead>
+			<tr>
+				<th>Email</th>
+				<th>Name</th>
+        <th>Not locked</th>
+        <th>Enabled</th>
+			</tr>
+		</thead>
+		<tbody>
+			<tr ng-repeat="user in users">
+				<td>{{user.email}}</td>
+				<td>{{user.name}}</td>
+        <td><input type="checkbox" class="form-control" ng-model="user.nonLocked" ng-click="updateUser(user)"></td>
+        <td><input type="checkbox" class="form-control" ng-model="user.enabled" ng-click="updateUser(user)"></td>
+        <td> <i ng-click="deleteUser(user)" class="fa fa-times"></i> </td>
+			</tr>
+		</tbody>
+	</table>
+</div>

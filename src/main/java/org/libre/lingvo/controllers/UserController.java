@@ -4,6 +4,7 @@ import org.libre.lingvo.dto.*;
 import org.libre.lingvo.entities.User;
 import org.libre.lingvo.services.UserService;
 import org.libre.lingvo.services.VerificationTokenService;
+import org.libre.lingvo.utils.RequestUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.access.hierarchicalroles.RoleHierarchyImpl;
@@ -37,9 +38,6 @@ public class UserController {
     @Autowired
     private RoleHierarchyImpl roleHierarchy;
 
-    @Autowired
-    private TokenStore tokenStore;
-
     @RequestMapping(value = "/users/me", method = RequestMethod.GET)
     @PreAuthorize("hasAuthority('ROLE_USER')")
     public UserDetailsDto getMyInfo(@AuthenticationPrincipal User user) {
@@ -70,18 +68,7 @@ public class UserController {
 
     @RequestMapping(value = "/oauth/revoke-token", method = RequestMethod.DELETE)
     public void logout(HttpServletRequest request) {
-        String authHeader = request.getHeader("Authorization");
-        if (authHeader != null) {
-            String tokenValue = authHeader.replace("Bearer", "").trim();
-            OAuth2AccessToken accessToken = tokenStore.readAccessToken(tokenValue);
-            tokenStore.removeAccessToken(accessToken);
-        }
-    }
-
-    @RequestMapping(value = "/users", method = RequestMethod.GET)
-    @PreAuthorize("hasAuthority('ROLE_ADMIN')")
-    public List<FullUserDetailsDto> getAllFullUserDetails() {
-        return userService.getAllFullUserDetail();
+        RequestUtil.getAccessTokenValue(request).ifPresent(userService::revokeToken);
     }
 
     @RequestMapping(value = "/users", method = RequestMethod.POST)

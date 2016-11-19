@@ -39,7 +39,7 @@ public class DatabasePopulator  implements ApplicationListener<ContextRefreshedE
 
         User admin=new User();
         admin.setName("sample");
-        admin.setEmail("sample@exaple.com");
+        admin.setEmail("sample@example.com");
         admin.setPassword("1234");
         admin.setEnabled(true);
 

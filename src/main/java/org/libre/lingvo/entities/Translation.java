@@ -13,7 +13,7 @@ import java.util.Date;
 public class Translation {
     @Id
     @GeneratedValue
-    private Long id;
+    private long id;
 
     @ManyToOne
     @JoinColumn
@@ -31,7 +31,8 @@ public class Translation {
     @Column(nullable = false)
     private PartOfSpeech partOfSpeech;
 
-    private Boolean learned=false;
+    @Column(nullable = false)
+    private boolean learned=false;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn
@@ -40,9 +41,11 @@ public class Translation {
     @Type(type="text")
     private String note;
 
-    private Integer views=1;
+    @Column(nullable = false)
+    private int views=1;
 
     @Temporal(TemporalType.TIMESTAMP)
+    @Column(nullable = false)
     private Date lastModificationDate;
 
     @Temporal(TemporalType.TIMESTAMP)
@@ -56,11 +59,11 @@ public class Translation {
         views++;
     }
 
-    public Long getId() {
+    public long getId() {
         return id;
     }
 
-    public void setId(Long id) {
+    public void setId(long id) {
         this.id = id;
     }
 
@@ -96,11 +99,11 @@ public class Translation {
         this.partOfSpeech = partOfSpeech;
     }
 
-    public Boolean isLearned() {
+    public boolean isLearned() {
         return learned;
     }
 
-    public void setLearned(Boolean learned) {
+    public void setLearned(boolean learned) {
         this.learned = learned;
     }
 
@@ -120,11 +123,11 @@ public class Translation {
         this.note = note;
     }
 
-    public Integer getViews() {
+    public int getViews() {
         return views;
     }
 
-    public void setViews(Integer views) {
+    public void setViews(int views) {
         this.views = views;
     }
 

@@ -27,6 +27,11 @@
         class="fa fa-user-plus"></i>{{'label.sign.up' | translate}}</a></li>
     </ul>
     <ul class="nav navbar-nav navbar-right" ng-show="hasUserAuthority">
+      <li ui-sref-active="active" ng-show="hasAdminAuthority">
+        <a ui-sref="admin.users" data-toggle="collapse" data-target=".navbar-ex1-collapse">
+          <i class="fa fa-wrench"></i>Administration
+        </a>
+      </li>
       <li class="dropdown">
         <a  class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true"
            aria-expanded="false"><i ng-class="getBellClass()" class="fa fa-bell"></i><span class="caret"></span></a>

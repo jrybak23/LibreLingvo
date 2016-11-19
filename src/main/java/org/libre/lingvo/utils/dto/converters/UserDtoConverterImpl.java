@@ -2,6 +2,7 @@ package org.libre.lingvo.utils.dto.converters;
 
 import org.libre.lingvo.dto.FullUserDetailsDto;
 import org.libre.lingvo.dto.UserDetailsDto;
+import org.libre.lingvo.dto.UserItemDto;
 import org.libre.lingvo.dto.UserRegistrationDto;
 import org.libre.lingvo.entities.User;
 import org.springframework.stereotype.Component;
@@ -21,6 +22,11 @@ public class UserDtoConverterImpl extends AbstractDtoConverter implements UserDt
     @Override
     public FullUserDetailsDto convertToFullUserDetailsDto(User user) {
         return modelMapper.map(user, FullUserDetailsDto.class);
+    }
+
+    @Override
+    public UserItemDto convertToUserItemDto(User user) {
+        return modelMapper.map(user, UserItemDto.class);
     }
 
     @Override

@@ -202,23 +202,23 @@ module.exports = function (grunt) {
     wiredep: {
       app: {
         src: ['<%= yeoman.app %>/index.html'],
-        ignorePath:  /\.\.\//
+        ignorePath: /\.\.\//
       },
       test: {
         devDependencies: true,
         src: '<%= karma.unit.configFile %>',
-        ignorePath:  /\.\.\//,
-        fileTypes:{
+        ignorePath: /\.\.\//,
+        fileTypes: {
           js: {
             block: /(([\s\t]*)\/{2}\s*?bower:\s*?(\S*))(\n|\r|.)*?(\/{2}\s*endbower)/gi,
-              detect: {
-                js: /'(.*\.js)'/gi
-              },
-              replace: {
-                js: '\'{{filePath}}\','
-              }
+            detect: {
+              js: /'(.*\.js)'/gi
+            },
+            replace: {
+              js: '\'{{filePath}}\','
             }
           }
+        }
       }
     },
 
@@ -399,6 +399,11 @@ module.exports = function (grunt) {
           dest: '<%= yeoman.dist %>'
         }, {
           expand: true,
+          cwd: '<%= yeoman.app %>',
+          src: 'sounds/*',
+          dest: '<%= yeoman.dist %>'
+        }, {
+          expand: true,
           cwd: 'bower_components/tinymce/themes/modern/',
           src: ['**'],
           dest: '<%= yeoman.dist %>/scripts/themes/modern/'
@@ -412,42 +417,42 @@ module.exports = function (grunt) {
           cwd: 'bower_components/tinymce/plugins/link/',
           src: ['**'],
           dest: '<%= yeoman.dist %>/scripts/plugins/link/'
-        },{
+        }, {
           expand: true,
           cwd: 'bower_components/tinymce/plugins/autolink/',
           src: ['**'],
           dest: '<%= yeoman.dist %>/scripts/plugins/autolink/'
-        },{
+        }, {
           expand: true,
           cwd: 'bower_components/tinymce/plugins/image/',
           src: ['**'],
           dest: '<%= yeoman.dist %>/scripts/plugins/image/'
-        },{
+        }, {
           expand: true,
           cwd: 'bower_components/tinymce/plugins/charmap/',
           src: ['**'],
           dest: '<%= yeoman.dist %>/scripts/plugins/charmap/'
-        },{
+        }, {
           expand: true,
           cwd: 'bower_components/tinymce/plugins/print/',
           src: ['**'],
           dest: '<%= yeoman.dist %>/scripts/plugins/print/'
-        },{
+        }, {
           expand: true,
           cwd: 'bower_components/tinymce/plugins/advlist/',
           src: ['**'],
           dest: '<%= yeoman.dist %>/scripts/plugins/advlist/'
-        },{
+        }, {
           expand: true,
           cwd: 'bower_components/tinymce/plugins/lists/',
           src: ['**'],
           dest: '<%= yeoman.dist %>/scripts/plugins/lists/'
-        },{
+        }, {
           expand: true,
           cwd: 'bower_components/tinymce/plugins/preview/',
           src: ['**'],
           dest: '<%= yeoman.dist %>/scripts/plugins/preview/'
-        },{
+        }, {
           expand: true,
           cwd: 'bower_components/tinymce/plugins/autoresize/',
           src: ['**'],

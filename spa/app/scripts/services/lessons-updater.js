@@ -8,7 +8,7 @@
  * Factory in the libreLingvoApp.
  */
 angular.module('libreLingvoApp')
-  .factory('LessonsUpdater', function ($rootScope,
+  .factory('lessonsUpdater', function ($rootScope,
                                        amUtcFilter,
                                        amLocalFilter,
                                        amDifferenceFilter,

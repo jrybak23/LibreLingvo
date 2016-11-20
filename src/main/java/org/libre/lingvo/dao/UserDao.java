@@ -13,9 +13,13 @@ public interface UserDao extends GenericDao<User,Long> {
 
     List<User> findByEmailSubstring(String emailSubstring, Integer pageIndex, Integer maxRecords);
 
-    void deleteNotEnabledUsersWithExpiredTokens();
+    void deleteExpiredNotActivatedUsers();
 
     boolean existWithEmail(String email);
 
     List<User> findUsers(int pageIndex, int maxRecords);
+
+    Optional<User> findByActivationKey(String activationKey);
+
+    Optional<User> findByResetKey(String resetKey);
 }

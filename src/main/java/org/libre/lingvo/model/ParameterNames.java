@@ -14,5 +14,9 @@ public final class ParameterNames {
     public static final String SEARCH_SUBSTRING = "searchSubstring";
     public static final String PART_OF_SPEECH = "partOfSpeech";
     public static final String LEARNED = "learned";
+    public static final String EMAIL = "email";
+    public static final String ACTIVATION_KEY = "activationKey";
+    public static final String RESET_KEY = "resetKey";
+    public static final String EXPIRED_CURRENT_DATE = "currentDate";
 
 }

@@ -66,16 +66,16 @@ angular
         controllerAs: 'profile'
       })
       .state({
-        name: 'enable-user',
-        url: '/enable-user/:verificationToken',
-        controller: 'EnableUserCtrl',
-        controllerAs: 'enableUser'
+        name: 'activate-user',
+        url: '/activate-user?activation-key',
+        controller: 'ActivateUserCtrl',
+        controllerAs: 'activateUser'
       })
       .state({
-        name: 'cancel-user-enabling',
-        url: '/cancel-user-enabling/:verificationToken',
-        controller: 'CancelUserEnablingCtrl',
-        controllerAs: 'cancelUserEnabling'
+        name: 'cancel-activation',
+        url: '/cancel-activation?activation-key',
+        controller: 'CancelActivationCtrl',
+        controllerAs: 'cancelActivation'
       })
       .state({
         name: 'user-translations',
@@ -155,6 +155,18 @@ angular
         templateUrl: 'views/users.html',
         controller: 'UsersCtrl',
         controllerAs: 'users'
+      })
+      .state({
+        name: 'reset-password',
+        url: '/reset-password?reset-key',
+        templateUrl: 'views/reset-password.html',
+        controller: 'ResetPasswordCtrl'
+      })
+      .state({
+        name: 'change-password',
+        url: '/change-password',
+        templateUrl: 'views/change-password.html',
+        controller: 'ChangePasswordCtrl'
       });
 
     $urlRouterProvider
@@ -174,7 +186,7 @@ angular
         },
         responseError: function (response) {
           console.log(response);
-          var messageBox = $injector.get('MessageBox');
+          var messageBox = $injector.get('messageBox');
           if (response.status === -1) {
             //var translate = $injector.get('$translate');
             //alert(translate.instant('error.connection.refused'));
@@ -188,7 +200,7 @@ angular
             else if (response.data.error_description === 'User account is locked')
               messageBox.show('error.locked.account', MessageType.ERROR);
             else if (response.data.error === 'invalid_token')
-              $injector.get('Oauth2').handleInvalidToken();
+              $injector.get('oauth2').handleInvalidToken();
             else if (response.data.errorCode === 401) {
               messageBox.show(response.data.message, MessageType.ERROR);
               $injector.get('$state').go('log-in');
@@ -214,16 +226,16 @@ angular
   })
   .run(function ($rootScope,
                  $q,
-                 LessonsUpdater,
-                 Oauth2) {
+                 lessonsUpdater,
+                 oauth2) {
 
-    Oauth2.updateAuthoritiesCallback(function (authorities) {
+    oauth2.updateAuthoritiesCallback(function (authorities) {
       $rootScope.hasUserAuthority = authorities.indexOf('ROLE_USER') > -1;
       $rootScope.hasAdminAuthority = authorities.indexOf('ROLE_ADMIN') > -1;
       $rootScope.isAnnonymos = authorities.indexOf('ROLE_ANONYMOUS') > -1;
 
       if ($rootScope.hasUserAuthority)
-        LessonsUpdater.updateLessons();
+        lessonsUpdater.updateLessons();
     });
   });
 

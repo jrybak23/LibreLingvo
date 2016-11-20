@@ -15,7 +15,9 @@ import org.springframework.security.oauth2.provider.token.TokenStore;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Date;
 import java.util.List;
+import java.util.UUID;
 import java.util.stream.Collectors;
 
 import static org.libre.lingvo.utils.EntityUtil.findOrThrowNotFound;
@@ -33,15 +35,12 @@ public class UserServiceImpl implements UserService {
     private RoleDao roleDao;
 
     @Autowired
-    VerificationTokenService verificationTokenService;
-
-    @Autowired
     private UserDtoConverter userDtoConverter;
 
     @Autowired
     private TokenStore tokenStore;
 
-    private void deleteAccessTokens(String username){
+    private void deleteAccessTokens(String username) {
         tokenStore.findTokensByClientIdAndUserName("webapp", username)
                 .forEach(tokenStore::removeAccessToken);
     }
@@ -61,7 +60,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public User registerUser(UserRegistrationDto dto) {
+    public User createUser(UserRegistrationDto dto) {
         if (userDao.existWithEmail(dto.getEmail()))
             throw new CustomErrorException(CustomError.USER_WITH_SUCH_EMAIL_ALREADY_EXISTS);
 
@@ -72,13 +71,34 @@ public class UserServiceImpl implements UserService {
         userRole.setUser(user);
         userRole.setRole(role);
         user.getUserRoles().add(userRole);
+        user.setActivationKey(UUID.randomUUID().toString());
+        user.setRegistrationDate(new Date());
 
         userDao.create(user);
         return user;
     }
 
+
     @Override
-    public void updateUser(Long userId, UserUpdatingDto dto) {
+    public void activateUser(String activationKey) {
+        User user = userDao.findByActivationKey(activationKey).orElseThrow(
+                () -> new CustomErrorException(CustomError.NO_USER_WITH_SUCH_ACTIVATION_KEY)
+        );
+
+        user.setEnabled(true);
+        userDao.create(user);
+    }
+
+    @Override
+    public void cancelActivation(String activationKey) {
+        userDao.findByActivationKey(activationKey).ifPresent(user -> {
+            if (!user.isEnabled())
+                userDao.delete(user);
+        });
+    }
+
+    @Override
+    public void updateUser(long userId, UserUpdatingDto dto) {
         User user = findOrThrowNotFound(userDao, userId);
         user.setName(dto.getName());
         user.setTranslationsInOneLesson(dto.getTranslationsInOneLesson());
@@ -95,7 +115,17 @@ public class UserServiceImpl implements UserService {
         user.setNonLocked(dto.isNonLocked());
         userDao.update(user);
         if (!dto.isNonLocked())
-         deleteAccessTokens(user.getEmail());
+            deleteAccessTokens(user.getEmail());
+    }
+
+    @Override
+    public void changePassword(long userId, ChangePasswordDto dto) {
+        User user = findOrThrowNotFound(userDao, userId);
+        if (!user.getPassword().equals(dto.getOldPassword()))
+            throw new CustomErrorException(CustomError.WRONG_OLD_PASSWORD);
+
+        user.setPassword(dto.getPassword());
+        userDao.update(user);
     }
 
     @Override
@@ -106,13 +136,31 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public void deleteNotEnabledUsersWithExpiredTokens() {
-        userDao.deleteNotEnabledUsersWithExpiredTokens();
+    public void deleteExpiredNotActivatedUsers() {
+        userDao.deleteExpiredNotActivatedUsers();
     }
 
     @Override
     public void revokeToken(String tokenValue) {
         OAuth2AccessToken accessToken = tokenStore.readAccessToken(tokenValue);
         tokenStore.removeAccessToken(accessToken);
+    }
+
+    public String generateResetKey(String email) {
+        User user = userDao.findByEmail(email)
+                .orElseThrow(() -> new CustomErrorException(CustomError.NO_USER_WITH_SUCH_EMAIL));
+        user.setResetKey(UUID.randomUUID().toString());
+        userDao.update(user);
+        return user.getResetKey();
+    }
+
+    @Override
+    public void resetPassword(String resetKey, String newPassword) {
+        User user = userDao.findByResetKey(resetKey)
+                .orElseThrow(() -> new CustomErrorException(CustomError.NO_USER_WITH_SUCH_RESET_KEY));
+
+        user.setPassword(newPassword);
+        user.setResetKey(null);
+        userDao.update(user);
     }
 }

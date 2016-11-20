@@ -7,11 +7,12 @@ angular.module('libreLingvoApp')
   .controller('NavBarCtrl', function ($scope,
                                       $window,
                                       $rootScope,
-                                      Oauth2,
-                                      MessageBox,
+                                      oauth2,
+                                      messageBox,
                                       Lessons,
-                                      LessonsUpdater,
-                                      NotificationType) {
+                                      lessonsUpdater,
+                                      NotificationType,
+                                      audio) {
 
     var w = angular.element($window);
     $scope.$watch(
@@ -29,12 +30,16 @@ angular.module('libreLingvoApp')
     });
 
     $scope.logOut = function () {
-      Oauth2.logOut();
+      oauth2.logOut();
     };
 
     $scope.$on('timer-stopped', function (event, args) {
       console.log('timer-stopped');
-      LessonsUpdater.updateLessons();
+      lessonsUpdater.updateLessons().then(
+        function () {
+          audio.playAlert();
+        }
+      );
     });
 
     $scope.deleteLesson = function (lesson) {
@@ -43,7 +48,7 @@ angular.module('libreLingvoApp')
           Lessons.delete(
             {lessonId: lesson.id},
             function () {
-              $rootScope.updateLessons();
+              lessonsUpdater.updateLessons();
             },
             function (error) {
               if (error.data && error.data.errorCode === 404)
@@ -61,5 +66,6 @@ angular.module('libreLingvoApp')
         case NotificationType.LESSON_NOT_AVAILABLE:
           return "text-warning";
       }
-    }
+    };
+
   });

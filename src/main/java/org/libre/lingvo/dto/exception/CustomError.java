@@ -14,10 +14,10 @@ public enum CustomError {
             "User with such email already exists",
             "error.user.with.such.email.exists"
     ),
-    NO_VERIFICATION_TOKEN_WITH_SUCH_UUID(
+    NO_USER_WITH_SUCH_ACTIVATION_KEY(
             2,
             HttpStatus.NOT_FOUND,
-            "No verification token with such uuid",
+            "No user with such activation key",
             "error.failed.account.enabling"
     ),
     USER_HAS_ALREADY_SUCH_TRANSLATION(
@@ -25,6 +25,24 @@ public enum CustomError {
             HttpStatus.CONFLICT,
             "User has already such translation",
             "error.user.has.already.such.translation"
+    ),
+    NO_USER_WITH_SUCH_EMAIL(
+            4,
+            HttpStatus.NOT_FOUND,
+            "No user with such email",
+            "error.no.user.with.such.email"
+    ),
+    NO_USER_WITH_SUCH_RESET_KEY(
+            5,
+            HttpStatus.NOT_FOUND,
+            "No user with such reset key",
+            "error.password.reset.link.is.not.working"
+    ),
+    WRONG_OLD_PASSWORD(
+            6,
+            HttpStatus.BAD_REQUEST,
+            "Wrong old password",
+            "error.wrong.old.password"
     ),
     ACCESS_DENIED(401, HttpStatus.UNAUTHORIZED, null, "error.access.denied"),
     FORBIDDEN(403, HttpStatus.FORBIDDEN, null, "error.forbidden"),

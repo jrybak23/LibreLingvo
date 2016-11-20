@@ -4,6 +4,7 @@ import org.hibernate.validator.constraints.NotEmpty;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -16,7 +17,7 @@ public class User implements Serializable {
 
     @Id
     @GeneratedValue
-    private long id;
+    private Long id;
 
     @NotEmpty
     @Column(unique = true, nullable = false)
@@ -33,8 +34,8 @@ public class User implements Serializable {
     @OneToMany(mappedBy = "pk.user", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     private Set<UserRole> userRoles = new HashSet<>();
 
-    @OneToOne(mappedBy = "user", cascade = CascadeType.REMOVE, fetch = FetchType.LAZY)
-    private VerificationToken verificationToken;
+    /*@OneToOne(mappedBy = "user", cascade = CascadeType.REMOVE, fetch = FetchType.LAZY)
+    private VerificationToken verificationToken;*/
 
     @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY, optional = false)
     @JoinColumn
@@ -47,6 +48,15 @@ public class User implements Serializable {
     private int minutesBetweenLessonParts = 10;
 
     private boolean autoPlayDuringLesson=true;
+
+    @Column(length = 36)
+    private String activationKey;
+
+    @Column(length = 36)
+    private String resetKey;
+
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date registrationDate;
 
     public User() {
         Folder root = new Folder();
@@ -65,11 +75,11 @@ public class User implements Serializable {
         this.userRoles = user.getUserRoles();
     }
 
-    public long getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(long id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
@@ -123,14 +133,6 @@ public class User implements Serializable {
         this.nonLocked = nonLocked;
     }
 
-    public VerificationToken getVerificationToken() {
-        return verificationToken;
-    }
-
-    public void setVerificationToken(VerificationToken verificationToken) {
-        this.verificationToken = verificationToken;
-    }
-
     public Folder getRootFolder() {
         return rootFolder;
     }
@@ -169,5 +171,29 @@ public class User implements Serializable {
 
     public void setAutoPlayDuringLesson(boolean autoPlayDuringLesson) {
         this.autoPlayDuringLesson = autoPlayDuringLesson;
+    }
+
+    public String getActivationKey() {
+        return activationKey;
+    }
+
+    public void setActivationKey(String activationKey) {
+        this.activationKey = activationKey;
+    }
+
+    public String getResetKey() {
+        return resetKey;
+    }
+
+    public void setResetKey(String resetKey) {
+        this.resetKey = resetKey;
+    }
+
+    public Date getRegistrationDate() {
+        return registrationDate;
+    }
+
+    public void setRegistrationDate(Date registrationDate) {
+        this.registrationDate = registrationDate;
     }
 }

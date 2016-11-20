@@ -14,15 +14,25 @@ public interface UserService {
 
     List<UserItemDto> getUserItems(int pageIndex, int maxRecords);
 
-    User registerUser(UserRegistrationDto dto);
+    User createUser(UserRegistrationDto dto);
 
-    void updateUser(Long userId,UserUpdatingDto dto);
+    void activateUser(String activationKey);
+
+    void cancelActivation(String activationKey);
+
+    void updateUser(long userId, UserUpdatingDto dto);
 
     void updateFullUserInfo(long userId, FullUserDetailsDto dto);
 
+    void changePassword(long userId, ChangePasswordDto dto);
+
     void deleteUser(long userId);
 
-    void deleteNotEnabledUsersWithExpiredTokens();
+    void deleteExpiredNotActivatedUsers();
 
     void revokeToken(String accessToken);
+
+    String generateResetKey(String email);
+
+    void resetPassword(String resetKey, String newPassword);
 }

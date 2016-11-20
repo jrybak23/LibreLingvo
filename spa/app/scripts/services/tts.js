@@ -8,7 +8,7 @@
  * Factory in the libreLingvoApp.
  */
 angular.module('libreLingvoApp')
-  .factory('TTS', function () {
+  .factory('tts', function () {
     var SpeechSynthesisUtterance = window.webkitSpeechSynthesisUtterance ||
       window.mozSpeechSynthesisUtterance ||
       window.msSpeechSynthesisUtterance ||

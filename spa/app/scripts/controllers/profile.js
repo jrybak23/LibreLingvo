@@ -9,13 +9,13 @@
  */
 angular.module('libreLingvoApp')
   .controller('ProfileCtrl', function ($scope, Users) {
-    Users.get({'userId': 'me'}).$promise.then(
+    Users.get({userId: 'me'}).$promise.then(
       function (data) {
         $scope.user = data;
       }
     );
 
     $scope.saveChanges = function () {
-      Users.update({'userId': 'me'}, $scope.user);
+      Users.update({userId: 'me'}, $scope.user);
     }
   });

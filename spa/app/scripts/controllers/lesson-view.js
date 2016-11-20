@@ -8,7 +8,7 @@
  * Controller of the libreLingvoApp
  */
 angular.module('libreLingvoApp')
-  .controller('LessonViewCtrl', function ($scope, $state, $stateParams, Lessons, MessageBox, MessageType) {
+  .controller('LessonViewCtrl', function ($scope, $state, $stateParams, Lessons, messageBox, MessageType) {
     $scope.next = function () {
       if ($scope.lesson.translations[$scope.index + 1])
         $scope.index++;

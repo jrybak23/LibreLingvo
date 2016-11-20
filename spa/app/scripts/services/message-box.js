@@ -8,7 +8,7 @@
  * Factory in the libreLingvoApp.
  */
 angular.module('libreLingvoApp')
-  .factory('MessageBox', function ($uibModal, $translate, $q, MessageType) {
+  .factory('messageBox', function ($uibModal, $translate, $q, MessageType) {
     var messageContent = "none";
     var messageTitle = "none";
     var panelClass = "panel-default";

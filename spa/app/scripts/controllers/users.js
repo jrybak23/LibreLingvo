@@ -8,7 +8,7 @@
  * Controller of the libreLingvoApp
  */
 angular.module('libreLingvoApp')
-  .controller('UsersCtrl', function ($scope, Users, MessageBox) {
+  .controller('UsersCtrl', function ($scope, Users, messageBox) {
     $scope.updateUsers = function () {
       Users.query(function (response) {
         $scope.users = response;
@@ -28,7 +28,7 @@ angular.module('libreLingvoApp')
     };
 
     $scope.deleteUser = function (user) {
-      MessageBox.showGeneralQuestion("Do you really want to delete this user?").then(
+      messageBox.showGeneralQuestion("Do you really want to delete this user?").then(
         function () {
           Users.delete(
             {

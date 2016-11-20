@@ -20,7 +20,7 @@ public class Role implements GrantedAuthority, Serializable {
 
     @Id
     @GeneratedValue
-    private int id;
+    private Integer id;
 
     @NotEmpty
     private String name;
@@ -35,11 +35,11 @@ public class Role implements GrantedAuthority, Serializable {
         this.id = id;
     }
 
-    public int getId() {
+    public Integer getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(Integer id) {
         this.id = id;
     }
 

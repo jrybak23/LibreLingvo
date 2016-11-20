@@ -3,7 +3,7 @@ package org.libre.lingvo.controllers;
 import org.libre.lingvo.dto.*;
 import org.libre.lingvo.entities.User;
 import org.libre.lingvo.services.UserService;
-import org.libre.lingvo.services.VerificationTokenService;
+import org.libre.lingvo.utils.EmailSender;
 import org.libre.lingvo.utils.RequestUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -12,13 +12,10 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.authority.AuthorityUtils;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.oauth2.common.OAuth2AccessToken;
-import org.springframework.security.oauth2.provider.token.TokenStore;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
-import java.util.List;
 import java.util.Set;
 
 /**
@@ -33,10 +30,10 @@ public class UserController {
     private UserService userService;
 
     @Autowired
-    private VerificationTokenService verificationTokenService;
+    private RoleHierarchyImpl roleHierarchy;
 
     @Autowired
-    private RoleHierarchyImpl roleHierarchy;
+    private EmailSender emailSender;
 
     @RequestMapping(value = "/users/me", method = RequestMethod.GET)
     @PreAuthorize("hasAuthority('ROLE_USER')")
@@ -52,6 +49,16 @@ public class UserController {
             @RequestBody @Validated UserUpdatingDto dto
     ) {
         userService.updateUser(user.getId(), dto);
+    }
+
+    @RequestMapping(value = "/users/me/password", method = RequestMethod.PUT)
+    @PreAuthorize("hasAuthority('ROLE_USER')")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void changePassword(
+            @AuthenticationPrincipal User user,
+            @RequestBody ChangePasswordDto dto
+    ) {
+        userService.changePassword(user.getId(), dto);
     }
 
     @RequestMapping(value = "/users/me/authorities", method = RequestMethod.GET)
@@ -79,8 +86,35 @@ public class UserController {
     ) {
         String originUrl = request.getHeader("Origin");
 
-        User user = userService.registerUser(dto);
-        verificationTokenService.create(user, originUrl);
+        User user = userService.createUser(dto);
+        emailSender.sendEmailActivationMessage(user, originUrl);
         return new CreatedResourceDto(user.getId());
+    }
+
+    @RequestMapping(value = "/users/enable", method = RequestMethod.PUT)
+    public void enableUser(@RequestParam(name = "activation-key") String activationKey) {
+        userService.activateUser(activationKey);
+    }
+
+    @RequestMapping(value = "/users", method = RequestMethod.DELETE)
+    public void cancelUserEnabling(@RequestParam(name = "activation-key") String activationKey) {
+        userService.cancelActivation(activationKey);
+    }
+
+    @RequestMapping(value = "/users/set-reset-key", method = RequestMethod.PUT)
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void setResetKey(@RequestParam String email, HttpServletRequest request) {
+        String originUrl = request.getHeader("Origin");
+        String resetKey = userService.generateResetKey(email);
+        emailSender.sendEmailResetPasswordMessage(email, resetKey, originUrl);
+    }
+
+    @RequestMapping(value = "/users/reset-password", method = RequestMethod.PUT)
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void resetPassword(
+            @RequestParam(name = "reset-key") String resetKey,
+            @Validated @RequestBody NewPasswordDto dto
+    ) {
+        userService.resetPassword(resetKey, dto.getPassword());
     }
 }

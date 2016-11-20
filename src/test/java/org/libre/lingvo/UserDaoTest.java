@@ -3,7 +3,6 @@ package org.libre.lingvo;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.libre.lingvo.dao.UserDao;
-import org.libre.lingvo.dao.VerificationTokenDao;
 import org.libre.lingvo.entities.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -49,7 +48,7 @@ public class UserDaoTest {
 
     @Test
     public void testDeleteNotEnabledWithExpiredTokens(){
-       userDao.deleteNotEnabledUsersWithExpiredTokens();
+       userDao.deleteExpiredNotActivatedUsers();
     }
 
     private void persistSample(){

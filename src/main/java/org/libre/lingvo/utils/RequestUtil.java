@@ -1,7 +1,5 @@
 package org.libre.lingvo.utils;
 
-import org.springframework.stereotype.Component;
-
 import javax.servlet.http.HttpServletRequest;
 import java.util.Optional;
 

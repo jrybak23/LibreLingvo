@@ -8,7 +8,7 @@
  * Factory in the libreLingvoApp.
  */
 angular.module('libreLingvoApp')
-  .factory('Oauth2', function (HostUrl, $http, $cookies, $httpParamSerializer, $q, $state, UserAuthorities) {
+  .factory('oauth2', function (HostUrl, $http, $cookies, $httpParamSerializer, $q, $state, UserAuthorities) {
     var accessTokenData = {grant_type: "password"};
     var encoded = btoa("webapp:123456");
 

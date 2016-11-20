@@ -14,12 +14,12 @@ angular.module('libreLingvoApp')
               $translate,
               $stateParams,
               $rootScope,
-              MessageBox,
+              messageBox,
               Translations,
-              TTS,
+              tts,
               Users,
               Lessons,
-              LessonsUpdater) {
+              lessonsUpdater) {
       Users.get({'userId': 'me'}, function (response) {
         $scope.maxRecords = response.translationsInOneLesson;
       });
@@ -44,8 +44,8 @@ angular.module('libreLingvoApp')
       $scope.sortOrder = $stateParams['sort-order'];
       $scope.learned = $stateParams['learned'] || 'false';
 
-      $scope.play = TTS.play;
-      $scope.supports = TTS.supports;
+      $scope.play = tts.play;
+      $scope.supports = tts.supports;
 
       $scope.selectedTranslationIds = [];
 
@@ -117,7 +117,7 @@ angular.module('libreLingvoApp')
 
       $scope.deleteTranslations = function () {
         $scope.hideAffix = true;
-        MessageBox.showGeneralQuestion('question.on.delete.translations').then(
+        messageBox.showGeneralQuestion('question.on.delete.translations').then(
           function () {
             $scope.hideAffix = false;
             Translations.delete(
@@ -154,7 +154,7 @@ angular.module('libreLingvoApp')
             translationIds: translationIds
           },
           function (response) {
-            LessonsUpdater.updateLessons().then(
+            lessonsUpdater.updateLessons().then(
               function () {
                 $state.go('lesson', {lessonId: response.id});
               }

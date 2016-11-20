@@ -8,11 +8,11 @@
  * Factory in the libreLingvoApp.
  */
 angular.module('libreLingvoApp')
-  .factory('VerificationTokens', function ($resource, HostUrl) {
-    return $resource(HostUrl+'/api/v1/verification-tokens/:verificationToken/user/:field',
+  .factory('UsersActions', function ($resource, HostUrl) {
+    return $resource(HostUrl+'/api/v1/users/:action',
       {
         verificationToken:'@id',
-        field: '@fieldName'
+        action:'@actionName'
       },
       {
         update: {method: 'PUT'}

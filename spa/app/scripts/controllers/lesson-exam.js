@@ -8,7 +8,7 @@
  * Controller of the libreLingvoApp
  */
 angular.module('libreLingvoApp')
-  .controller('LessonExamCtrl', function ($scope, $state, $timeout, $rootScope, Lessons, LessonsUpdater) {
+  .controller('LessonExamCtrl', function ($scope, $state, $timeout, $rootScope, Lessons, lessonsUpdater) {
     var n = 5;
     $scope.reverse = false;
     $scope.showAnswers = false;
@@ -60,7 +60,7 @@ angular.module('libreLingvoApp')
               },
               {},
               function () {
-                LessonsUpdater.updateLessons().then(
+                lessonsUpdater.updateLessons().then(
                   function () {
                     $state.go('user-translations');
                   }

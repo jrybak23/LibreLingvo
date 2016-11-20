@@ -2,12 +2,13 @@ package org.libre.lingvo.dao.criteria.queries;
 
 import org.libre.lingvo.entities.User;
 import org.libre.lingvo.entities.User_;
-import org.libre.lingvo.entities.VerificationToken_;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 import javax.persistence.criteria.*;
 import java.util.Date;
+
+import static org.libre.lingvo.model.ParameterNames.*;
 
 
 /**
@@ -40,16 +41,17 @@ public class UserCriteriaQueries extends AbstractCriteriaQueriesConfig {
     }
 
     @Bean
-    public CriteriaQuery<User> findNotEnabledUsersWithExpiredTokens() {
+    public CriteriaQuery<User> findExpiredNotActivatedUsers() {
         CriteriaQuery<User> cq = cb.createQuery(User.class);
         Root<User> userRoot = cq.from(User.class);
-        ParameterExpression<Date> currentDateParameter = cb.parameter(Date.class, "currentDate");
-        Path<Date> expiryDatePath =userRoot.get(User_.verificationToken).get(VerificationToken_.expiryDate);
+        ParameterExpression<Date> expiredCurrentDateParameter = cb.parameter(Date.class, EXPIRED_CURRENT_DATE);
+        Path<Date> registrationDatePath = userRoot.get(User_.registrationDate);
         Path<Boolean> enabledPath = userRoot.get(User_.enabled);
         cq.select(userRoot);
+
         cq.where(
                 cb.and(
-                        cb.greaterThanOrEqualTo(currentDateParameter,expiryDatePath),
+                        cb.greaterThanOrEqualTo(expiredCurrentDateParameter, registrationDatePath),
                         cb.equal(enabledPath, false)
                 )
         );
@@ -61,7 +63,7 @@ public class UserCriteriaQueries extends AbstractCriteriaQueriesConfig {
     public CriteriaQuery<Boolean> existsUserWithEmail() {
         CriteriaQuery<Boolean> cq = cb.createQuery(Boolean.class);
         cq.from(User.class);
-        ParameterExpression<String> emailParameter = cb.parameter(String.class, "email");
+        ParameterExpression<String> emailParameter = cb.parameter(String.class, EMAIL);
         Subquery<User> sq = cq.subquery(User.class);
         Root<User> userRoot = sq.from(User.class);
         sq.select(userRoot);
@@ -73,11 +75,32 @@ public class UserCriteriaQueries extends AbstractCriteriaQueriesConfig {
     }
 
     @Bean
-    public CriteriaQuery<User> findUsers(){
+    public CriteriaQuery<User> findUsers() {
         CriteriaQuery<User> cq = cb.createQuery(User.class);
         Root<User> userRoot = cq.from(User.class);
         cq.select(userRoot);
         return cq;
     }
 
+    @Bean
+    public CriteriaQuery<User> findByActivationKey() {
+        CriteriaQuery<User> cq = cb.createQuery(User.class);
+        Root<User> userRoot = cq.from(User.class);
+        ParameterExpression<String> activationKeyPrm = cb.parameter(String.class, ACTIVATION_KEY);
+        Path<String> activationKeyPath = userRoot.get(User_.activationKey);
+        cq.select(userRoot);
+        cq.where(cb.equal(activationKeyPath, activationKeyPrm));
+        return cq;
+    }
+
+    @Bean
+    public CriteriaQuery<User> findByResetKey() {
+        CriteriaQuery<User> cq = cb.createQuery(User.class);
+        Root<User> userRoot = cq.from(User.class);
+        ParameterExpression<String> resetKeyPrm = cb.parameter(String.class, RESET_KEY);
+        Path<String> resetKeyPath = userRoot.get(User_.resetKey);
+        cq.select(userRoot);
+        cq.where(cb.equal(resetKeyPath, resetKeyPrm));
+        return cq;
+    }
 }

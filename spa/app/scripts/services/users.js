@@ -9,7 +9,12 @@
  */
 angular.module('libreLingvoApp')
   .factory('Users', function ($resource, HostUrl) {
-    return $resource(HostUrl + '/api/v1/users/:userId', {userId: '@id'}, {
+    return $resource(HostUrl + '/api/v1/users/:userId/:field',
+      {
+        userId: '@id',
+        field: '@fieldName'
+      },
+      {
         update: {method: 'PUT'}
       });
   });

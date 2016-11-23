@@ -22,9 +22,13 @@ angular.module('libreLingvoApp')
               lessonsUpdater) {
       Users.get({'userId': 'me'}, function (response) {
         $scope.maxRecords = response.translationsInOneLesson;
+        setTimeout(function () {
+          $scope.pageIndex = $stateParams['page-index'] || 1;
+          $scope.updateTranslations();
+        }, 0);
       });
 
-      $scope.hideAffix = false;
+
       $scope.maxPagSize = 5;
 
       $scope.searchSubstring = $stateParams['search-substring'];
@@ -59,10 +63,10 @@ angular.module('libreLingvoApp')
           $scope.selectedTranslationIds.length = 0;
       };
 
-      $scope.interpol = {};
+      $scope.selectionInterpol = {};
 
       $scope.$watch('selectedTranslationIds.length', function (val) {
-        $scope.interpol.selectedTranslationsCount = val;
+        $scope.selectionInterpol.selectedTranslationsCount = val;
       });
 
       $scope.updateTranslations = function () {
@@ -87,15 +91,16 @@ angular.module('libreLingvoApp')
 
             $scope.filteredRecords = response.filteredRecords;
             $scope.totalRecords = response.totalRecords;
-            $scope.recordsCount = {
+            $scope.countInterpol = {
               filteredRecords: $scope.filteredRecords,
-              totalRecords: $scope.totalRecords
+              totalRecords: $scope.totalRecords,
+              learningTranslations: $scope.totalRecords - $scope.filteredRecords
             };
 
             $scope.langCodesPairs = response.langCodesPairs;
             $scope.partsOfSpeech = response.partsOfSpeech;
 
-            $scope.interpol.translationsCount = $scope.translations.length;
+            $scope.selectionInterpol.translationsCount = $scope.translations.length;
 
             $state.transitionTo('user-translations',
               {
@@ -116,10 +121,10 @@ angular.module('libreLingvoApp')
       };
 
       $scope.deleteTranslations = function () {
-        $scope.hideAffix = true;
+        $rootScope.hideAffix = true;
         messageBox.showGeneralQuestion('question.on.delete.translations').then(
           function () {
-            $scope.hideAffix = false;
+            $rootScope.hideAffix = false;
             Translations.delete(
               {
                 userId: 'me',
@@ -136,7 +141,7 @@ angular.module('libreLingvoApp')
             );
           },
           function () {
-            $scope.hideAffix = false;
+            $rootScope.hideAffix = false;
           }
         );
       };
@@ -170,10 +175,4 @@ angular.module('libreLingvoApp')
         else
           $scope.selectedTranslationIds.push(id);
       };
-
-      setTimeout(function () {
-        $scope.pageIndex = $stateParams['page-index'] || 1;
-        $scope.updateTranslations();
-      }, 0);
-
     });

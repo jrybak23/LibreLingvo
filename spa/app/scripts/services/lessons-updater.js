@@ -9,51 +9,53 @@
  */
 angular.module('libreLingvoApp')
   .factory('lessonsUpdater', function ($rootScope,
+                                       Lessons,
+                                       NotificationType,
                                        amUtcFilter,
                                        amLocalFilter,
                                        amDifferenceFilter,
-                                       Lessons,
-                                       NotificationType) {
-    var promiseContainer = {};
+                                       audio) {
+    var getSecondsDiff = function (date) {
+      var seconds = amDifferenceFilter(
+        amLocalFilter(
+          amUtcFilter(date)
+        ), null, 'seconds');
+      return (seconds > 2) ? seconds : -1;
+    };
 
     return {
-      updateLessons: function () {
-        if ((!promiseContainer.lessonsPromise) || (promiseContainer.lessonsPromise && promiseContainer.lessonsPromise.$$state.status)) {
-          promiseContainer.lessonsPromise = Lessons.query(
-            function (respose) {
-              $rootScope.lessons = respose;
-              $rootScope.lessons.forEach(function (lesson) {
-                lesson.diffInSeconds = amDifferenceFilter(
-                  amLocalFilter(
-                    amUtcFilter(lesson.waitUnitNextLessonPart)
-                  ), null, 'seconds'
-                );
-              });
+      updateLessons: function (timerStopped) {
+        return Lessons.query(
+          function (respose) {
 
-              $rootScope.$watch('lessons', function () {
-                var lessonsAvailable = $rootScope.lessons.find(function (lesson) {
-                  return lesson.diffInSeconds < 0;
-                });
+            respose.forEach(function (lesson) {
+              lesson.diffInSeconds = getSecondsDiff(lesson.waitUnitNextLessonPart);
+            });
 
-                if (lessonsAvailable) {
-                  $rootScope.notification = NotificationType.LESSON_AVAILABLE;
-                  return;
-                }
+            $rootScope.lessons = respose;
 
-                var lessonNotAvailable = $rootScope.lessons.find(function (lesson) {
-                  return lesson.diffInSeconds > 0;
-                });
+            var availableLesson = $rootScope.lessons.find(function (lesson) {
+              return lesson.diffInSeconds < 0;
+            });
 
-                if (lessonNotAvailable) {
-                  $rootScope.notification = NotificationType.LESSON_NOT_AVAILABLE;
-                  return;
-                }
+            if (availableLesson) {
+              $rootScope.notification = NotificationType.LESSON_AVAILABLE;
+              if (timerStopped)
+                audio.playAlert();
+              return;
+            }
 
-                $rootScope.notification = NotificationType.NO_LESSONS;
-              });
-            }).$promise;
-        }
-        return promiseContainer.lessonsPromise;
+            var notAvailableLesson = $rootScope.lessons.find(function (lesson) {
+              return lesson.diffInSeconds > 0;
+            });
+
+            if (notAvailableLesson) {
+              $rootScope.notification = NotificationType.LESSON_NOT_AVAILABLE;
+              return;
+            }
+
+            $rootScope.notification = NotificationType.NO_LESSONS;
+          }).$promise;
       }
     };
   })

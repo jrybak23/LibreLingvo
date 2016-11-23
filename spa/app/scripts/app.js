@@ -237,6 +237,8 @@ angular
       if ($rootScope.hasUserAuthority)
         lessonsUpdater.updateLessons();
     });
+
+    $rootScope.hideAffix = false;
   });
 
 

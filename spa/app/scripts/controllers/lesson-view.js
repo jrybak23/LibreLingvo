@@ -13,7 +13,7 @@ angular.module('libreLingvoApp')
       if ($scope.lesson.translations[$scope.index + 1])
         $scope.index++;
       else
-        MessageBox.showGeneralQuestion('question.after.first.lesson.part', MessageType.INFO).then(
+        messageBox.showGeneralQuestion('question.after.first.lesson.part', MessageType.INFO).then(
           function () {
             Lessons.update(
               {

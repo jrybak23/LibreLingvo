@@ -13,6 +13,7 @@ angular.module('libreLingvoApp')
 
     return {
       playAlert: function () {
+        console.log("alert!!!");
         alert.play();
       }
     };

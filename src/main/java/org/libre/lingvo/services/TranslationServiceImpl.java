@@ -19,6 +19,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Date;
 import java.util.List;
+import java.util.Objects;
 import java.util.function.Supplier;
 import java.util.stream.Collectors;
 
@@ -53,7 +54,7 @@ public class TranslationServiceImpl implements TranslationService {
     }
 
     private void checkIfUserIsOwnerOfTranslation(Long userId, Translation translation) {
-        if (!(translation.getUser().getId()==userId))
+        if (!(Objects.equals(translation.getUser().getId(), userId)))
             throw new CustomErrorException(CustomError.FORBIDDEN);
     }
 

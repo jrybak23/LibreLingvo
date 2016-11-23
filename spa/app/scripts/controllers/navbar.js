@@ -11,8 +11,7 @@ angular.module('libreLingvoApp')
                                       messageBox,
                                       Lessons,
                                       lessonsUpdater,
-                                      NotificationType,
-                                      audio) {
+                                      NotificationType) {
 
     var w = angular.element($window);
     $scope.$watch(
@@ -34,16 +33,12 @@ angular.module('libreLingvoApp')
     };
 
     $scope.$on('timer-stopped', function (event, args) {
-      console.log('timer-stopped');
-      lessonsUpdater.updateLessons().then(
-        function () {
-          audio.playAlert();
-        }
-      );
+      lessonsUpdater.updateLessons(true);
     });
 
     $scope.deleteLesson = function (lesson) {
-      MessageBox.showGeneralQuestion('question.on.delete.lesson').then(
+      $rootScope.hideAffix = true;
+      messageBox.showGeneralQuestion('question.on.delete.lesson').then(
         function () {
           Lessons.delete(
             {lessonId: lesson.id},
@@ -55,6 +50,10 @@ angular.module('libreLingvoApp')
                 $rootScope.updateLessons();
             }
           );
+          $rootScope.hideAffix = false;
+        },
+        function () {
+          $rootScope.hideAffix = false;
         }
       );
     };

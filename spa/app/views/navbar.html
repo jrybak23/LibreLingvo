@@ -32,6 +32,7 @@
           <i class="fa fa-wrench"></i>Administration
         </a>
       </li>
+      <li></li>
       <li class="dropdown">
         <a  class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true"
            aria-expanded="false"><i ng-class="getBellClass()" class="fa fa-bell"></i><span class="caret"></span></a>
@@ -44,7 +45,7 @@
               <timer countdown="lesson.diffInSeconds" interval="1000">{{hours}}:{{minutes}}:{{seconds}}</timer>
             </a>
 
-            <a ui-sref="lesson({lessonId:lesson.id})" ng-show="lesson.diffInSeconds<0">
+            <a ui-sref="lesson({lessonId:lesson.id})" ng-show="lesson.diffInSeconds<=0">
               {{$index+1}}.<i class="fa fa-graduation-cap"></i>{{'label.move.on.next.lesson.part' | translate}}
             </a>
 

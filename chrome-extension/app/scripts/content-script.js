@@ -27,23 +27,29 @@ $.get(chrome.extension.getURL('/templates/modal.html'), function (data) {
   saveSourceBox = document.getElementById('save-source-box');
   saveResultBox = document.getElementById('save-result-box');
   partOfSpeechCombobox = document.getElementById('part-of-speech');
-
   var submitSaveButton = document.getElementById('submit-save-button');
 
   submitSaveButton.onclick = function () {
+    var note = tinyMCE.get('note').getContent();
     var translationDto = new TranslationDto(
       saveSourceBox.innerText,
       sourceLangCodeInput.val(),
       saveResultBox.value,
       resultLangCodeInput.val(),
-      partOfSpeechCombobox.value
+      partOfSpeechCombobox.value,
+      note
     );
+
+    var clearForm=function () {
+      partOfSpeechCombobox.value = 'NOT_DEFINED';
+      tinyMCE.get('note').setContent("");
+    };
 
     libreLingvoService.saveTranslation(translationDto).then(
       function (data) {
         setTranslationIsSaved(true);
         closeMainModal();
-        partOfSpeechCombobox.value = 'NOT_DEFINED';
+        clearForm();
       },
       function (error) {
         console.error(error);
@@ -56,10 +62,9 @@ $.get(chrome.extension.getURL('/templates/modal.html'), function (data) {
           if (err.message)
             showErrorMessage(err.message);
         }
-        partOfSpeechCombobox.value = 'NOT_DEFINED';
+        clearForm();
       }
     );
-
   };
 
   var cancelSaveButton = document.getElementById('cancel-save-button');
@@ -121,20 +126,29 @@ var checkTranslation = function () {
   var resultLangCode = resultBox.attr('lang');
   saveSourceBox.innerText = source;
   saveResultBox.value = resultBox.text();
-
-  libreLingvoService.getUserTranslations(source, sourceLangCode, resultLangCode).then(
-    function (data) {
-      if (data.translations && data.translations.length)
-        setTranslationIsSaved(true);
-      else
+  if (source){
+    saveButton.show();
+    libreLingvoService.getUserTranslations(source, sourceLangCode, resultLangCode).then(
+      function (data) {
+        if (data.translations && data.translations.length)
+          setTranslationIsSaved(true);
+        else
+          setTranslationIsSaved(false);
+      },
+      function (error) {
         setTranslationIsSaved(false);
-    },
-    function (error) {
-      setTranslationIsSaved(false);
-    }
-  );
+      }
+    );
+  }
+  else
+    saveButton.hide();
+
 };
 
-//checkTranslation();
 resultBox.on('DOMSubtreeModified', _.debounce(checkTranslation, 800));
 
+tinymce.init({
+  selector: '#note',
+  language: 'en',
+  plugins: 'image'
+});

@@ -10,13 +10,14 @@ var TranslationDto = function (sourceText,
                                sourceLangCode,
                                resultText,
                                resultLangCode,
-                               partOfSpeech) {
+                               partOfSpeech,
+                               note) {
   this.sourceText = sourceText;
   this.sourceLangCode = sourceLangCode;
   this.resultText = resultText;
   this.resultLangCode = resultLangCode;
   this.partOfSpeech = partOfSpeech;
-  this.note = null;
+  this.note = note;
 };
 
 var RequestSettings = function (method, url, data) {
@@ -56,9 +57,9 @@ var libreLingvoService = {
 
     var requestSettings = new RequestSettings(
       'GET',
-      HOST_URL + '/api/v1/users/me/translations?source-text='+sourceText+
-      '&source-lang-code='+sourceLangCode+
-      '&result-lang-code='+resultLangCode
+      HOST_URL + '/api/v1/users/me/translations?source-text=' + sourceText +
+      '&source-lang-code=' + sourceLangCode +
+      '&result-lang-code=' + resultLangCode
     );
 
     var message = {

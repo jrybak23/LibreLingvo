@@ -34,14 +34,19 @@
       "js": [
         "bower_components/jquery/dist/jquery.js",
         "bower_components/underscore/underscore.js",
+        "bower_components/tinymce/tinymce.js",
+        "bower_components/tinymce/themes/modern/theme.js",
+        "bower_components/tinymce/plugins/image/plugin.js",
         "scripts/libre-lingvo-service.js",
         "scripts/content-script.js"
       ],
-      "css":[
+      "css": [
+        "styles/skin.min.css",
+        "bower_components/tinymce/skins/lightgray/content.min.css",
         "styles/content-style.css",
         "styles/modal.css"
       ],
-      "run_at":"document_end"
+      "run_at": "document_end"
     }
   ],
   "browser_action": {
@@ -53,6 +58,7 @@
   },
   "web_accessible_resources": [
     "images/*",
-    "templates/*"
+    "templates/*",
+    "bower_components/tinymce/skins/lightgray/fonts/*"
   ]
 }

@@ -1,0 +1,7 @@
+---
+applications:
+  - name: libre-lingvo-org
+    buildpack: java_buildpack
+    path: build/libs/libre-lingvo-0.0.1-SNAPSHOT.jar
+    services:
+      - mysql

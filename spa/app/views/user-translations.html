@@ -33,7 +33,7 @@
               <option value="SORT_RESULT_TEXT"> {{'label.sorting.field.result.text' | translate}}</option>
               <option value="SORT_VIEWS"> {{'label.sorting.field.views' | translate}}</option>
               <option value="SORT_MODIFICATION_DATE"> {{'label.sorting.modification.date' | translate}}</option>
-              <option value=""> {{'label.sorting.none' | translate}}</option>
+             <!-- <option value=""> {{'label.sorting.none' | translate}}</option>-->
             </select>
           </div>
           <div class="form-group" ng-show="sortField">
@@ -52,7 +52,7 @@
           </div>
           <div class="text-muted">
             <span>{{'label.criteria.panel.filtered' | translate:countInterpol}}</span>
-            <span ng-show="countInterpol.learningTranslations"> {{'label.you.are.learning.translations' | translate:countInterpol}}</span>
+            <span ng-show="lessons.length"> {{'label.you.are.learning.translations' | translate}}</span>
           </div>
         </div>
       </div>

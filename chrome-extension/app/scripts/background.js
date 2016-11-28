@@ -1,12 +1,10 @@
 'use strict';
 
-var BASE_URL = 'http://localhost:8080';
-
 chrome.runtime.onInstalled.addListener(function (details) {
   console.log('previousVersion', details.previousVersion);
 });
 
-var accessToken = "";
+var accessToken = '';
 
 var wasAuthErrorFlag = true;
 
@@ -20,9 +18,9 @@ var ErrorMessage = function (error) {
   this.error = error;
 };
 
-var updateAccessToken = function () {
+var updateAccessToken = function (baseUrl) {
   return new Promise(function (resolve, reject) {
-    chrome.cookies.get({url: BASE_URL, name: 'access_token'}, function (cookie) {
+    chrome.cookies.get({url: baseUrl, name: 'access_token'}, function (cookie) {
       if (cookie) {
         accessToken = cookie.value;
         console.log('updated access token:' + cookie.value);
@@ -36,7 +34,7 @@ var updateAccessToken = function () {
 };
 
 var sendAjaxRequest = function (settings, callback) {
-  settings.headers.authorization = "Bearer " + accessToken;
+  settings.headers.authorization = 'Bearer ' + accessToken;
   $.ajax(settings).then(
     function (response) {
       wasAuthErrorFlag = false;
@@ -52,7 +50,7 @@ var sendAjaxRequest = function (settings, callback) {
 chrome.extension.onMessage.addListener(function (message, sender, callback) {
   if (message.action === 'sendAjaxRequest') {
     if (wasAuthErrorFlag) {
-      updateAccessToken().then(
+      updateAccessToken(message.baseUrl).then(
         function () {
           sendAjaxRequest(message.requestSettings, callback);
         },
@@ -68,4 +66,4 @@ chrome.extension.onMessage.addListener(function (message, sender, callback) {
   }
 });
 
-console.log("content script done");
+console.log('content script done');

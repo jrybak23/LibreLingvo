@@ -44,10 +44,13 @@ angular.module('libreLingvoApp')
             {lessonId: lesson.id},
             function () {
               lessonsUpdater.updateLessons();
+              $rootScope.updateTranslations();
             },
             function (error) {
-              if (error.data && error.data.errorCode === 404)
-                $rootScope.updateLessons();
+              if (error.data && error.data.errorCode === 404) {
+                lessonsUpdater.updateLessons();
+                $rootScope.updateTranslations();
+              }
             }
           );
           $rootScope.hideAffix = false;

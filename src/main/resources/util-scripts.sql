@@ -1,0 +1,15 @@
+DROP DATABASE IF EXISTS `libre-lingvo`;
+CREATE DATABASE `libre-lingvo`
+  CHARACTER SET `utf8`;
+
+ALTER DATABASE `ad_5e767e1bdcb3fd3`
+CHARACTER SET utf8
+COLLATE utf8_general_ci;
+
+ALTER TABLE `word`
+  CONVERT TO CHARACTER SET utf8
+  COLLATE utf8_unicode_ci;
+
+ALTER TABLE `user`
+  CONVERT TO CHARACTER SET utf8
+  COLLATE utf8_unicode_ci;

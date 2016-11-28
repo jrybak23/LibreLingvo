@@ -241,7 +241,6 @@ angular
     $rootScope.hideAffix = false;
   });
 
-
 // update popover template for binding unsafe html
 angular.module("uib/template/popover/popover.html", []).run(function ($templateCache) {
   //$templateCache.removeAll();

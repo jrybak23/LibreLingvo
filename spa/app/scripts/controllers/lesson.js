@@ -8,7 +8,7 @@
  * Controller of the libreLingvoApp
  */
 angular.module('libreLingvoApp')
-  .controller('LessonCtrl', function ($scope, $state, $stateParams, Lessons, tts, Users) {
+  .controller('LessonCtrl', function ($scope, $state, $stateParams, Lessons, tts, Users, lessonsUpdater) {
     $scope.lessonPromise = Lessons.get(
       {
         lessonId: $stateParams.lessonId
@@ -20,6 +20,12 @@ angular.module('libreLingvoApp')
           $state.go('lesson.view');
         else {
           $state.go('lesson.exam');
+        }
+      },
+      function (error) {
+        if (error.data && error.data.errorCode === 7) {
+          lessonsUpdater.updateLessons();
+          $state.go("user-translations");
         }
       }
     ).$promise;

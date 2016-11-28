@@ -78,10 +78,10 @@ public class UserDaoImpl extends GenericDaoImpl<User, Long> implements UserDao {
     }
 
     @Override
-    public boolean existWithEmail(String email) {
-        return entityManager.createQuery(existsUserWithEmail)
+    public Optional<Boolean> existWithEmail(String email) {
+        return findOptional(() -> entityManager.createQuery(existsUserWithEmail)
                 .setParameter(EMAIL, email)
-                .getSingleResult();
+                .getSingleResult());
     }
 
     @Override
@@ -95,14 +95,14 @@ public class UserDaoImpl extends GenericDaoImpl<User, Long> implements UserDao {
     @Override
     public Optional<User> findByActivationKey(String activationKey) {
         return findOptional(() -> entityManager.createQuery(findByActivationKey)
-                .setParameter(ACTIVATION_KEY,activationKey)
+                .setParameter(ACTIVATION_KEY, activationKey)
                 .getSingleResult());
     }
 
     @Override
     public Optional<User> findByResetKey(String resetKey) {
         return findOptional(() -> entityManager.createQuery(findByResetKey)
-                .setParameter(RESET_KEY,resetKey)
+                .setParameter(RESET_KEY, resetKey)
                 .getSingleResult());
     }
 }

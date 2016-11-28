@@ -6,7 +6,6 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.dao.annotation.PersistenceExceptionTranslationPostProcessor;
-import org.springframework.jdbc.datasource.DriverManagerDataSource;
 import org.springframework.orm.jpa.JpaTransactionManager;
 import org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean;
 import org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter;
@@ -23,18 +22,6 @@ import java.util.Properties;
 @ComponentScan
 @EnableTransactionManagement
 public class DatabaseConfig {
-    @Value("${db.driver}")
-    private String DB_DRIVER;
-
-    @Value("${db.password}")
-    private String DB_PASSWORD;
-
-    @Value("${db.url}")
-    private String DB_URL;
-
-    @Value("${db.username}")
-    private String DB_USERNAME;
-
     @Value("${hibernate.dialect}")
     private String HIBERNATE_DIALECT;
 
@@ -62,16 +49,6 @@ public class DatabaseConfig {
     @Autowired
     private LocalContainerEntityManagerFactoryBean entityManagerFactory;
 
-    @Bean
-    public DataSource dataSource() {
-        DriverManagerDataSource dataSource = new DriverManagerDataSource();
-        dataSource.setDriverClassName(DB_DRIVER);
-        dataSource.setUrl(DB_URL);
-        dataSource.setUsername(DB_USERNAME);
-        dataSource.setPassword(DB_PASSWORD);
-        return dataSource;
-    }
-
     /**
      * Declare the JPA entities manager factory.
      */
@@ -96,6 +73,11 @@ public class DatabaseConfig {
         additionalProperties.put("hibernate.hbm2ddl.auto", HIBERNATE_HBM2DDL_AUTO);
         additionalProperties.put("hibernate.hbm2ddl.import_files", HIBERNATE_HBM2DDL_IMPORT_FILES);
         additionalProperties.put("hibernate.hbm2ddl.import_files_sql_extractor", HIBERNATE_HBM2DDL_IMPORT_FILES_SQL_EXTRACTOR);
+
+        additionalProperties.put("hibernate.connection.CharSet", "utf8");
+        additionalProperties.put("hibernate.connection.characterEncoding", "utf8");
+        additionalProperties.put("hibernate.connection.useUnicode", "true");
+
         entityManagerFactory.setJpaProperties(additionalProperties);
 
         return entityManagerFactory;

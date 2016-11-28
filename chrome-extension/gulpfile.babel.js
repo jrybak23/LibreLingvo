@@ -115,11 +115,17 @@ gulp.task('package', function () {
     .pipe(gulp.dest('package'));
 });
 
+gulp.task('fonts', function() {
+  return gulp.src([
+    'app/bower_components/tinymce/skins/lightgray/fonts/*'])
+    .pipe(gulp.dest('dist/bower_components/tinymce/skins/lightgray/fonts/'));
+});
+
 gulp.task('build', (cb) => {
   runSequence(
     'lint', 'chromeManifest',
     ['html', 'images', 'extras'],
-    'size', cb);
+    'size', 'fonts',cb);
 });
 
 gulp.task('default', ['clean'], cb => {

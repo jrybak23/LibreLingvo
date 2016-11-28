@@ -3,8 +3,6 @@ package org.libre.lingvo.config.startup.events;
 import org.libre.lingvo.dao.RoleDao;
 import org.libre.lingvo.dao.UserDao;
 import org.libre.lingvo.entities.Role;
-import org.libre.lingvo.entities.User;
-import org.libre.lingvo.entities.UserRole;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationListener;
 import org.springframework.context.annotation.Profile;
@@ -17,11 +15,10 @@ import org.springframework.transaction.annotation.Transactional;
  * Created by igorek2312 on 23.09.16.
  */
 
-@Profile("init")
+@Profile({"init","cloud"})
 @Component
 @Transactional
 public class DatabasePopulator  implements ApplicationListener<ContextRefreshedEvent> {
-
     @Autowired
     private RoleDao roleDao;
 
@@ -37,17 +34,18 @@ public class DatabasePopulator  implements ApplicationListener<ContextRefreshedE
         roleDao.create(roleUser);
         roleDao.create(roleAdmin);
 
-        User admin=new User();
+       /* User admin=new User();
         admin.setName("sample");
         admin.setEmail("sample@example.com");
         admin.setPassword("1234");
         admin.setEnabled(true);
+        admin.setNonLocked(true);
 
         UserRole userRole = new UserRole();
         userRole.setRole(roleAdmin);
         userRole.setUser(admin);
         admin.getUserRoles().add(userRole);
 
-        userDao.create(admin);
+        userDao.create(admin);*/
     }
 }

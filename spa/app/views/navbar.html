@@ -35,7 +35,13 @@
       <li></li>
       <li class="dropdown">
         <a  class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true"
-           aria-expanded="false"><i ng-class="getBellClass()" class="fa fa-bell"></i><span class="caret"></span></a>
+           aria-expanded="false">
+          <span ng-class="getBellClass()" >
+              <i class="fa fa-bell"></i>
+               <span ng-show="lessons.length" class="tag tag-pill tag-primary">{{lessons.length}}</span>
+              <span class="caret"></span>
+          </span>
+         </a>
         <ul id="lessons-dropdown" class="dropdown-menu">
           <li ng-repeat="lesson in lessons | orderBy:'waitUnitNextLessonPart'"
               ng-class="lesson.diffInSeconds>0?'bg-warning':'bg-info'">

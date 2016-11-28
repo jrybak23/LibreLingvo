@@ -61,7 +61,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public User createUser(UserRegistrationDto dto) {
-        if (userDao.existWithEmail(dto.getEmail()))
+        if (userDao.existWithEmail(dto.getEmail()).orElse(false))
             throw new CustomErrorException(CustomError.USER_WITH_SUCH_EMAIL_ALREADY_EXISTS);
 
         User user = userDtoConverter.convertFromUserRegistrationDto(dto);

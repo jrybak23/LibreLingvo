@@ -10,9 +10,7 @@ import java.util.Date;
 public class LessonItemDto {
     private Long id;
 
-    private String title;
-
-  @JsonFormat(pattern = "MM.dd.yyyy HH:mm:ss")
+    @JsonFormat(pattern = "MM.dd.yyyy HH:mm:ss")
     private Date waitUnitNextLessonPart;
 
     public Long getId() {
@@ -21,14 +19,6 @@ public class LessonItemDto {
 
     public void setId(Long id) {
         this.id = id;
-    }
-
-    public String getTitle() {
-        return title;
-    }
-
-    public void setTitle(String title) {
-        this.title = title;
     }
 
     public Date getWaitUnitNextLessonPart() {

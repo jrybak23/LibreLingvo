@@ -41,9 +41,9 @@ public class UserDaoTest {
 
     @Test
     public void testExistUserWithEmail(){
-        assertFalse(userDao.existWithEmail(testEmail));
+        assertFalse(userDao.existWithEmail(testEmail).orElse(false));
         persistSample();
-        assertTrue(userDao.existWithEmail(testEmail));
+        assertTrue(userDao.existWithEmail(testEmail).orElse(false));
     }
 
     @Test

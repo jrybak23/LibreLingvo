@@ -24,10 +24,9 @@ angular.module('libreLingvoApp')
         $scope.maxRecords = response.translationsInOneLesson;
         setTimeout(function () {
           $scope.pageIndex = $stateParams['page-index'] || 1;
-          $scope.updateTranslations();
+          $rootScope.updateTranslations();
         }, 0);
       });
-
 
       $scope.maxPagSize = 5;
 
@@ -69,7 +68,7 @@ angular.module('libreLingvoApp')
         $scope.selectionInterpol.selectedTranslationsCount = val;
       });
 
-      $scope.updateTranslations = function () {
+      $rootScope.updateTranslations = function () {
         $scope.selectedTranslationIds = [];
         var langCodesPair = JSON.parse($scope.langCodesPair);
 
@@ -94,7 +93,6 @@ angular.module('libreLingvoApp')
             $scope.countInterpol = {
               filteredRecords: $scope.filteredRecords,
               totalRecords: $scope.totalRecords,
-              learningTranslations: $scope.totalRecords - $scope.filteredRecords
             };
 
             $scope.langCodesPairs = response.langCodesPairs;
@@ -131,12 +129,12 @@ angular.module('libreLingvoApp')
                 ids: $scope.selectedTranslationIds
               },
               function () {
-                $scope.updateTranslations();
+                $rootScope.updateTranslations();
                 $scope.selectedTranslationIds = [];
               },
               function (error) {
                 if (error.data && error.data.errorCode === 404)
-                  $scope.updateTranslations();
+                  $rootScope.updateTranslations();
               }
             );
           },
@@ -161,7 +159,9 @@ angular.module('libreLingvoApp')
           function (response) {
             lessonsUpdater.updateLessons().then(
               function () {
-                $state.go('lesson', {lessonId: response.id});
+                setTimeout(function () {
+                  $state.go('lesson', {lessonId: response.id});
+                }, 300);
               }
             );
           }

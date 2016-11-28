@@ -7,9 +7,12 @@ import org.libre.lingvo.dto.CreatedResourceDto;
 import org.libre.lingvo.dto.LessonDto;
 import org.libre.lingvo.dto.LessonItemDto;
 import org.libre.lingvo.dto.TranslationLearningDto;
+import org.libre.lingvo.dto.exception.CustomError;
+import org.libre.lingvo.dto.exception.CustomErrorException;
 import org.libre.lingvo.entities.Lesson;
 import org.libre.lingvo.entities.Translation;
 import org.libre.lingvo.entities.User;
+import org.libre.lingvo.utils.dto.converters.LessonDtoConverter;
 import org.libre.lingvo.utils.dto.converters.TranslationDtoConverter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -19,6 +22,7 @@ import java.sql.Timestamp;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 import static org.libre.lingvo.utils.EntityUtil.findOrThrowNotFound;
@@ -41,15 +45,28 @@ public class LessonServiceImpl implements LessonService {
     @Autowired
     private TranslationDtoConverter translationDtoConverter;
 
+    @Autowired
+    private LessonDtoConverter lessonDtoConverter;
+
+    private void checkIfUserIsOwnerOfTranslation(Long userId, Translation translation) {
+        if (!(Objects.equals(translation.getUser().getId(), userId)))
+            throw new CustomErrorException(CustomError.FORBIDDEN);
+    }
+
     public void checkIfUserIsOwnerOfLesson(Long userId, Long lessonId) {
+        Lesson lesson = findOrThrowNotFound(lessonDao, lessonId);
+        lesson.getTranslations().stream()
+                .findFirst()
+                .ifPresent(t -> checkIfUserIsOwnerOfTranslation(userId, t));
     }
 
     @Override
     public CreatedResourceDto createLesson(Long userId, List<Long> translationsIds) {
         User user = findOrThrowNotFound(userDao, userId);
         List<Translation> translations = translationDao.getByIds(translationsIds);
-        Lesson lesson = new Lesson();
+        translations.forEach(t -> checkIfUserIsOwnerOfTranslation(userId, t));
 
+        Lesson lesson = new Lesson();
 
         lesson.setCompletedPartsOfLesson(0);
         lesson.setMaxPartsOfLesson(user.getLessonPartsCount());
@@ -67,19 +84,16 @@ public class LessonServiceImpl implements LessonService {
     public List<LessonItemDto> getUserLessons(Long userId) {
         return lessonDao.findByUserId(userId)
                 .stream()
-                .map(lesson -> {
-                    LessonItemDto dto = new LessonItemDto();
-                    dto.setId(lesson.getId());
-                    dto.setWaitUnitNextLessonPart(lesson.getWaitUnitNextLessonPart());
-                    dto.setTitle("foo");
-                    return dto;
-                }).collect(Collectors.toList());
+                .map(lessonDtoConverter::convertToLessonItemDto)
+                .collect(Collectors.toList());
     }
 
     @Override
     public LessonDto getLesson(Long userId, Long lessonId) {
         Lesson lesson = findOrThrowNotFound(lessonDao, lessonId);
         checkIfUserIsOwnerOfLesson(userId, lessonId);
+        if (lesson.getWaitUnitNextLessonPart().after(new Date()))
+            throw new CustomErrorException(CustomError.LESSON_WAIT_DATE_IS_FUTURE);
 
         LessonDto lessonDto = new LessonDto();
         lessonDto.setId(lessonId);
@@ -108,7 +122,7 @@ public class LessonServiceImpl implements LessonService {
                         trn.setLesson(null);
                     });
         else {
-            if (lesson.getCompletedPartsOfLesson()==1)
+            if (lesson.getCompletedPartsOfLesson() == 1)
                 lesson.setWaitUnitNextLessonPart(new Date());
             else {
                 Calendar calendar = Calendar.getInstance();

@@ -1,6 +1,6 @@
 db:
   driver: com.mysql.jdbc.Driver
-  url: jdbc:mysql://localhost:3306/libre-lingvo?characterEncoding=UTF-8
+  url: jdbc:mysql://localhost:3306/libre-lingvo?useUnicode=true&characterEncoding=UTF-8
   username: root
   password: 1q2w3e4r
 hibernate:
@@ -8,11 +8,9 @@ hibernate:
   show_sql: "true"
   format_sql: "true"
   entitymanager.packagesToScan: org.libre.lingvo.entities
-spring:
-  profiles.active: dev
 ---
 spring:
-  profiles: dev, cloud
+  profiles: dev
 hibernate:
   hbm2ddl:
       auto: update
@@ -34,3 +32,19 @@ hibernate:
       auto: create
       import_files: init-database.sql
       import_files_sql_extractor: org.hibernate.tool.hbm2ddl.MultipleLinesSqlCommandExtractor
+---
+#spring:
+#  profiles: cloud
+#hibernate:
+#  hbm2ddl:
+#      auto: create
+#      import_files: init-database.sql
+#      import_files_sql_extractor: org.hibernate.tool.hbm2ddl.MultipleLinesSqlCommandExtractor
+#---
+spring:
+  profiles: cloud
+hibernate:
+  hbm2ddl:
+      auto: update
+      import_files: null
+      import_files_sql_extractor: null

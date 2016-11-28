@@ -149,8 +149,8 @@ public class TranslationServiceImpl implements TranslationService {
                 sourceLangCode,
                 resultLangCode,
                 learned,
-                sortField==null ? TranslationSortFieldOptions.SORT_MODIFICATION_DATE:sortField,
-                sortOrder==null ? SortingOptions.DESC:sortOrder,
+                sortField == null ? TranslationSortFieldOptions.SORT_MODIFICATION_DATE : sortField,
+                sortOrder == null ? SortingOptions.DESC : sortOrder,
                 pageIndex,
                 maxRecords)
                 .stream()
@@ -168,7 +168,7 @@ public class TranslationServiceImpl implements TranslationService {
         Long totalRecords = translationDao.countTotalUserTranslations(userId);
         List<LangCodesPairDto> langCodes = translationDao.getLangKeysByUserId(userId)
                 .stream()
-                .map(tuple -> new LangCodesPairDto((String) tuple.get(0),(String) tuple.get(1)))
+                .map(tuple -> new LangCodesPairDto((String) tuple.get(0), (String) tuple.get(1)))
                 .collect(Collectors.toList());
         List<PartOfSpeech> partsOfSpeech = translationDao.getPartsOfSpeechByUserId(userId);
 
@@ -195,6 +195,10 @@ public class TranslationServiceImpl implements TranslationService {
         return new TranslationNoteDto(translation.getNote());
     }
 
+    private boolean wordsIsNotSame(String newWordText, String langKey, Word word) {
+        return !(word.getText().equals(newWordText) && word.getLangCode().equals(langKey));
+    }
+
     private void safeWordDelete(Long translationId, Word word) {
         Boolean exists = translationDao.existsOtherTranslationsDependedOnWord(translationId, word.getId())
                 .orElse(false);
@@ -203,7 +207,7 @@ public class TranslationServiceImpl implements TranslationService {
     }
 
     private Word safeWordUpdate(Long translationId, String newWordText, String newWordLangKey, Word word) {
-        if (!(word.getText().equals(newWordText) && word.getLangCode().equals(newWordLangKey))) {
+        if (wordsIsNotSame(newWordText, newWordLangKey, word)) {
             safeWordDelete(translationId, word);
 
             return wordDao.findByTextAndLangKey(newWordText, newWordLangKey)

@@ -2,9 +2,10 @@
  * Created by igorek2312 on 22.10.16.
  */
 'use strict'
-
-var HOST_URL = 'http://localhost:8080';
-var BASE_URL = 'http://localhost:9000';
+var HOSTING = true;
+var HOSTING_URL = 'http://libre-lingvo-org.cfapps.io';
+var HOST_URL = HOSTING ? HOSTING_URL : 'http://localhost:8080';
+var BASE_URL = HOSTING ? HOSTING_URL : 'http://localhost:9000';
 
 var TranslationDto = function (sourceText,
                                sourceLangCode,
@@ -25,8 +26,8 @@ var RequestSettings = function (method, url, data) {
   this.url = url;
   this.data = data;
   this.headers = {
-    "content-type": "application/json",
-    "accept-language": "en"
+    'content-type': 'application/json',
+    'accept-language': 'en'
   };
   this.crossDomain = true;
   this.async = true;
@@ -64,6 +65,7 @@ var libreLingvoService = {
 
     var message = {
       action: 'sendAjaxRequest',
+      baseUrl: BASE_URL,
       requestSettings: requestSettings
     };
 
@@ -78,6 +80,7 @@ var libreLingvoService = {
 
     var message = {
       action: 'sendAjaxRequest',
+      baseUrl: BASE_URL,
       requestSettings: requestSettings
     };
 

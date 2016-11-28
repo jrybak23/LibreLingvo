@@ -18,7 +18,7 @@ var resultLangCodeInput = $('input[name="tl"]').first();
 var starButtonId = '#gt-pb-star';
 
 
-$.get(chrome.extension.getURL('/templates/modal.html'), function (data) {
+$.get(chrome.extension.getURL('/modal.html'), function (data) {
   $($.parseHTML(data)).appendTo('body');
   mainModal = document.getElementById('main-modal');
   var closeSpan = document.getElementById('close-main-modal');
@@ -42,7 +42,7 @@ $.get(chrome.extension.getURL('/templates/modal.html'), function (data) {
 
     var clearForm=function () {
       partOfSpeechCombobox.value = 'NOT_DEFINED';
-      tinyMCE.get('note').setContent("");
+      tinyMCE.get('note').setContent('');
     };
 
     libreLingvoService.saveTranslation(translationDto).then(
@@ -72,14 +72,14 @@ $.get(chrome.extension.getURL('/templates/modal.html'), function (data) {
 });
 
 var showMainModal = function () {
-  mainModal.style.display = "block";
+  mainModal.style.display = 'block';
 };
 
 var closeMainModal = function () {
-  mainModal.style.display = "none";
+  mainModal.style.display = 'none';
 };
 
-$.get(chrome.extension.getURL('/templates/error-modal.html'), function (data) {
+$.get(chrome.extension.getURL('/error-modal.html'), function (data) {
   $($.parseHTML(data)).appendTo('body');
   errorModal = document.getElementById('error-modal');
   errorMessage = document.getElementById('error-message');
@@ -90,12 +90,12 @@ $.get(chrome.extension.getURL('/templates/error-modal.html'), function (data) {
 });
 
 var showErrorMessage = function (message) {
-  errorModal.style.display = "block";
+  errorModal.style.display = 'block';
   errorMessage.innerText = message;
 };
 
 var closeErrorModal = function () {
-  errorModal.style.display = "none";
+  errorModal.style.display = 'none';
 };
 
 window.onclick = function (event) {
@@ -107,7 +107,7 @@ window.onclick = function (event) {
   }
 };
 
-$.get(chrome.extension.getURL('/templates/save-button.html'), function (data) {
+$.get(chrome.extension.getURL('/save-button.html'), function (data) {
   saveButton = $($.parseHTML(data));
   saveButton.insertBefore(starButtonId);
   saveButton.on('click', function () {

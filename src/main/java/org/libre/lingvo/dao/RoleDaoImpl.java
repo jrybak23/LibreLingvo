@@ -8,6 +8,9 @@ import org.springframework.stereotype.Repository;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.criteria.CriteriaQuery;
+import java.util.Optional;
+
+import static org.libre.lingvo.utils.DaoRetrieverUtil.findOptional;
 
 /**
  * Created by igorek2312 on 23.09.16.
@@ -23,8 +26,8 @@ public class RoleDaoImpl extends GenericDaoImpl<Role, Integer> implements RoleDa
     private CriteriaQuery<Role> findRoleByNameCriteriaQuery;
 
     @Override
-    public Role findByName(String roleName) {
-        return entityManager.createQuery(findRoleByNameCriteriaQuery)
-                .setParameter("name", roleName).getSingleResult();
+    public Optional<Role> findByName(String roleName) {
+        return findOptional(() -> entityManager.createQuery(findRoleByNameCriteriaQuery)
+                .setParameter("name", roleName).getSingleResult());
     }
 }

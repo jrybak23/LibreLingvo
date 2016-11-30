@@ -13,7 +13,8 @@ import java.util.List;
 import java.util.Optional;
 
 import static org.libre.lingvo.model.ParameterNames.*;
-import static org.libre.lingvo.utils.optional.dao.OptionalDaoUtil.findOptional;
+import static org.libre.lingvo.utils.DaoRetrieverUtil.exists;
+import static org.libre.lingvo.utils.DaoRetrieverUtil.findOptional;
 
 /**
  * Created by igorek2312 on 08.09.16.
@@ -78,8 +79,8 @@ public class UserDaoImpl extends GenericDaoImpl<User, Long> implements UserDao {
     }
 
     @Override
-    public Optional<Boolean> existWithEmail(String email) {
-        return findOptional(() -> entityManager.createQuery(existsUserWithEmail)
+    public boolean existsWithEmail(String email) {
+        return exists(() -> entityManager.createQuery(existsUserWithEmail)
                 .setParameter(EMAIL, email)
                 .getSingleResult());
     }

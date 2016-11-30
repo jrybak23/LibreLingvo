@@ -113,6 +113,7 @@ $.get(chrome.extension.getURL('/save-button.html'), function (data) {
   saveButton.on('click', function () {
     showMainModal();
   });
+  saveButton.hide();
 });
 
 var setTranslationIsSaved = function (saved) {
@@ -145,10 +146,11 @@ var checkTranslation = function () {
 
 };
 
-resultBox.on('DOMSubtreeModified', _.debounce(checkTranslation, 800));
+resultBox.on('DOMSubtreeModified', _.debounce(checkTranslation, 400));
 
 tinymce.init({
   selector: '#note',
   language: 'en',
   plugins: 'image'
 });
+

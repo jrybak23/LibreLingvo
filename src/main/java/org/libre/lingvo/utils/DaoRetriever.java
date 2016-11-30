@@ -1,4 +1,4 @@
-package org.libre.lingvo.utils.optional.dao;
+package org.libre.lingvo.utils;
 
 import javax.persistence.NoResultException;
 

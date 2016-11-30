@@ -13,7 +13,8 @@ import java.util.List;
 import java.util.Optional;
 
 import static org.libre.lingvo.model.ParameterNames.*;
-import static org.libre.lingvo.utils.optional.dao.OptionalDaoUtil.findOptional;
+import static org.libre.lingvo.utils.DaoRetrieverUtil.exists;
+import static org.libre.lingvo.utils.DaoRetrieverUtil.findOptional;
 
 /**
  * Created by igorek2312 on 29.10.16.
@@ -45,7 +46,7 @@ public class TranslationDaoImpl extends GenericDaoImpl<Translation, Long> implem
 
     @Autowired
     @Qualifier("getPartsOfSpeechByUserId")
-    private CriteriaQuery<PartOfSpeech>getPartsOfSpeechByUserId;
+    private CriteriaQuery<PartOfSpeech> getPartsOfSpeechByUserId;
 
     @Override
     public List<Translation> findFilteredUserTranslations(
@@ -70,7 +71,7 @@ public class TranslationDaoImpl extends GenericDaoImpl<Translation, Long> implem
                 .setParameter(PART_OF_SPEECH, partOfSpeech)
                 .setParameter(SOURCE_LANG_CODE, sourceLangCode)
                 .setParameter(RESULT_LANG_CODE, resultLangCode)
-                .setParameter(LEARNED,learned)
+                .setParameter(LEARNED, learned)
                 .setFirstResult((pageIndex - 1) * maxRecords)
                 .setMaxResults(maxRecords)
                 .getResultList();
@@ -141,8 +142,8 @@ public class TranslationDaoImpl extends GenericDaoImpl<Translation, Long> implem
     }
 
     @Override
-    public Optional<Boolean> existsOtherTranslationsDependedOnWord(Long translationId, Long wordId) {
-        return findOptional(() -> entityManager.createQuery(existsOtherTranslationsDependedOnWord)
+    public boolean existsOtherTranslationsDependedOnWord(Long translationId, Long wordId) {
+        return exists(() -> entityManager.createQuery(existsOtherTranslationsDependedOnWord)
                 .setParameter(TRANSLATION_ID, translationId)
                 .setParameter(WORD_ID, wordId)
                 .getSingleResult());

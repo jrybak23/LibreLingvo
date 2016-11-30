@@ -7,6 +7,7 @@ angular.module('libreLingvoApp')
   .controller('NavBarCtrl', function ($scope,
                                       $window,
                                       $rootScope,
+                                      $state,
                                       oauth2,
                                       messageBox,
                                       Lessons,
@@ -44,7 +45,8 @@ angular.module('libreLingvoApp')
             {lessonId: lesson.id},
             function () {
               lessonsUpdater.updateLessons();
-              $rootScope.updateTranslations();
+              if ($state.$current.name === 'user-translations')
+                $rootScope.updateTranslations();
             },
             function (error) {
               if (error.data && error.data.errorCode === 404) {

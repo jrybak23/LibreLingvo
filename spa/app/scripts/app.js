@@ -157,6 +157,13 @@ angular
         controllerAs: 'users'
       })
       .state({
+        name: 'admin.utils',
+        url: '/utils',
+        templateUrl: 'views/utils.html',
+        controller: 'UtilsCtrl',
+        controllerAs: 'utils'
+      })
+      .state({
         name: 'reset-password',
         url: '/reset-password?reset-key',
         templateUrl: 'views/reset-password.html',

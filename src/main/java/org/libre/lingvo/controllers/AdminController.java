@@ -1,8 +1,10 @@
 package org.libre.lingvo.controllers;
 
 import org.libre.lingvo.dto.FullUserDetailsDto;
+import org.libre.lingvo.dto.ReadOnlyUserDto;
 import org.libre.lingvo.dto.UserItemDto;
 import org.libre.lingvo.services.UserService;
+import org.libre.lingvo.utils.ReadOnlyAccountUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
@@ -37,5 +39,17 @@ public class AdminController {
     @PreAuthorize("hasAuthority('ROLE_ADMIN')")
     public void deleteUser(@PathVariable Long userId) {
         userService.deleteUser(userId);
+    }
+
+    @RequestMapping(value = "/users/read-only", method = RequestMethod.PUT)
+    @PreAuthorize("hasAuthority('ROLE_ADMIN')")
+    public void updateReadOnly(@RequestBody ReadOnlyUserDto dto) {
+        ReadOnlyAccountUtil.setEnabled(dto.isEnabled());
+    }
+
+    @RequestMapping(value = "/users/read-only", method = RequestMethod.GET)
+    @PreAuthorize("hasAuthority('ROLE_ADMIN')")
+    public ReadOnlyUserDto getReadOnly() {
+        return new ReadOnlyUserDto(ReadOnlyAccountUtil.isEnabled());
     }
 }

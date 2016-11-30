@@ -26,6 +26,7 @@ import java.util.Objects;
 import java.util.stream.Collectors;
 
 import static org.libre.lingvo.utils.EntityUtil.findOrThrowNotFound;
+import static org.libre.lingvo.utils.ReadOnlyAccountUtil.isReadOnly;
 
 /**
  * Created by igorek2312 on 09.11.16.
@@ -115,7 +116,7 @@ public class LessonServiceImpl implements LessonService {
 
         lesson.increaseCompletedPartsOfLesson();
 
-        if (lesson.isCompleted())
+        if (lesson.isCompleted() && !isReadOnly(user.getEmail()))
             lesson.getTranslations()
                     .forEach(trn -> {
                         trn.setLearned(true);

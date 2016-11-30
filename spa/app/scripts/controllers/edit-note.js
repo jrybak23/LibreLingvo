@@ -36,7 +36,6 @@ angular.module('libreLingvoApp')
         editor.on('init', function(args) {
           editor = args.target;
 
-          console.log("init");
           editor.on('NodeChange', function(e) {
             if (e && e.element.nodeName.toLowerCase() == 'img') {
               tinyMCE.DOM.setAttribs(e.element, {'height': 'auto', 'style' : 'max-width:300px;'});
@@ -46,9 +45,6 @@ angular.module('libreLingvoApp')
 
           editor.on('change', function(args) {
             editor = args.target;
-
-            console.log("change", args);
-            console.log("editor", editor);
           });
       },
       inline: false,

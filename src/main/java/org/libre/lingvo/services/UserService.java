@@ -35,4 +35,5 @@ public interface UserService {
     String generateResetKey(String email);
 
     void resetPassword(String resetKey, String newPassword);
+
 }

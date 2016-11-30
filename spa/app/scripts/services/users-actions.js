@@ -11,7 +11,6 @@ angular.module('libreLingvoApp')
   .factory('UsersActions', function ($resource, HostUrl) {
     return $resource(HostUrl+'/api/v1/users/:action',
       {
-        verificationToken:'@id',
         action:'@actionName'
       },
       {

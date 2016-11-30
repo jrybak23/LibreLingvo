@@ -21,6 +21,7 @@ import java.util.UUID;
 import java.util.stream.Collectors;
 
 import static org.libre.lingvo.utils.EntityUtil.findOrThrowNotFound;
+import static org.libre.lingvo.utils.ReadOnlyAccountUtil.throwIfReadOnly;
 
 /**
  * Created by igorek2312 on 08.09.16.
@@ -61,12 +62,13 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public User createUser(UserRegistrationDto dto) {
-        if (userDao.existWithEmail(dto.getEmail()).orElse(false))
+        if (userDao.existsWithEmail(dto.getEmail()))
             throw new CustomErrorException(CustomError.USER_WITH_SUCH_EMAIL_ALREADY_EXISTS);
 
+        Role role = roleDao.findByName("ROLE_USER").get();
         User user = userDtoConverter.convertFromUserRegistrationDto(dto);
         user.setEnabled(false);
-        Role role = roleDao.findByName("ROLE_USER");
+
         UserRole userRole = new UserRole();
         userRole.setUser(user);
         userRole.setRole(role);
@@ -100,6 +102,8 @@ public class UserServiceImpl implements UserService {
     @Override
     public void updateUser(long userId, UserUpdatingDto dto) {
         User user = findOrThrowNotFound(userDao, userId);
+        throwIfReadOnly(user.getEmail());
+
         user.setName(dto.getName());
         user.setTranslationsInOneLesson(dto.getTranslationsInOneLesson());
         user.setLessonPartsCount(dto.getLessonPartsCount());
@@ -121,6 +125,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public void changePassword(long userId, ChangePasswordDto dto) {
         User user = findOrThrowNotFound(userDao, userId);
+        throwIfReadOnly(user.getEmail());
         if (!user.getPassword().equals(dto.getOldPassword()))
             throw new CustomErrorException(CustomError.WRONG_OLD_PASSWORD);
 
@@ -163,4 +168,6 @@ public class UserServiceImpl implements UserService {
         user.setResetKey(null);
         userDao.update(user);
     }
+
+
 }

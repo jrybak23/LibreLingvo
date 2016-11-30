@@ -44,7 +44,13 @@ public enum CustomError {
             "Wrong old password",
             "error.wrong.old.password"
     ),
-    LESSON_WAIT_DATE_IS_FUTURE(7,HttpStatus.BAD_REQUEST,"The opening time of lesson is future"),
+    LESSON_WAIT_DATE_IS_FUTURE(7, HttpStatus.BAD_REQUEST, "The opening time of lesson is future"),
+    FORBIDDEN_FOR_READONLY_ACCOUNT(
+            8,
+            HttpStatus.FORBIDDEN,
+            "Forbidden for readonly account",
+            "error.forbidden.for.readonly.account"
+    ),
     ACCESS_DENIED(401, HttpStatus.UNAUTHORIZED, null, "error.access.denied"),
     FORBIDDEN(403, HttpStatus.FORBIDDEN, null, "error.forbidden"),
     NO_ENTITY_WITH_SUCH_ID(404, HttpStatus.NOT_FOUND, "No entity %s with id %s");

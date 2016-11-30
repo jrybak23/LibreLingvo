@@ -404,6 +404,11 @@ module.exports = function (grunt) {
           dest: '<%= yeoman.dist %>'
         }, {
           expand: true,
+          cwd: '<%= yeoman.app %>',
+          src: 'artifacts/*',
+          dest: '<%= yeoman.dist %>'
+        }, {
+          expand: true,
           cwd: 'bower_components/tinymce/themes/modern/',
           src: ['**'],
           dest: '<%= yeoman.dist %>/scripts/themes/modern/'

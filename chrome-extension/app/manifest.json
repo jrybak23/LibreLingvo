@@ -1,8 +1,8 @@
 {
-  "name": "__MSG_appName__",
-  "version": "0.0.1",
+  "name": "Save to LibreLingvo",
+  "version": "0.0.0",
   "manifest_version": 2,
-  "description": "__MSG_appDescription__",
+  "description": "Save translations from Google Translate to LibreLingvo",
   "icons": {
     "512": "images/save_translate_512.png"
   },

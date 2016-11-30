@@ -1,6 +1,7 @@
 package org.libre.lingvo.services;
 
 import org.libre.lingvo.dto.*;
+import org.libre.lingvo.entities.User;
 import org.libre.lingvo.model.PartOfSpeech;
 import org.libre.lingvo.model.SortingOptions;
 import org.libre.lingvo.model.TranslationSortFieldOptions;
@@ -37,10 +38,10 @@ public interface TranslationService {
 
     TranslationNoteDto getUserTranslationNote(Long userId, Long translationId);
 
-    void updateTranslation(Long userId, Long translationId, InputTranslationDto dto);
-    void updateTranslationNote(Long userId, Long translationId, TranslationNoteDto dto);
+    void updateTranslation(User user, Long translationId, InputTranslationDto dto);
+    void updateTranslationNote(User user, Long translationId, TranslationNoteDto dto);
 
     void deleteUserTranslation(Long userId, Long translationId);
 
-    void deleteUserTranslations(Long userId, List<Long> ids);
+    void deleteUserTranslations(User user, List<Long> ids);
 }

@@ -34,9 +34,6 @@ public class User implements Serializable {
     @OneToMany(mappedBy = "pk.user", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     private Set<UserRole> userRoles = new HashSet<>();
 
-    /*@OneToOne(mappedBy = "user", cascade = CascadeType.REMOVE, fetch = FetchType.LAZY)
-    private VerificationToken verificationToken;*/
-
     @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY, optional = false)
     @JoinColumn
     private Folder rootFolder;
@@ -47,7 +44,7 @@ public class User implements Serializable {
 
     private int minutesBetweenLessonParts = 10;
 
-    private boolean autoPlayDuringLesson=true;
+    private boolean autoPlayDuringLesson = true;
 
     @Column(length = 36)
     private String activationKey;

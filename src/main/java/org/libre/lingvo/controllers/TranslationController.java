@@ -98,7 +98,7 @@ public class TranslationController {
             @PathVariable Long translationId
     ) {
         translationService.updateTranslation(
-                user.getId(),
+                user,
                 translationId,
                 dto
         );
@@ -113,7 +113,7 @@ public class TranslationController {
             @PathVariable Long translationId
     ) {
         translationService.updateTranslationNote(
-                user.getId(),
+                user,
                 translationId,
                 dto
         );
@@ -136,6 +136,6 @@ public class TranslationController {
             @AuthenticationPrincipal User user,
             @RequestParam List<Long> ids
     ) {
-        translationService.deleteUserTranslations(user.getId(), ids);
+        translationService.deleteUserTranslations(user, ids);
     }
 }

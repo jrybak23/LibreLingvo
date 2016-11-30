@@ -62,6 +62,9 @@
         <div class="col-sm-12" id="tool-panel-container">
           <div ui-scrollpoint="-45" id="tool-panel" class="panel" ng-hide="hideAffix">
             <div class="panel-body">
+              <button class="btn btn-info" ng-click="updateTranslations()">
+                <i class="fa fa-refresh"></i>
+              </button>
               <button class="btn btn-info" ng-click="learnTranslations(false)" ng-show="translations.length">
                 <i class="fa fa-graduation-cap"></i>{{'label.learn.current.n.translations' | translate:selectionInterpol}}
               </button>

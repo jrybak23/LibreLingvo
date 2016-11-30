@@ -51,7 +51,7 @@ public interface TranslationDao extends GenericDao<Translation, Long> {
             String resultLangKey
     );
 
-    Optional<Boolean> existsOtherTranslationsDependedOnWord(Long translationId, Long wordId);
+    boolean existsOtherTranslationsDependedOnWord(Long translationId, Long wordId);
 
     List<Tuple> getLangKeysByUserId(Long userId);
 

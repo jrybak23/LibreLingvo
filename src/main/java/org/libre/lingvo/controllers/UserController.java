@@ -18,6 +18,8 @@ import org.springframework.web.bind.annotation.*;
 import javax.servlet.http.HttpServletRequest;
 import java.util.Set;
 
+import static org.libre.lingvo.utils.ReadOnlyAccountUtil.isReadOnly;
+
 /**
  * Created by igorek2312 on 08.09.16.
  */
@@ -74,8 +76,9 @@ public class UserController {
     }
 
     @RequestMapping(value = "/oauth/revoke-token", method = RequestMethod.DELETE)
-    public void logout(HttpServletRequest request) {
-        RequestUtil.getAccessTokenValue(request).ifPresent(userService::revokeToken);
+    public void logout(HttpServletRequest request, @AuthenticationPrincipal User user) {
+        if (!isReadOnly(user.getEmail()))
+            RequestUtil.getAccessTokenValue(request).ifPresent(userService::revokeToken);
     }
 
     @RequestMapping(value = "/users", method = RequestMethod.POST)

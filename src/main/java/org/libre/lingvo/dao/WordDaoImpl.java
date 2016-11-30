@@ -8,7 +8,7 @@ import org.springframework.stereotype.Repository;
 import javax.persistence.criteria.CriteriaQuery;
 import java.util.Optional;
 
-import static org.libre.lingvo.utils.optional.dao.OptionalDaoUtil.findOptional;
+import static org.libre.lingvo.utils.DaoRetrieverUtil.findOptional;
 
 /**
  * Created by igorek2312 on 29.10.16.

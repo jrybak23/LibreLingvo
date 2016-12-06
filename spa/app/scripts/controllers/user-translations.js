@@ -19,7 +19,8 @@ angular.module('libreLingvoApp')
               tts,
               Users,
               Lessons,
-              lessonsUpdater) {
+              lessonsUpdater,
+              Tags) {
       Users.get({'userId': 'me'}, function (response) {
         $scope.maxRecords = response.translationsInOneLesson;
         setTimeout(function () {
@@ -83,7 +84,8 @@ angular.module('libreLingvoApp')
             'result-lang-code': langCodesPair ? langCodesPair.result : null,
             'sort-field': $scope.sortField,
             'sort-order': ($scope.sortField && !$scope.sortOrder) ? 'ASC' : $scope.sortOrder,
-            'learned': $scope.learned == 'ALL' ? null : $scope.learned
+            'learned': $scope.learned == 'ALL' ? null : $scope.learned,
+            'tag-ids': $scope.selectedTagsIds
           },
           function (response) {
             $scope.translations = response.translations;
@@ -175,4 +177,123 @@ angular.module('libreLingvoApp')
         else
           $scope.selectedTranslationIds.push(id);
       };
+
+      $scope.createTag = function () {
+        $rootScope.hideAffix = true;
+        messageBox.showInputDialog("label.message.title.input.tag.name").then(
+          function (name) {
+            $rootScope.hideAffix = false;
+            Tags.save(
+              {},
+              {
+                name: name
+              },
+              function () {
+                $scope.updateTags();
+              }
+            );
+          },
+          function () {
+            $rootScope.hideAffix = false;
+          }
+        );
+      };
+
+      $scope.updateTags = function () {
+        Tags.query(
+          {},
+          function (response) {
+            $scope.tags = response;
+          }
+        )
+      };
+
+      $scope.selectedTagsIds = [];
+
+      $scope.toggleTag = function (tag) {
+        var index = $scope.selectedTagsIds.indexOf(tag.id);
+        if (index > -1)
+          $scope.selectedTagsIds.splice(index, 1);
+        else
+          $scope.selectedTagsIds.push(tag.id);
+
+        $rootScope.updateTranslations();
+      };
+
+      $scope.isTagSelected = function (tag) {
+        return $scope.selectedTagsIds.indexOf(tag.id) > -1;
+      };
+
+      $scope.renameTag = function (tag) {
+        $rootScope.hideAffix = true;
+        messageBox.showInputDialog("label.message.title.input.tag.name", tag.name).then(
+          function (name) {
+            $rootScope.hideAffix = false;
+            Tags.update(
+              {tagId: tag.id},
+              {name: name},
+              function () {
+                $scope.updateTags();
+              }
+            );
+          },
+          function () {
+            $rootScope.hideAffix = false;
+          }
+        );
+      };
+
+      $scope.deleteTag = function (tag) {
+        $rootScope.hideAffix = true;
+        messageBox.showGeneralQuestion('question.on.delete.tag').then(
+          function () {
+            $rootScope.hideAffix = false;
+            Tags.delete(
+              {
+                tagId: tag.id,
+              },
+              function () {
+                $scope.updateTags();
+              },
+              function (error) {
+                if (error.data && error.data.errorCode === 404)
+                  $scope.updateTags();
+              }
+            );
+          },
+          function () {
+            $rootScope.hideAffix = false;
+          }
+        );
+      };
+
+      $scope.sortableOptions = {
+        stop: function (e, ui) {
+          Tags.update(
+            {},
+            $scope.tags
+          );
+        }
+      };
+
+      $scope.updateTags();
+
+      $scope.tagTranslations = function () {
+        messageBox.showSelectTagDialog().then(
+          function (tag) {
+            Tags.update(
+              {
+                tagId: tag.id,
+                field: 'translations'
+              },
+              $scope.selectedTranslationIds,
+              function () {
+
+              }
+            );
+          }
+        );
+      }
+
+
     });

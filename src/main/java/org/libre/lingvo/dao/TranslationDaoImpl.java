@@ -2,7 +2,7 @@ package org.libre.lingvo.dao;
 
 import com.google.common.cache.LoadingCache;
 import org.libre.lingvo.entities.Translation;
-import org.libre.lingvo.model.*;
+import org.libre.lingvo.reference.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Repository;
@@ -12,7 +12,7 @@ import javax.persistence.criteria.CriteriaQuery;
 import java.util.List;
 import java.util.Optional;
 
-import static org.libre.lingvo.model.ParameterNames.*;
+import static org.libre.lingvo.reference.ParameterNames.*;
 import static org.libre.lingvo.utils.DaoRetrieverUtil.exists;
 import static org.libre.lingvo.utils.DaoRetrieverUtil.findOptional;
 
@@ -55,10 +55,12 @@ public class TranslationDaoImpl extends GenericDaoImpl<Translation, Long> implem
             PartOfSpeech partOfSpeech,
             String sourceLangCode,
             String resultLangCode,
-            Boolean learned, TranslationSortFieldOptions sortFieldOption,
+            Boolean learned,
+            List<Long> tagIds,
             SortingOptions sortingOption,
             Integer pageIndex,
-            Integer maxRecords
+            Integer maxRecords,
+            TranslationSortFieldOptions sortFieldOption
     ) {
         CriteriaQuery<Translation> query = filteredTranslationsQueries.getUnchecked(new TranslationsCriteria(
                 ActionOptions.FIND,
@@ -72,6 +74,7 @@ public class TranslationDaoImpl extends GenericDaoImpl<Translation, Long> implem
                 .setParameter(SOURCE_LANG_CODE, sourceLangCode)
                 .setParameter(RESULT_LANG_CODE, resultLangCode)
                 .setParameter(LEARNED, learned)
+                /*.setParameter(TAG_IDS, tagIds)*/
                 .setFirstResult((pageIndex - 1) * maxRecords)
                 .setMaxResults(maxRecords)
                 .getResultList();

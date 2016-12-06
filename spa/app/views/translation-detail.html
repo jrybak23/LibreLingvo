@@ -81,3 +81,15 @@
     </a>
   </div>
 </div>
+<hr>
+<ul class="list-group" ng-show="tags.length">
+  <li ng-repeat="tag in tags"
+      class="list-group-item">
+    <span>
+      <i class="fa fa-tag"></i> {{tag.name}}
+    </span>
+    <span class="pull-right" ng-click="removeTag(tag)">
+      <i class="fa fa-times"></i>
+    </span>
+  </li>
+</ul>

@@ -1,8 +1,5 @@
 package org.libre.lingvo.utils;
 
-import org.libre.lingvo.dto.exception.CustomError;
-import org.libre.lingvo.dto.exception.CustomErrorException;
-
 import javax.servlet.http.HttpServletRequest;
 import java.util.Optional;
 

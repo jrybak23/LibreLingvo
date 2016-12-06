@@ -1,6 +1,6 @@
 package org.libre.lingvo.dto;
 
-import org.libre.lingvo.model.PartOfSpeech;
+import org.libre.lingvo.reference.PartOfSpeech;
 
 import java.util.List;
 

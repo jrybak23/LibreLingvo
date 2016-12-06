@@ -9,7 +9,7 @@ import org.springframework.context.annotation.Configuration;
 
 import javax.persistence.criteria.*;
 
-import static org.libre.lingvo.model.ParameterNames.USER_ID;
+import static org.libre.lingvo.reference.ParameterNames.USER_ID;
 
 /**
  * Created by igorek2312 on 12.11.16.

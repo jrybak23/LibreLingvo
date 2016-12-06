@@ -1,7 +1,7 @@
 package org.libre.lingvo.dto;
 
 import org.hibernate.validator.constraints.NotBlank;
-import org.libre.lingvo.model.PartOfSpeech;
+import org.libre.lingvo.reference.PartOfSpeech;
 
 import javax.validation.constraints.Size;
 

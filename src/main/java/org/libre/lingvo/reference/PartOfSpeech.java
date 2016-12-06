@@ -1,4 +1,4 @@
-package org.libre.lingvo.model;
+package org.libre.lingvo.reference;
 
 /**
  * Created by igorek2312 on 29.10.16.

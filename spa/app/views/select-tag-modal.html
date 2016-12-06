@@ -1,0 +1,26 @@
+<div class="modal-content panel-success">
+  <div class="modal-header panel-heading">
+    <button type="button" class="close" data-dismiss="modal" ng-click="onCancel()" aria-hidden="true">&times;</button>
+    <h4 class="modal-title">{{'label.message.title.select.tag' | translate}}</h4>
+  </div>
+  <div class="modal-body panel-body">
+    <ul class="list-group">
+      <li ng-repeat="tag in tags"
+          class="list-group-item"
+          ng-class="{active: hover}"
+          ng-mouseenter="hover = true"
+          ng-mouseleave="hover = false"
+          ng-click="selectTag(tag)">
+
+        <span>
+              <i class="fa fa-tag"></i> {{tag.name}}
+        </span>
+      </li>
+    </ul>
+  </div>
+  <div class="modal-footer panel-footer">
+    <button type="button" class="btn btn-primary" data-dismiss="modal" ng-click="onCancel()">
+      {{'label.cancel' | translate}}
+    </button>
+  </div>
+</div>

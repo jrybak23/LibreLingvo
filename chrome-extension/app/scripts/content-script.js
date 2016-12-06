@@ -59,8 +59,8 @@ $.get(chrome.extension.getURL('/modal.html'), function (data) {
 
         if (error.responseText) {
           var err = JSON.parse(error.responseText);
-          if (err.message)
-            showErrorMessage(err.message);
+          if (err.fieldErrors)
+            showErrorMessage(err.fieldErrors[0].message);
         }
         clearForm();
       }

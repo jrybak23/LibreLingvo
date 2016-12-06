@@ -1,16 +1,19 @@
 package org.libre.lingvo.entities;
 
 import org.hibernate.annotations.Type;
-import org.libre.lingvo.model.PartOfSpeech;
+import org.libre.lingvo.reference.PartOfSpeech;
 
 import javax.persistence.*;
+import java.io.Serializable;
 import java.util.Date;
+import java.util.HashSet;
+import java.util.Set;
 
 /**
  * Created by igorek2312 on 26.10.16.
  */
 @Entity
-public class Translation {
+public class Translation implements Serializable {
     @Id
     @GeneratedValue
     private Long id;
@@ -34,10 +37,6 @@ public class Translation {
     @Column(nullable = false)
     private boolean learned=false;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn
-    private Folder folder;
-
     @Type(type="text")
     private String note;
 
@@ -54,6 +53,9 @@ public class Translation {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn
     private Lesson lesson;
+
+    @OneToMany(mappedBy = "pk.translation",cascade = CascadeType.ALL)
+    private Set<TranslationTag> translationTags=new HashSet<>();
 
     public void incrementViews(){
         views++;
@@ -107,14 +109,6 @@ public class Translation {
         this.learned = learned;
     }
 
-    public Folder getFolder() {
-        return folder;
-    }
-
-    public void setFolder(Folder folder) {
-        this.folder = folder;
-    }
-
     public String getNote() {
         return note;
     }
@@ -153,5 +147,13 @@ public class Translation {
 
     public void setLesson(Lesson lesson) {
         this.lesson = lesson;
+    }
+
+    public Set<TranslationTag> getTranslationTags() {
+        return translationTags;
+    }
+
+    public void setTranslationTags(Set<TranslationTag> translationTags) {
+        this.translationTags = translationTags;
     }
 }

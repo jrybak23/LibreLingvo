@@ -1,0 +1,17 @@
+<div class="modal-content panel-success">
+  <div class="modal-header panel-heading">
+    <button type="button" class="close" data-dismiss="modal" ng-click="onCancel()" aria-hidden="true">&times;</button>
+    <h4 class="modal-title">{{title | translate}}</h4>
+  </div>
+  <div class="modal-body panel-body">
+    <input type="text" class="form-control" ng-model="value">
+  </div>
+  <div class="modal-footer panel-footer">
+    <button type="button" class="btn btn-danger" data-dismiss="modal" ng-click="onSubmit()">
+      ok
+    </button>
+    <button type="button" class="btn btn-primary" data-dismiss="modal" ng-click="onCancel()">
+      {{'label.cancel' | translate}}
+    </button>
+  </div>
+</div>

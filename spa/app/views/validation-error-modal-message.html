@@ -1,7 +1,7 @@
-<div class="modal-content panel panel-danger">
+<div class="modal-content panel-danger">
   <div class="modal-header panel-heading">
     <button type="button" class="close" data-dismiss="modal" ng-click="onOk()" aria-hidden="true">&times;</button>
-    <h4 class="modal-title">{{'label.message.error.title' | translate}}:</h4>
+    <h4 class="modal-title">{{'label.message.title.error' | translate}}:</h4>
   </div>
   <div class="modal-body panel-body">
     <p ng-repeat="fieldError in fieldErrors">{{fieldError.message}}</p>
@@ -10,3 +10,5 @@
     <button type="button" class="btn btn-default" data-dismiss="modal" ng-click="onOk()">Ok</button>
   </div>
 </div>
+
+

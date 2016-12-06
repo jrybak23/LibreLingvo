@@ -8,7 +8,7 @@ import org.springframework.stereotype.Repository;
 import javax.persistence.criteria.CriteriaQuery;
 import java.util.List;
 
-import static org.libre.lingvo.model.ParameterNames.USER_ID;
+import static org.libre.lingvo.reference.ParameterNames.USER_ID;
 
 /**
  * Created by igorek2312 on 08.11.16.

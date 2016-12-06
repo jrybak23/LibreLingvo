@@ -6,20 +6,21 @@ import org.libre.lingvo.dao.WordDao;
 import org.libre.lingvo.dto.*;
 import org.libre.lingvo.dto.exception.CustomError;
 import org.libre.lingvo.dto.exception.CustomErrorException;
-import org.libre.lingvo.entities.Translation;
-import org.libre.lingvo.entities.User;
-import org.libre.lingvo.entities.Word;
-import org.libre.lingvo.model.PartOfSpeech;
-import org.libre.lingvo.model.SortingOptions;
-import org.libre.lingvo.model.TranslationSortFieldOptions;
+import org.libre.lingvo.entities.*;
+import org.libre.lingvo.reference.PartOfSpeech;
+import org.libre.lingvo.reference.SortingOptions;
+import org.libre.lingvo.reference.TranslationSortFieldOptions;
+import org.libre.lingvo.utils.dto.converters.TagDtoConverter;
 import org.libre.lingvo.utils.dto.converters.TranslationDtoConverter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Objects;
+import java.util.function.Predicate;
 import java.util.function.Supplier;
 import java.util.stream.Collectors;
 
@@ -43,6 +44,9 @@ public class TranslationServiceImpl implements TranslationService {
 
     @Autowired
     TranslationDtoConverter translationDtoConverter;
+
+    @Autowired
+    private TagDtoConverter tagDtoConverter;
 
     private Supplier<Word> getWordSupplier(String text, String langKey) {
         return () -> {
@@ -99,7 +103,7 @@ public class TranslationServiceImpl implements TranslationService {
         translation.setPartOfSpeech(dto.getPartOfSpeech());
         translation.setNote(dto.getNote());
         translation.setLastModificationDate(new Date());
-        translation.setFolder(user.getRootFolder());
+        translation.setUser(user);
 
         translationDao.create(translation);
         return new CreatedResourceDto(translation.getId());
@@ -141,9 +145,13 @@ public class TranslationServiceImpl implements TranslationService {
             PartOfSpeech partOfSpeech,
             String sourceLangCode,
             String resultLangCode,
-            Boolean learned, TranslationSortFieldOptions sortField,
-            SortingOptions sortOrder
+            Boolean learned,
+            List<Long> tagIds,
+            SortingOptions sortOrder,
+            TranslationSortFieldOptions sortField
     ) {
+        if (tagIds == null) tagIds = new ArrayList<Long>();
+
         List<TranslationListItemDto> translations = translationDao.findFilteredUserTranslations(
                 userId,
                 searchSubstring,
@@ -151,13 +159,15 @@ public class TranslationServiceImpl implements TranslationService {
                 sourceLangCode,
                 resultLangCode,
                 learned,
-                sortField == null ? TranslationSortFieldOptions.SORT_MODIFICATION_DATE : sortField,
+                tagIds,
                 sortOrder == null ? SortingOptions.DESC : sortOrder,
                 pageIndex,
-                maxRecords)
+                maxRecords, sortField == null ? TranslationSortFieldOptions.SORT_MODIFICATION_DATE : sortField)
                 .stream()
+                .filter(getTranslationPredicate(tagIds))
                 .map(translationDtoConverter::convertToTranslationDto)
                 .collect(Collectors.toList());
+
 
         Long filteredRecords = translationDao.countFilteredUserTranslations(
                 userId,
@@ -167,7 +177,9 @@ public class TranslationServiceImpl implements TranslationService {
                 resultLangCode,
                 learned
         );
+
         Long totalRecords = translationDao.countTotalUserTranslations(userId);
+
         List<LangCodesPairDto> langCodes = translationDao.getLangKeysByUserId(userId)
                 .stream()
                 .map(tuple -> new LangCodesPairDto((String) tuple.get(0), (String) tuple.get(1)))
@@ -181,6 +193,14 @@ public class TranslationServiceImpl implements TranslationService {
         dto.setLangCodesPairs(langCodes);
         dto.setPartsOfSpeech(partsOfSpeech);
         return dto;
+    }
+
+    private Predicate<Translation> getTranslationPredicate(List<Long> tagIds) {
+        return translation -> tagIds.isEmpty() || translation.getTranslationTags().stream()
+                .map(TranslationTag::getPk)
+                .map(TranslationTagId::getTag)
+                .map(Tag::getId)
+                .anyMatch(tagIds::contains);
     }
 
     @Override
@@ -279,5 +299,14 @@ public class TranslationServiceImpl implements TranslationService {
         ids.forEach(
                 id -> deleteUserTranslation(user.getId(), id)
         );
+    }
+
+    @Override
+    public List<TagDto> getTranslationTags(long userId, long translationId) {
+        return findOrThrowNotFound(translationDao, translationId)
+                .getTranslationTags().stream()
+                .map(tTag -> tTag.getPk().getTag())
+                .map(tagDtoConverter::convertToTagDto)
+                .collect(Collectors.toList());
     }
 }

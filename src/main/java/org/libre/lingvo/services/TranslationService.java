@@ -2,9 +2,9 @@ package org.libre.lingvo.services;
 
 import org.libre.lingvo.dto.*;
 import org.libre.lingvo.entities.User;
-import org.libre.lingvo.model.PartOfSpeech;
-import org.libre.lingvo.model.SortingOptions;
-import org.libre.lingvo.model.TranslationSortFieldOptions;
+import org.libre.lingvo.reference.PartOfSpeech;
+import org.libre.lingvo.reference.SortingOptions;
+import org.libre.lingvo.reference.TranslationSortFieldOptions;
 
 import java.util.List;
 
@@ -30,8 +30,7 @@ public interface TranslationService {
             String sourceLangCode,
             String resultLangCode,
 
-            Boolean learned, TranslationSortFieldOptions sortField,
-            SortingOptions sortOrder
+            Boolean learned, List<Long> tagIds, SortingOptions sortOrder, TranslationSortFieldOptions sortField
     );
 
     TranslationDetailDto getUserTranslationDetailDto(Long userId, Long translationId);
@@ -44,4 +43,6 @@ public interface TranslationService {
     void deleteUserTranslation(Long userId, Long translationId);
 
     void deleteUserTranslations(User user, List<Long> ids);
+
+    List<TagDto> getTranslationTags(long userId,long translationId);
 }

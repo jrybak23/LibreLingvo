@@ -26,7 +26,8 @@ angular
     'ui.tinymce',
     'angularMoment',
     'ui.scrollpoint',
-    'timer'
+    'timer',
+    'ui.sortable',
   ])
   .constant('GRUNT_SERVE_URL', 'http://localhost:9000')
   .constant('TOMCAT_URL', 'http://localhost:8080')

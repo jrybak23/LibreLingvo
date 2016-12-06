@@ -8,7 +8,7 @@ import org.springframework.context.annotation.Configuration;
 import javax.persistence.criteria.*;
 import java.util.Date;
 
-import static org.libre.lingvo.model.ParameterNames.*;
+import static org.libre.lingvo.reference.ParameterNames.*;
 
 
 /**

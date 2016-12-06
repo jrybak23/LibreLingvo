@@ -2,9 +2,9 @@ package org.libre.lingvo.controllers;
 
 import org.libre.lingvo.dto.*;
 import org.libre.lingvo.entities.User;
-import org.libre.lingvo.model.PartOfSpeech;
-import org.libre.lingvo.model.SortingOptions;
-import org.libre.lingvo.model.TranslationSortFieldOptions;
+import org.libre.lingvo.reference.PartOfSpeech;
+import org.libre.lingvo.reference.SortingOptions;
+import org.libre.lingvo.reference.TranslationSortFieldOptions;
 import org.libre.lingvo.services.TranslationService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -45,6 +45,7 @@ public class TranslationController {
             @RequestParam(name = "sort-field", required = false) TranslationSortFieldOptions sortField,
             @RequestParam(name = "sort-order", required = false) SortingOptions sortOrder,
             @RequestParam(name = "learned", required = false) Boolean learned,
+            @RequestParam(name = "tag-ids", required = false) List<Long> tagIds,
 
             @RequestParam(name = "source-text", required = false) String sourceText,
             @RequestParam(name = "source-lang-code", required = false) String sourceLangCode,
@@ -67,8 +68,8 @@ public class TranslationController {
                 sourceLangCode,
                 resultLangCode,
                 learned,
-                sortField,
-                sortOrder);
+                tagIds,
+                sortOrder, sortField);
     }
 
     @RequestMapping(value = "/users/me/translations/{translationId}", method = RequestMethod.GET)
@@ -137,5 +138,14 @@ public class TranslationController {
             @RequestParam List<Long> ids
     ) {
         translationService.deleteUserTranslations(user, ids);
+    }
+
+    @RequestMapping(value = "/users/me/translations/{translationId}/tags", method = RequestMethod.GET)
+    @PreAuthorize("hasAuthority('ROLE_USER')")
+    public List<TagDto> getTransaltionTags(
+            @AuthenticationPrincipal User user,
+            @PathVariable long translationId
+    ) {
+        return translationService.getTranslationTags(user.getId(), translationId);
     }
 }

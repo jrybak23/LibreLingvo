@@ -1,7 +1,5 @@
 package org.libre.lingvo.utils;
 
-import org.libre.lingvo.utils.DaoRetriever;
-
 import javax.persistence.NoResultException;
 import java.util.Optional;
 

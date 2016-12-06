@@ -1,7 +1,7 @@
 package org.libre.lingvo.dto;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
-import org.libre.lingvo.model.PartOfSpeech;
+import org.libre.lingvo.reference.PartOfSpeech;
 
 import java.util.Date;
 

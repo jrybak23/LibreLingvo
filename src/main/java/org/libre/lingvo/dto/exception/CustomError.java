@@ -51,8 +51,8 @@ public enum CustomError {
             "Forbidden for readonly account",
             "error.forbidden.for.readonly.account"
     ),
-    ACCESS_DENIED(401, HttpStatus.UNAUTHORIZED, null, "error.access.denied"),
-    FORBIDDEN(403, HttpStatus.FORBIDDEN, null, "error.forbidden"),
+    ACCESS_DENIED(401, HttpStatus.UNAUTHORIZED, HttpStatus.UNAUTHORIZED.getReasonPhrase(), "error.access.denied"),
+    FORBIDDEN(403, HttpStatus.FORBIDDEN, HttpStatus.FORBIDDEN.getReasonPhrase(), "error.forbidden"),
     NO_ENTITY_WITH_SUCH_ID(404, HttpStatus.NOT_FOUND, "No entity %s with id %s");
 
     private final int code;

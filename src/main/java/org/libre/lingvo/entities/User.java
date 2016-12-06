@@ -34,9 +34,14 @@ public class User implements Serializable {
     @OneToMany(mappedBy = "pk.user", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     private Set<UserRole> userRoles = new HashSet<>();
 
-    @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY, optional = false)
+    @OneToMany(mappedBy = "user",cascade = CascadeType.ALL)
+    private Set<Translation> translations=new HashSet<>();
+    /*@OneToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY, optional = false)
     @JoinColumn
-    private Folder rootFolder;
+    private Tag rootFolder;*/
+
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
+    private Set<Tag> tags = new HashSet<>();
 
     private int translationsInOneLesson = 15;
 
@@ -56,10 +61,6 @@ public class User implements Serializable {
     private Date registrationDate;
 
     public User() {
-        Folder root = new Folder();
-        root.setName("root");
-        setRootFolder(root);
-        root.setUser(this);
     }
 
     public User(User user) {
@@ -130,12 +131,12 @@ public class User implements Serializable {
         this.nonLocked = nonLocked;
     }
 
-    public Folder getRootFolder() {
-        return rootFolder;
+    public Set<Tag> getTags() {
+        return tags;
     }
 
-    public void setRootFolder(Folder rootFolder) {
-        this.rootFolder = rootFolder;
+    public void setTags(Set<Tag> tags) {
+        this.tags = tags;
     }
 
     public int getTranslationsInOneLesson() {
@@ -192,5 +193,13 @@ public class User implements Serializable {
 
     public void setRegistrationDate(Date registrationDate) {
         this.registrationDate = registrationDate;
+    }
+
+    public Set<Translation> getTranslations() {
+        return translations;
+    }
+
+    public void setTranslations(Set<Translation> translations) {
+        this.translations = translations;
     }
 }

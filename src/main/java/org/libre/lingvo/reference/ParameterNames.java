@@ -1,4 +1,4 @@
-package org.libre.lingvo.model;
+package org.libre.lingvo.reference;
 
 /**
  * Created by igorek2312 on 01.11.16.
@@ -18,5 +18,7 @@ public final class ParameterNames {
     public static final String ACTIVATION_KEY = "activationKey";
     public static final String RESET_KEY = "resetKey";
     public static final String EXPIRED_CURRENT_DATE = "currentDate";
+    public static final String TAG_ID = "tagId";
+    public static final String TAG_IDS = "tagIds";
 
 }

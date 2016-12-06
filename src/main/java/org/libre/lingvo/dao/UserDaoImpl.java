@@ -12,7 +12,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
-import static org.libre.lingvo.model.ParameterNames.*;
+import static org.libre.lingvo.reference.ParameterNames.*;
 import static org.libre.lingvo.utils.DaoRetrieverUtil.exists;
 import static org.libre.lingvo.utils.DaoRetrieverUtil.findOptional;
 

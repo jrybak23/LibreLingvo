@@ -1,9 +1,9 @@
 package org.libre.lingvo.dao;
 
 import org.libre.lingvo.entities.Translation;
-import org.libre.lingvo.model.PartOfSpeech;
-import org.libre.lingvo.model.SortingOptions;
-import org.libre.lingvo.model.TranslationSortFieldOptions;
+import org.libre.lingvo.reference.PartOfSpeech;
+import org.libre.lingvo.reference.SortingOptions;
+import org.libre.lingvo.reference.TranslationSortFieldOptions;
 
 import javax.persistence.Tuple;
 import java.util.List;
@@ -19,10 +19,7 @@ public interface TranslationDao extends GenericDao<Translation, Long> {
             PartOfSpeech partOfSpeech,
             String sourceLangCode,
             String resultLangCode,
-            Boolean learned, TranslationSortFieldOptions sortFieldOption,
-            SortingOptions sortingOption,
-            Integer pageIndex,
-            Integer maxRecords
+            Boolean learned, List<Long> tagIds, SortingOptions sortingOption, Integer pageIndex, Integer maxRecords, TranslationSortFieldOptions sortFieldOption
     );
 
     Long countFilteredUserTranslations(

@@ -116,7 +116,7 @@ public class LessonServiceImpl implements LessonService {
 
         lesson.increaseCompletedPartsOfLesson();
 
-        if (lesson.isCompleted() && !isReadOnly(user.getEmail()))
+        if (lesson.isCompleted() && !isReadOnly())
             lesson.getTranslations()
                     .forEach(trn -> {
                         trn.setLearned(true);

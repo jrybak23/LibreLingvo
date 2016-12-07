@@ -22,6 +22,7 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 import static org.libre.lingvo.utils.EntityUtil.findOrThrowNotFound;
+import static org.libre.lingvo.utils.ReadOnlyAccountUtil.throwIfReadOnly;
 
 /**
  * Created by igorek2312 on 03.12.16.
@@ -52,7 +53,7 @@ public class TagServiceImpl implements TagService {
                 .collect(Collectors.toList());
     }
 
-    private void checkIfUserIsOwnerOfFolder(long userId, Tag tag) {
+    private void checkIfUserIsOwnerOfTag(long userId, Tag tag) {
         if (!tag.getUser().getId().equals(userId))
             throw new CustomErrorException(CustomError.FORBIDDEN);
     }
@@ -60,6 +61,7 @@ public class TagServiceImpl implements TagService {
     @Override
     public CreatedResourceDto createTag(long userId, TagDto dto) {
         User user = findOrThrowNotFound(userDao, userId);
+        throwIfReadOnly();
         user.getTags().forEach(Tag::increasePosition);
 
         Tag tag = new Tag();
@@ -72,10 +74,10 @@ public class TagServiceImpl implements TagService {
         return new CreatedResourceDto(tag.getId());
     }
 
-    @Override
     public void deleteTag(long userId, long tagId) {
         Tag tag = findOrThrowNotFound(tagDao, tagId);
-        checkIfUserIsOwnerOfFolder(userId, tag);
+        checkIfUserIsOwnerOfTag(userId, tag);
+        throwIfReadOnly();
         tag.getTranslationTags().forEach(
                 translationTagDao::delete
         );
@@ -99,7 +101,7 @@ public class TagServiceImpl implements TagService {
         tags.stream()
                 .findFirst()
                 .ifPresent(
-                        tag -> checkIfUserIsOwnerOfFolder(userId, tag)
+                        tag -> checkIfUserIsOwnerOfTag(userId, tag)
                 );
 
         final int[] position = {0};
@@ -115,13 +117,15 @@ public class TagServiceImpl implements TagService {
 
     @Override
     public void renameTag(long tagId, String name) {
+        throwIfReadOnly();
         Tag tag = findOrThrowNotFound(tagDao, tagId);
         tag.setName(name);
         tagDao.update(tag);
     }
 
     @Override
-    public void addTranslations(long tagId, List<Long> translationIds) {
+    public void tagTranslations(long tagId, List<Long> translationIds) {
+        throwIfReadOnly();
         Tag tag = findOrThrowNotFound(tagDao, tagId);
         List<Translation> translations = translationDao.getByIds(translationIds);
         translations.forEach(translation -> {

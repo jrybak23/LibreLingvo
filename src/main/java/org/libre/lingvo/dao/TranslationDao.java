@@ -28,7 +28,7 @@ public interface TranslationDao extends GenericDao<Translation, Long> {
             PartOfSpeech partOfSpeech,
             String sourceLangCode,
             String resultLangCode,
-            Boolean learned);
+            Boolean learned, List<Long> tagIds);
 
     Long countTotalUserTranslations(Long userId);
 

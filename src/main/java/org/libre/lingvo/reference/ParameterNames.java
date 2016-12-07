@@ -11,14 +11,11 @@ public final class ParameterNames {
     public static final String RESULT_TEXT = "resultText";
     public static final String SOURCE_LANG_CODE = "sourceLangCode";
     public static final String RESULT_LANG_CODE = "resultLangCode";
-    public static final String SEARCH_SUBSTRING = "searchSubstring";
     public static final String PART_OF_SPEECH = "partOfSpeech";
-    public static final String LEARNED = "learned";
     public static final String EMAIL = "email";
     public static final String ACTIVATION_KEY = "activationKey";
     public static final String RESET_KEY = "resetKey";
     public static final String EXPIRED_CURRENT_DATE = "currentDate";
     public static final String TAG_ID = "tagId";
-    public static final String TAG_IDS = "tagIds";
 
 }

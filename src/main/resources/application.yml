@@ -32,19 +32,19 @@ hibernate:
       auto: create
       import_files: init-database.sql
       import_files_sql_extractor: org.hibernate.tool.hbm2ddl.MultipleLinesSqlCommandExtractor
----
-spring:
-  profiles: cloud
-hibernate:
-  hbm2ddl:
-      auto: create
-      import_files: init-database.sql
-      import_files_sql_extractor: org.hibernate.tool.hbm2ddl.MultipleLinesSqlCommandExtractor
 #---
 #spring:
 #  profiles: cloud
 #hibernate:
 #  hbm2ddl:
-#      auto: update
-#      import_files: null
-#      import_files_sql_extractor: null
+#      auto: create
+#      import_files: init-database.sql
+#      import_files_sql_extractor: org.hibernate.tool.hbm2ddl.MultipleLinesSqlCommandExtractor
+---
+spring:
+  profiles: cloud
+hibernate:
+  hbm2ddl:
+      auto: update
+      import_files: null
+      import_files_sql_extractor: null

@@ -76,8 +76,8 @@ public class UserController {
     }
 
     @RequestMapping(value = "/oauth/revoke-token", method = RequestMethod.DELETE)
-    public void logout(HttpServletRequest request, @AuthenticationPrincipal User user) {
-        if (!isReadOnly(user.getEmail()))
+    public void logout(HttpServletRequest request) {
+        if (!isReadOnly())
             RequestUtil.getAccessTokenValue(request).ifPresent(userService::revokeToken);
     }
 

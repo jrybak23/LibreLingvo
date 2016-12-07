@@ -21,7 +21,6 @@
     <orderEntry type="library" name="Gradle: org.springframework.security.oauth:spring-security-oauth2:2.0.11.RELEASE" level="project" />
     <orderEntry type="library" name="Gradle: org.modelmapper:modelmapper:0.7.7" level="project" />
     <orderEntry type="library" name="Gradle: org.freemarker:freemarker:2.3.23" level="project" />
-    <orderEntry type="library" name="Gradle: com.google.guava:guava:20.0" level="project" />
     <orderEntry type="library" name="Gradle: org.springframework.cloud:spring-cloud-core:1.2.3.RELEASE" level="project" />
     <orderEntry type="library" name="Gradle: org.springframework.cloud:spring-cloud-spring-service-connector:1.2.3.RELEASE" level="project" />
     <orderEntry type="library" name="Gradle: org.springframework.cloud:spring-cloud-cloudfoundry-connector:1.2.3.RELEASE" level="project" />

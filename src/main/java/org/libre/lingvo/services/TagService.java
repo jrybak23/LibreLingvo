@@ -2,6 +2,7 @@ package org.libre.lingvo.services;
 
 import org.libre.lingvo.dto.CreatedResourceDto;
 import org.libre.lingvo.dto.TagDto;
+import org.libre.lingvo.entities.User;
 
 import java.util.List;
 
@@ -13,13 +14,13 @@ public interface TagService {
 
     CreatedResourceDto createTag(long userId, TagDto dto);
 
-    void deleteTag(long userId, long folderId);
+    void deleteTag(long userId, long tagId);
 
     void updateTagsPosition(long userId, List<TagDto> dtos);
 
-    void renameTag(long folderId, String name);
+    void renameTag(long tagId, String name);
 
-    void addTranslations(long tagId, List<Long> translationIds);
+    void tagTranslations(long tagId, List<Long> translationIds);
 
     void removeTranslation(long tagId, long translationId);
 }

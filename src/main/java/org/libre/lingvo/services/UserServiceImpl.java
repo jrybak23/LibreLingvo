@@ -102,7 +102,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public void updateUser(long userId, UserUpdatingDto dto) {
         User user = findOrThrowNotFound(userDao, userId);
-        throwIfReadOnly(user.getEmail());
+        throwIfReadOnly();
 
         user.setName(dto.getName());
         user.setTranslationsInOneLesson(dto.getTranslationsInOneLesson());
@@ -125,7 +125,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public void changePassword(long userId, ChangePasswordDto dto) {
         User user = findOrThrowNotFound(userDao, userId);
-        throwIfReadOnly(user.getEmail());
+        throwIfReadOnly();
         if (!user.getPassword().equals(dto.getOldPassword()))
             throw new CustomErrorException(CustomError.WRONG_OLD_PASSWORD);
 

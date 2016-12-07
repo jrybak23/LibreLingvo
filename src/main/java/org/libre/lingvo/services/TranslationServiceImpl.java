@@ -6,7 +6,9 @@ import org.libre.lingvo.dao.WordDao;
 import org.libre.lingvo.dto.*;
 import org.libre.lingvo.dto.exception.CustomError;
 import org.libre.lingvo.dto.exception.CustomErrorException;
-import org.libre.lingvo.entities.*;
+import org.libre.lingvo.entities.Translation;
+import org.libre.lingvo.entities.User;
+import org.libre.lingvo.entities.Word;
 import org.libre.lingvo.reference.PartOfSpeech;
 import org.libre.lingvo.reference.SortingOptions;
 import org.libre.lingvo.reference.TranslationSortFieldOptions;
@@ -20,7 +22,6 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Objects;
-import java.util.function.Predicate;
 import java.util.function.Supplier;
 import java.util.stream.Collectors;
 
@@ -72,7 +73,7 @@ public class TranslationServiceImpl implements TranslationService {
                     error.setDescriptionArgs(User.class.getName(), userId);
                     return new CustomErrorException(error);
                 });
-        throwIfReadOnly(user.getEmail());
+        throwIfReadOnly();
         translation.setUser(user);
 
         String sourceText = dto.getSourceText().trim();
@@ -164,7 +165,6 @@ public class TranslationServiceImpl implements TranslationService {
                 pageIndex,
                 maxRecords, sortField == null ? TranslationSortFieldOptions.SORT_MODIFICATION_DATE : sortField)
                 .stream()
-                .filter(getTranslationPredicate(tagIds))
                 .map(translationDtoConverter::convertToTranslationDto)
                 .collect(Collectors.toList());
 
@@ -175,7 +175,8 @@ public class TranslationServiceImpl implements TranslationService {
                 partOfSpeech,
                 sourceLangCode,
                 resultLangCode,
-                learned
+                learned,
+                tagIds
         );
 
         Long totalRecords = translationDao.countTotalUserTranslations(userId);
@@ -193,14 +194,6 @@ public class TranslationServiceImpl implements TranslationService {
         dto.setLangCodesPairs(langCodes);
         dto.setPartsOfSpeech(partsOfSpeech);
         return dto;
-    }
-
-    private Predicate<Translation> getTranslationPredicate(List<Long> tagIds) {
-        return translation -> tagIds.isEmpty() || translation.getTranslationTags().stream()
-                .map(TranslationTag::getPk)
-                .map(TranslationTagId::getTag)
-                .map(Tag::getId)
-                .anyMatch(tagIds::contains);
     }
 
     @Override
@@ -241,7 +234,7 @@ public class TranslationServiceImpl implements TranslationService {
     public void updateTranslation(User user, Long translationId, InputTranslationDto dto) {
         Translation translation = findOrThrowNotFound(translationDao, translationId);
         checkIfUserIsOwnerOfTranslation(user.getId(), translation);
-        throwIfReadOnly(user.getEmail());
+        throwIfReadOnly();
 
         Word sourceWord = translation.getSourceWord();
         Word resultWord = translation.getResultWord();
@@ -276,7 +269,7 @@ public class TranslationServiceImpl implements TranslationService {
     public void updateTranslationNote(User user, Long translationId, TranslationNoteDto dto) {
         Translation translation = findOrThrowNotFound(translationDao, translationId);
         checkIfUserIsOwnerOfTranslation(user.getId(), translation);
-        throwIfReadOnly(user.getEmail());
+        throwIfReadOnly();
 
         translation.setNote(dto.getNote());
         translation.setLastModificationDate(new Date());
@@ -295,7 +288,7 @@ public class TranslationServiceImpl implements TranslationService {
 
     @Override
     public void deleteUserTranslations(User user, List<Long> ids) {
-        throwIfReadOnly(user.getEmail());
+        throwIfReadOnly();
         ids.forEach(
                 id -> deleteUserTranslation(user.getId(), id)
         );

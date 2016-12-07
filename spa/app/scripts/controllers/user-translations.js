@@ -279,8 +279,10 @@ angular.module('libreLingvoApp')
       $scope.updateTags();
 
       $scope.tagTranslations = function () {
+        $rootScope.hideAffix = true;
         messageBox.showSelectTagDialog().then(
           function (tag) {
+            $rootScope.hideAffix = false;
             Tags.update(
               {
                 tagId: tag.id,
@@ -291,6 +293,9 @@ angular.module('libreLingvoApp')
 
               }
             );
+          },
+          function () {
+            $rootScope.hideAffix = false;
           }
         );
       }

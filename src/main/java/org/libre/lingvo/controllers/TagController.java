@@ -35,7 +35,6 @@ public class TagController {
         return tagService.createTag(user.getId(), dto);
     }
 
-
     @RequestMapping(value = "/users/me/tags/{tagId}", method = RequestMethod.DELETE)
     @PreAuthorize("hasAuthority('ROLE_USER')")
     @ResponseStatus(HttpStatus.NO_CONTENT)
@@ -72,7 +71,7 @@ public class TagController {
             @PathVariable long tagId,
             @RequestBody List<Long> translationIds
     ) {
-        tagService.addTranslations(tagId, translationIds);
+        tagService.tagTranslations(tagId, translationIds);
     }
 
     @RequestMapping(value = "/users/me/tags/{tagId}/translations/{translationId}", method = RequestMethod.DELETE)

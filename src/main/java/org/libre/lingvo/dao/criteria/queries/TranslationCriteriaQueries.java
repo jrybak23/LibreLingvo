@@ -1,18 +1,15 @@
 package org.libre.lingvo.dao.criteria.queries;
 
-import com.google.common.cache.CacheBuilder;
-import com.google.common.cache.CacheLoader;
-import com.google.common.cache.LoadingCache;
-import org.libre.lingvo.entities.*;
-import org.libre.lingvo.reference.ActionOptions;
+import org.libre.lingvo.entities.Translation;
+import org.libre.lingvo.entities.Translation_;
+import org.libre.lingvo.entities.User_;
+import org.libre.lingvo.entities.Word_;
 import org.libre.lingvo.reference.PartOfSpeech;
-import org.libre.lingvo.reference.TranslationsCriteria;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 import javax.persistence.Tuple;
 import javax.persistence.criteria.*;
-import java.util.Date;
 
 import static org.libre.lingvo.reference.ParameterNames.*;
 
@@ -21,125 +18,6 @@ import static org.libre.lingvo.reference.ParameterNames.*;
  */
 @Configuration
 public class TranslationCriteriaQueries extends AbstractCriteriaQueriesConfig {
-
-    @Bean
-    public LoadingCache<TranslationsCriteria, CriteriaQuery> filteredTranslationsQueries() {
-        CacheLoader<TranslationsCriteria, CriteriaQuery> loader;
-        loader = new CacheLoader<TranslationsCriteria, CriteriaQuery>() {
-            @Override
-            public CriteriaQuery load(TranslationsCriteria key) throws Exception {
-                CriteriaQuery cq = null;
-                if (key.getActionOption().equals(ActionOptions.FIND))
-                    cq = cb.createQuery(Translation.class);
-                if (key.getActionOption().equals(ActionOptions.COUNT))
-                    cq = cb.createQuery(Long.class);
-
-                Root<Translation> root = cq.from(Translation.class);
-                ParameterExpression<Long> userIdPrm = cb.parameter(Long.class, USER_ID);
-                ParameterExpression<String> searchSubstringPrm = cb.parameter(String.class, SEARCH_SUBSTRING);
-                Expression<String> searchSubstringPattern = cb.concat(cb.concat("%", searchSubstringPrm), "%");
-                ParameterExpression<PartOfSpeech> partOfSpeechPrm = cb.parameter(PartOfSpeech.class, PART_OF_SPEECH);
-                ParameterExpression<String> sourceLangKeyPrm = cb.parameter(String.class, SOURCE_LANG_CODE);
-                ParameterExpression<String> resultLangKeyPrm = cb.parameter(String.class, RESULT_LANG_CODE);
-                ParameterExpression<Boolean> learnedPrm = cb.parameter(Boolean.class, LEARNED);
-
-              /*  ParameterExpression<List<Long>> tagIdsPrm = cb.parameter(Class<List<String>>, TAG_IDS);
-
-                Path<Long> translationIdPath = root.get(Translation_.id);*/
-                Path<Long> userIdPath = root.get(Translation_.user).get(User_.id);
-                Path<String> sourceTextPath = root.get(Translation_.sourceWord).get(Word_.text);
-                Path<String> sourceLangKeyPath = root.get(Translation_.sourceWord).get(Word_.langCode);
-                Path<String> resultTextPath = root.get(Translation_.resultWord).get(Word_.text);
-                Path<String> resultLangKeyPath = root.get(Translation_.resultWord).get(Word_.langCode);
-                Path<PartOfSpeech> partOfSpeechPath = root.get(Translation_.partOfSpeech);
-                Path<Integer> viewsPath = root.get(Translation_.views);
-                Path<Date> modificationDatePath = root.get(Translation_.lastModificationDate);
-                Path<Lesson> lessonPath = root.get(Translation_.lesson);
-                Path<Boolean> learnedPath = root.get(Translation_.learned);
-
-              /*  Subquery<TranslationTag> sq = cq.subquery(TranslationTag.class);
-                Root<TranslationTag> sqRoot = sq.from(TranslationTag.class);
-                Path<Long> sqTranslationIdPath = sqRoot.get(TranslationTag_.pk).get(TranslationTagId_.translation).get(Translation_.id);
-                Path<Long> sqTagIdPath = sqRoot.get(TranslationTag_.pk).get(TranslationTagId_.tag).get(Tag_.id);
-                sq.select(sqRoot);
-                sq.where(
-                        cb.and(
-                                cb.equal(translationIdPath, sqTranslationIdPath),
-                                tagIdsPrm.in(sqTagIdPath)
-                        )
-                );*/
-
-                cq.where(
-                        cb.and(
-                                cb.equal(userIdPrm, userIdPath),
-                                cb.or(
-                                        cb.like(sourceTextPath, searchSubstringPattern),
-                                        cb.like(resultTextPath, searchSubstringPattern)
-                                ),
-                                cb.or(
-                                        cb.equal(partOfSpeechPrm, partOfSpeechPath),
-                                        cb.isNull(partOfSpeechPrm)
-                                ),
-                                cb.or(
-                                        cb.equal(sourceLangKeyPrm, sourceLangKeyPath),
-                                        cb.isNull(sourceLangKeyPrm)
-                                ),
-                                cb.or(
-                                        cb.equal(resultLangKeyPrm, resultLangKeyPath),
-                                        cb.isNull(resultLangKeyPrm)
-                                ),
-                                cb.isNull(lessonPath),
-                                cb.or(
-                                        cb.equal(learnedPrm, learnedPath),
-                                        cb.isNull(learnedPrm)
-                                )
-                                /*cb.or(
-                                        cb.isEmpty(tagIdsPrm),
-                                        cb.exists(sq)
-                                )*/
-                        )
-                );
-
-                if (key.getSortFieldOption() != null) {
-                    Path sortingPath = null;
-                    switch (key.getSortFieldOption()) {
-                        case SORT_SOURCE_TEXT:
-                            sortingPath = sourceTextPath;
-                            break;
-                        case SORT_RESULT_TEXT:
-                            sortingPath = resultTextPath;
-                            break;
-                        case SORT_VIEWS:
-                            sortingPath = viewsPath;
-                            break;
-                        case SORT_MODIFICATION_DATE:
-                            sortingPath = modificationDatePath;
-                            break;
-                    }
-
-                    Order order = null;
-                    switch (key.getSortingOption()) {
-                        case ASC:
-                            order = cb.asc(sortingPath);
-                            break;
-                        case DESC:
-                            order = cb.desc(sortingPath);
-                            break;
-                    }
-                    cq.orderBy(order);
-                }
-
-                if (key.getActionOption().equals(ActionOptions.FIND))
-                    cq.select(root);
-                if (key.getActionOption().equals(ActionOptions.COUNT))
-                    cq.select(cb.count(root.get(Translation_.id)));
-
-                return cq;
-            }
-        };
-        return CacheBuilder.newBuilder().build(loader);
-    }
-
 
     @Bean
     public CriteriaQuery<Long> countTotalUserTranslations() {
@@ -269,5 +147,10 @@ public class TranslationCriteriaQueries extends AbstractCriteriaQueriesConfig {
         cq.where(cb.equal(userIdPrm, userIdPath));
         cq.distinct(true);
         return cq;
+    }
+
+    @Bean
+    public TranslationFilterQueryBuilder translationFilterBuilder() {
+        return new TranslationFilterQueryBuilder();
     }
 }

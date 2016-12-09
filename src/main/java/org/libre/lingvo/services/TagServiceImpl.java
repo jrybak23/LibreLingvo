@@ -1,5 +1,6 @@
 package org.libre.lingvo.services;
 
+import org.libre.lingvo.config.aspects.annotaions.NotForReadOnly;
 import org.libre.lingvo.dao.TagDao;
 import org.libre.lingvo.dao.TranslationDao;
 import org.libre.lingvo.dao.TranslationTagDao;
@@ -22,7 +23,6 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 import static org.libre.lingvo.utils.EntityUtil.findOrThrowNotFound;
-import static org.libre.lingvo.utils.ReadOnlyAccountUtil.throwIfReadOnly;
 
 /**
  * Created by igorek2312 on 03.12.16.
@@ -58,10 +58,10 @@ public class TagServiceImpl implements TagService {
             throw new CustomErrorException(CustomError.FORBIDDEN);
     }
 
+    @NotForReadOnly
     @Override
     public CreatedResourceDto createTag(long userId, TagDto dto) {
         User user = findOrThrowNotFound(userDao, userId);
-        throwIfReadOnly();
         user.getTags().forEach(Tag::increasePosition);
 
         Tag tag = new Tag();
@@ -74,10 +74,11 @@ public class TagServiceImpl implements TagService {
         return new CreatedResourceDto(tag.getId());
     }
 
+    @NotForReadOnly
+    @Override
     public void deleteTag(long userId, long tagId) {
         Tag tag = findOrThrowNotFound(tagDao, tagId);
         checkIfUserIsOwnerOfTag(userId, tag);
-        throwIfReadOnly();
         tag.getTranslationTags().forEach(
                 translationTagDao::delete
         );
@@ -115,17 +116,17 @@ public class TagServiceImpl implements TagService {
         );
     }
 
+    @NotForReadOnly
     @Override
     public void renameTag(long tagId, String name) {
-        throwIfReadOnly();
         Tag tag = findOrThrowNotFound(tagDao, tagId);
         tag.setName(name);
         tagDao.update(tag);
     }
 
+    @NotForReadOnly
     @Override
     public void tagTranslations(long tagId, List<Long> translationIds) {
-        throwIfReadOnly();
         Tag tag = findOrThrowNotFound(tagDao, tagId);
         List<Translation> translations = translationDao.getByIds(translationIds);
         translations.forEach(translation -> {
@@ -140,6 +141,7 @@ public class TagServiceImpl implements TagService {
         tagDao.update(tag);
     }
 
+    @NotForReadOnly
     @Override
     public void removeTranslation(long tagId, long translationId) {
         tagDao.removeTranslation(tagId, translationId);

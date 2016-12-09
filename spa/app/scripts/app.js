@@ -209,10 +209,13 @@ angular
               messageBox.show('error.locked.account', MessageType.ERROR);
             else if (response.data.error === 'invalid_token')
               $injector.get('oauth2').handleInvalidToken();
-            else if (response.data.errorCode === 401) {
-              messageBox.show(response.data.message, MessageType.ERROR);
-              $injector.get('$state').go('log-in');
-            }
+            else if (response.data.errorCode === 401)
+              messageBox.show(response.data.message, MessageType.ERROR).then(
+                function () {
+                  $injector.get('oauth2').logOut();
+                  $injector.get('oauth2').handleInvalidToken();
+                }
+              );
             else if (response.data.message)
               messageBox.show(response.data.message, MessageType.ERROR);
             else if (response.data.fieldErrors)

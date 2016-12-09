@@ -9,6 +9,8 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.StringUtils;
+import org.unitils.dbunit.annotation.ExpectedDataSet;
 
 import java.util.List;
 
@@ -27,6 +29,7 @@ public class UserDaoTest {
 
     @Autowired
     private UserDao userDao;
+
 
 
     @Test

@@ -77,6 +77,9 @@ dependencies {
 	compile group: 'org.springframework.security.oauth', name: 'spring-security-oauth2', version: '2.0.11.RELEASE'
 	compile group: 'org.modelmapper', name: 'modelmapper', version: '+'
 	compile group: 'org.freemarker', name: 'freemarker', version: '2.3.23'
+	// https://mvnrepository.com/artifact/org.unitils/unitils-dbunit
+	compile group: 'org.unitils', name: 'unitils-dbunit', version: '3.4.3'
+
 	//compile 'com.zaxxer:HikariCP:2.5.1'
 
 	// Spring Cloud Connectors

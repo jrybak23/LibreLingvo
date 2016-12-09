@@ -63,7 +63,7 @@ angular.module('libreLingvoApp')
       },
       logOut: function () {
         var deferred = $q.defer();
-        $http(logOutReq).then(function (data) {
+        $http(logOutReq).then(function () {
             delete $http.defaults.headers.common.Authorization;
             $cookies.remove("access_token");
             updateAuthorities();
@@ -72,7 +72,6 @@ angular.module('libreLingvoApp')
             deferred.reject(error);
           }
         );
-
         return deferred.promise;
       },
       handleInvalidToken: function () {
@@ -83,9 +82,9 @@ angular.module('libreLingvoApp')
       updateAuthoritiesCallback: function (callback) {
         updateCallback = callback;
       },
-      afterUpdateAuthoritiesCallback: function (callback) {
-        updateAuthoritiesPromise.then(function () {
-          callback();
+      updateAuthorities: function (callback) {
+        updateAuthoritiesPromise.then(function (data) {
+          callback(data.authorities);
         });
       }
     };

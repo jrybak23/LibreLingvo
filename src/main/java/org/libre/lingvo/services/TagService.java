@@ -2,7 +2,6 @@ package org.libre.lingvo.services;
 
 import org.libre.lingvo.dto.CreatedResourceDto;
 import org.libre.lingvo.dto.TagDto;
-import org.libre.lingvo.entities.User;
 
 import java.util.List;
 

@@ -29,7 +29,7 @@ public class ExceptionHandlerController {
     @Qualifier("backendMessageSource")
     private MessageSource ms;
 
-   /* @ExceptionHandler(Exception.class)
+   /*@ExceptionHandler(Exception.class)
     @ResponseBody
     public void handleException(Exception e){
 

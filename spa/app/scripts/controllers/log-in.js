@@ -10,7 +10,7 @@
 angular.module('libreLingvoApp')
   .controller('LogInCtrl', function ($scope, $state, $rootScope, $q, oauth2) {
 
-    oauth2.afterUpdateAuthoritiesCallback(function () {
+    oauth2.updateAuthorities(function () {
       if ($rootScope.hasUserAuthority)
         $state.go('user-translations');
     });

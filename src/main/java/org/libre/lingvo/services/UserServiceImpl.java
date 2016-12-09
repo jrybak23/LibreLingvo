@@ -1,5 +1,6 @@
 package org.libre.lingvo.services;
 
+import org.libre.lingvo.config.aspects.annotaions.NotForReadOnly;
 import org.libre.lingvo.dao.RoleDao;
 import org.libre.lingvo.dao.UserDao;
 import org.libre.lingvo.dto.*;
@@ -21,7 +22,6 @@ import java.util.UUID;
 import java.util.stream.Collectors;
 
 import static org.libre.lingvo.utils.EntityUtil.findOrThrowNotFound;
-import static org.libre.lingvo.utils.ReadOnlyAccountUtil.throwIfReadOnly;
 
 /**
  * Created by igorek2312 on 08.09.16.
@@ -99,10 +99,10 @@ public class UserServiceImpl implements UserService {
         });
     }
 
+    @NotForReadOnly
     @Override
     public void updateUser(long userId, UserUpdatingDto dto) {
         User user = findOrThrowNotFound(userDao, userId);
-        throwIfReadOnly();
 
         user.setName(dto.getName());
         user.setTranslationsInOneLesson(dto.getTranslationsInOneLesson());
@@ -122,10 +122,10 @@ public class UserServiceImpl implements UserService {
             deleteAccessTokens(user.getEmail());
     }
 
+    @NotForReadOnly
     @Override
     public void changePassword(long userId, ChangePasswordDto dto) {
         User user = findOrThrowNotFound(userDao, userId);
-        throwIfReadOnly();
         if (!user.getPassword().equals(dto.getOldPassword()))
             throw new CustomErrorException(CustomError.WRONG_OLD_PASSWORD);
 
@@ -168,6 +168,4 @@ public class UserServiceImpl implements UserService {
         user.setResetKey(null);
         userDao.update(user);
     }
-
-
 }

@@ -1,5 +1,6 @@
 package org.libre.lingvo.services;
 
+import org.libre.lingvo.config.aspects.annotaions.NotForReadOnly;
 import org.libre.lingvo.dao.TranslationDao;
 import org.libre.lingvo.dao.UserDao;
 import org.libre.lingvo.dao.WordDao;
@@ -26,7 +27,6 @@ import java.util.function.Supplier;
 import java.util.stream.Collectors;
 
 import static org.libre.lingvo.utils.EntityUtil.findOrThrowNotFound;
-import static org.libre.lingvo.utils.ReadOnlyAccountUtil.throwIfReadOnly;
 
 /**
  * Created by igorek2312 on 29.10.16.
@@ -64,6 +64,7 @@ public class TranslationServiceImpl implements TranslationService {
             throw new CustomErrorException(CustomError.FORBIDDEN);
     }
 
+    @NotForReadOnly
     @Override
     public CreatedResourceDto addUserTranslation(Long userId, InputTranslationDto dto) {
         Translation translation = new Translation();
@@ -73,7 +74,6 @@ public class TranslationServiceImpl implements TranslationService {
                     error.setDescriptionArgs(User.class.getName(), userId);
                     return new CustomErrorException(error);
                 });
-        throwIfReadOnly();
         translation.setUser(user);
 
         String sourceText = dto.getSourceText().trim();
@@ -230,11 +230,11 @@ public class TranslationServiceImpl implements TranslationService {
         return word;
     }
 
+    @NotForReadOnly
     @Override
     public void updateTranslation(User user, Long translationId, InputTranslationDto dto) {
         Translation translation = findOrThrowNotFound(translationDao, translationId);
         checkIfUserIsOwnerOfTranslation(user.getId(), translation);
-        throwIfReadOnly();
 
         Word sourceWord = translation.getSourceWord();
         Word resultWord = translation.getResultWord();
@@ -265,17 +265,18 @@ public class TranslationServiceImpl implements TranslationService {
         translationDao.update(translation);
     }
 
+    @NotForReadOnly
     @Override
     public void updateTranslationNote(User user, Long translationId, TranslationNoteDto dto) {
         Translation translation = findOrThrowNotFound(translationDao, translationId);
         checkIfUserIsOwnerOfTranslation(user.getId(), translation);
-        throwIfReadOnly();
 
         translation.setNote(dto.getNote());
         translation.setLastModificationDate(new Date());
         translationDao.update(translation);
     }
 
+    @NotForReadOnly
     @Override
     public void deleteUserTranslation(Long userId, Long translationId) {
         Translation translation = findOrThrowNotFound(translationDao, translationId);
@@ -286,9 +287,9 @@ public class TranslationServiceImpl implements TranslationService {
         translationDao.delete(translation);
     }
 
+    @NotForReadOnly
     @Override
     public void deleteUserTranslations(User user, List<Long> ids) {
-        throwIfReadOnly();
         ids.forEach(
                 id -> deleteUserTranslation(user.getId(), id)
         );

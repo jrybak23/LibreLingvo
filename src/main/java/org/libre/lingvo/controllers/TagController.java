@@ -31,6 +31,7 @@ public class TagController {
 
     @RequestMapping(value = "/users/me/tags", method = RequestMethod.POST)
     @PreAuthorize("hasAuthority('ROLE_USER')")
+    @ResponseStatus(HttpStatus.CREATED)
     public CreatedResourceDto createTag(@AuthenticationPrincipal User user, @RequestBody @Validated TagDto dto) {
         return tagService.createTag(user.getId(), dto);
     }

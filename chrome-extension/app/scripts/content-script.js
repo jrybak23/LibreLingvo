@@ -40,7 +40,7 @@ $.get(chrome.extension.getURL('/modal.html'), function (data) {
       note
     );
 
-    var clearForm=function () {
+    var clearForm = function () {
       partOfSpeechCombobox.value = 'NOT_DEFINED';
       tinyMCE.get('note').setContent('');
     };
@@ -59,7 +59,10 @@ $.get(chrome.extension.getURL('/modal.html'), function (data) {
 
         if (error.responseText) {
           var err = JSON.parse(error.responseText);
-          if (err.fieldErrors)
+
+          if (err.message)
+            showErrorMessage(err.message);
+          else if (err.fieldErrors)
             showErrorMessage(err.fieldErrors[0].message);
         }
         clearForm();
@@ -127,7 +130,7 @@ var checkTranslation = function () {
   var resultLangCode = resultBox.attr('lang');
   saveSourceBox.innerText = source;
   saveResultBox.value = resultBox.text();
-  if (source){
+  if (source) {
     saveButton.show();
     libreLingvoService.getUserTranslations(source, sourceLangCode, resultLangCode).then(
       function (data) {

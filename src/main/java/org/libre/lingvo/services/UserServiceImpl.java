@@ -29,17 +29,24 @@ import static org.libre.lingvo.utils.EntityUtil.findOrThrowNotFound;
 @Service
 @Transactional
 public class UserServiceImpl implements UserService {
-    @Autowired
     private UserDao userDao;
 
-    @Autowired
     private RoleDao roleDao;
+
+    private TokenStore tokenStore;
 
     @Autowired
     private UserDtoConverter userDtoConverter;
 
     @Autowired
-    private TokenStore tokenStore;
+    public UserServiceImpl(UserDao userDao, RoleDao roleDao, TokenStore tokenStore, UserDtoConverter userDtoConverter) {
+        this.userDao = userDao;
+        this.roleDao = roleDao;
+        this.tokenStore = tokenStore;
+        this.userDtoConverter=userDtoConverter;
+    }
+
+
 
     private void deleteAccessTokens(String username) {
         tokenStore.findTokensByClientIdAndUserName("webapp", username)
@@ -88,7 +95,7 @@ public class UserServiceImpl implements UserService {
         );
 
         user.setEnabled(true);
-        userDao.create(user);
+        userDao.update(user);
     }
 
     @Override

@@ -17,4 +17,12 @@ public class EntityUtil {
         });
     }
 
+    public static <T, ID> T getOneOrThrowNotFound(GenericDao<T, ID> dao, ID id) {
+        return dao.getOne(id).orElseThrow(() -> {
+            CustomError error = CustomError.NO_ENTITY_WITH_SUCH_ID;
+            error.setDescriptionArgs(dao.getDaoType().getName(), id);
+            return new CustomErrorException(error);
+        });
+    }
+
 }

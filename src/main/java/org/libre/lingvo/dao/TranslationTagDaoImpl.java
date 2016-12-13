@@ -1,7 +1,5 @@
-package org.libre.lingvo.dao.criteria.queries;
+package org.libre.lingvo.dao;
 
-import org.libre.lingvo.dao.GenericDaoImpl;
-import org.libre.lingvo.dao.TranslationTagDao;
 import org.libre.lingvo.entities.TranslationTag;
 import org.libre.lingvo.entities.TranslationTagId;
 import org.springframework.stereotype.Repository;

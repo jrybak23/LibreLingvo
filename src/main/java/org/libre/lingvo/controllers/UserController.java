@@ -85,7 +85,7 @@ public class UserController {
     @ResponseStatus(HttpStatus.CREATED)
     public CreatedResourceDto registerUser(
             HttpServletRequest request,
-            @RequestBody @Validated UserRegistrationDto dto
+            @RequestBody UserRegistrationDto dto
     ) {
         String originUrl = request.getHeader("Origin");
 

@@ -1,0 +1,1 @@
+mysqldump -u root -p1q2w3e4r -d libre-lingvo | mysql -u root -p1q2w3e4r -Dlibre-lingvo-test

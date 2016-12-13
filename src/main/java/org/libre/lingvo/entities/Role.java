@@ -3,10 +3,7 @@ package org.libre.lingvo.entities;
 import org.hibernate.validator.constraints.NotEmpty;
 import org.springframework.security.core.GrantedAuthority;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.OneToMany;
+import javax.persistence.*;
 import java.io.Serializable;
 import java.util.HashSet;
 import java.util.Set;
@@ -16,6 +13,7 @@ import java.util.Set;
  */
 
 @Entity
+@Table(indexes = {@Index(name = "name_index", columnList = "name")})
 public class Role implements GrantedAuthority, Serializable {
 
     @Id
@@ -23,6 +21,7 @@ public class Role implements GrantedAuthority, Serializable {
     private Integer id;
 
     @NotEmpty
+    @Column(unique = true)
     private String name;
 
     @OneToMany(mappedBy = "pk.role")

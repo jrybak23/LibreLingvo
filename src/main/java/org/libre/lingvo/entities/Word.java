@@ -1,14 +1,15 @@
 package org.libre.lingvo.entities;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
+import javax.persistence.*;
 
 /**
  * Created by igorek2312 on 26.10.16.
  */
 @Entity
+@Table(indexes = {
+        @Index(name = "text_index", columnList = "text"),
+        @Index(name = "lang_code_index", columnList = "langCode")
+})
 public class Word {
     @Id
     @GeneratedValue

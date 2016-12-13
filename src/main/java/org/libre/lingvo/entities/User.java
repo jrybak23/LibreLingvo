@@ -13,6 +13,7 @@ import java.util.Set;
  */
 
 @Entity
+@Table(indexes = {@Index(name = "email_index",columnList = "email")})
 public class User implements Serializable {
 
     @Id
@@ -36,9 +37,6 @@ public class User implements Serializable {
 
     @OneToMany(mappedBy = "user",cascade = CascadeType.ALL)
     private Set<Translation> translations=new HashSet<>();
-    /*@OneToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY, optional = false)
-    @JoinColumn
-    private Tag rootFolder;*/
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
     private Set<Tag> tags = new HashSet<>();

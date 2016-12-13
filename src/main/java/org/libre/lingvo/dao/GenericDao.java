@@ -23,5 +23,7 @@ public interface GenericDao<T,ID> {
 
     void delete(T entity);
 
-    Class<? extends T> getDaoType();
+    Class getDaoType();
+
+    void flash();
 }

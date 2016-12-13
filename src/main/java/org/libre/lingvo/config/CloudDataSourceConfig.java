@@ -1,6 +1,5 @@
 package org.libre.lingvo.config;
 
-import org.apache.log4j.Logger;
 import org.springframework.cloud.config.java.AbstractCloudConfig;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -15,8 +14,6 @@ import javax.sql.DataSource;
 @Configuration
 @Profile("cloud")
 public class CloudDataSourceConfig extends AbstractCloudConfig {
-    private final static Logger logger = Logger.getLogger(CloudDataSourceConfig.class);
-
     @Bean
     public DataSource dataSource() {
         DataSource dataSource = connectionFactory().dataSource();
@@ -24,7 +21,6 @@ public class CloudDataSourceConfig extends AbstractCloudConfig {
             org.apache.tomcat.jdbc.pool.DataSource tomcatDatasource =
                     (org.apache.tomcat.jdbc.pool.DataSource) dataSource;
             tomcatDatasource.setConnectionProperties("useUnicode=yes;characterEncoding=utf8;");
-            logger.info("configured datasource with url:" + tomcatDatasource.getUrl());
         }
         return dataSource;
     }

@@ -27,6 +27,7 @@ import java.util.function.Supplier;
 import java.util.stream.Collectors;
 
 import static org.libre.lingvo.utils.EntityUtil.findOrThrowNotFound;
+import static org.libre.lingvo.utils.EntityUtil.getOneOrThrowNotFound;
 
 /**
  * Created by igorek2312 on 29.10.16.
@@ -268,7 +269,7 @@ public class TranslationServiceImpl implements TranslationService {
     @NotForReadOnly
     @Override
     public void updateTranslationNote(User user, Long translationId, TranslationNoteDto dto) {
-        Translation translation = findOrThrowNotFound(translationDao, translationId);
+        Translation translation = getOneOrThrowNotFound(translationDao, translationId);
         checkIfUserIsOwnerOfTranslation(user.getId(), translation);
 
         translation.setNote(dto.getNote());

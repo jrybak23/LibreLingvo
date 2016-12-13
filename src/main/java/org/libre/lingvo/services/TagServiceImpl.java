@@ -23,6 +23,7 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 import static org.libre.lingvo.utils.EntityUtil.findOrThrowNotFound;
+import static org.libre.lingvo.utils.EntityUtil.getOneOrThrowNotFound;
 
 /**
  * Created by igorek2312 on 03.12.16.
@@ -119,7 +120,7 @@ public class TagServiceImpl implements TagService {
     @NotForReadOnly
     @Override
     public void renameTag(long tagId, String name) {
-        Tag tag = findOrThrowNotFound(tagDao, tagId);
+        Tag tag = getOneOrThrowNotFound(tagDao, tagId);
         tag.setName(name);
         tagDao.update(tag);
     }

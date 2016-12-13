@@ -12,13 +12,13 @@ public class UserUpdatingDto {
     private String name;
 
     @Range(min = 5, max = 40)
-    private Integer translationsInOneLesson;
+    private int translationsInOneLesson;
 
     @Range(min = 2, max = 1000)
-    private Integer lessonPartsCount;
+    private int lessonPartsCount;
 
     @Range(min = 1, max = 120)
-    private Integer minutesBetweenLessonParts;
+    private int minutesBetweenLessonParts;
 
     private boolean autoPlayDuringLesson=true;
 
@@ -30,27 +30,27 @@ public class UserUpdatingDto {
         this.name = name;
     }
 
-    public Integer getTranslationsInOneLesson() {
+    public int getTranslationsInOneLesson() {
         return translationsInOneLesson;
     }
 
-    public void setTranslationsInOneLesson(Integer translationsInOneLesson) {
+    public void setTranslationsInOneLesson(int translationsInOneLesson) {
         this.translationsInOneLesson = translationsInOneLesson;
     }
 
-    public Integer getLessonPartsCount() {
+    public int getLessonPartsCount() {
         return lessonPartsCount;
     }
 
-    public void setLessonPartsCount(Integer lessonPartsCount) {
+    public void setLessonPartsCount(int lessonPartsCount) {
         this.lessonPartsCount = lessonPartsCount;
     }
 
-    public Integer getMinutesBetweenLessonParts() {
+    public int getMinutesBetweenLessonParts() {
         return minutesBetweenLessonParts;
     }
 
-    public void setMinutesBetweenLessonParts(Integer minutesBetweenLessonParts) {
+    public void setMinutesBetweenLessonParts(int minutesBetweenLessonParts) {
         this.minutesBetweenLessonParts = minutesBetweenLessonParts;
     }
 

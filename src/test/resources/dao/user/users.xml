@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE dataset SYSTEM "../../test.dtd">
+<dataset>
+    <Role id="1" name="ROLE_USER"/>
+
+    <User id="1" email="testemail@example.com" password="1234" name="test" nonLocked="true"
+          autoPlayDuringLesson="true" enabled="true" lessonPartsCount="3" minutesBetweenLessonParts="10"
+          translationsInOneLesson="10" registrationDate="2016-12-04 10:21:53" activationKey="foo-activation-key" resetKey="foo-reset-key"/>
+    <User id="2" email="expired@example.com" password="1234" name="test" nonLocked="true"
+          autoPlayDuringLesson="true" enabled="false" lessonPartsCount="3" minutesBetweenLessonParts="10" registrationDate="2016-01-01 10:21:53"
+          translationsInOneLesson="10"/>
+    <User id="3" email="notexpired@example.com" password="1234" name="test" nonLocked="true"
+          autoPlayDuringLesson="true" enabled="false" lessonPartsCount="3" minutesBetweenLessonParts="10" registrationDate="2116-01-01 10:21:53"
+          translationsInOneLesson="10"/>
+
+    <UserRole userId="1" roleId="1"/>
+    <UserRole userId="2" roleId="1"/>
+    <UserRole userId="3" roleId="1"/>
+</dataset>

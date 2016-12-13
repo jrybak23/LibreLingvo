@@ -12,7 +12,7 @@ import javax.sql.DataSource;
  * Created by igorek2312 on 28.11.16.
  */
 @Configuration
-@Profile({"dev", "init", "test"})
+@Profile({"dev", "init"})
 public class LocalDataSourceConfig {
     @Value("${db.driver}")
     private String DB_DRIVER;

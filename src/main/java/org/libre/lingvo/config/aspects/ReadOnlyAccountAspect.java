@@ -4,11 +4,13 @@ import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Before;
 import org.libre.lingvo.utils.ReadOnlyAccountUtil;
+import org.springframework.stereotype.Component;
 
 /**
  * Created by igorek2312 on 09.12.16.
  */
 @Aspect
+@Component
 public class ReadOnlyAccountAspect {
     @Before("execution (* org.libre.lingvo.services.*.*(..)) && @annotation(org.libre.lingvo.config.aspects.annotaions.NotForReadOnly)")
     public void checkIfReadOnly(JoinPoint joinPoint) {

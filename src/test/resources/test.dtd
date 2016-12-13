@@ -1,0 +1,173 @@
+<!ELEMENT dataset (
+    ClientDetails*,
+    Lesson*,
+    Role*,
+    Tag*,
+    Translation*,
+    TranslationTag*,
+    User*,
+    UserRole*,
+    Word*,
+    hibernate_sequence*,
+    oauth_access_token*,
+    oauth_client_details*,
+    oauth_client_token*,
+    oauth_code*,
+    oauth_refresh_token*,
+    schema_version*)>
+
+<!ELEMENT ClientDetails EMPTY>
+<!ATTLIST ClientDetails
+    appId CDATA #REQUIRED
+    resourceIds CDATA #IMPLIED
+    appSecret CDATA #IMPLIED
+    scope CDATA #IMPLIED
+    grantTypes CDATA #IMPLIED
+    redirectUrl CDATA #IMPLIED
+    authorities CDATA #IMPLIED
+    access_token_validity CDATA #IMPLIED
+    refresh_token_validity CDATA #IMPLIED
+    additionalInformation CDATA #IMPLIED
+    autoApproveScopes CDATA #IMPLIED
+>
+
+<!ELEMENT Lesson EMPTY>
+<!ATTLIST Lesson
+    id CDATA #REQUIRED
+    completedPartsOfLesson CDATA #REQUIRED
+    maxPartsOfLesson CDATA #REQUIRED
+    waitUnitNextLessonPart CDATA #IMPLIED
+>
+
+<!ELEMENT Role EMPTY>
+<!ATTLIST Role
+    id CDATA #REQUIRED
+    name CDATA #REQUIRED
+>
+
+<!ELEMENT Tag EMPTY>
+<!ATTLIST Tag
+    id CDATA #REQUIRED
+    name CDATA #IMPLIED
+    position CDATA #IMPLIED
+    user_id CDATA #IMPLIED
+>
+
+<!ELEMENT Translation EMPTY>
+<!ATTLIST Translation
+    id CDATA #REQUIRED
+    lastModificationDate CDATA #REQUIRED
+    learned CDATA #REQUIRED
+    learnedDate CDATA #IMPLIED
+    note CDATA #IMPLIED
+    partOfSpeech CDATA #REQUIRED
+    views CDATA #REQUIRED
+    lesson_id CDATA #IMPLIED
+    resultWord_id CDATA #IMPLIED
+    sourceWord_id CDATA #IMPLIED
+    user_id CDATA #IMPLIED
+>
+
+<!ELEMENT TranslationTag EMPTY>
+<!ATTLIST TranslationTag
+    tagId CDATA #REQUIRED
+    translationId CDATA #REQUIRED
+>
+
+<!ELEMENT User EMPTY>
+<!ATTLIST User
+    id CDATA #REQUIRED
+    activationKey CDATA #IMPLIED
+    autoPlayDuringLesson CDATA #REQUIRED
+    email CDATA #REQUIRED
+    enabled CDATA #REQUIRED
+    lessonPartsCount CDATA #REQUIRED
+    minutesBetweenLessonParts CDATA #REQUIRED
+    name CDATA #IMPLIED
+    nonLocked CDATA #REQUIRED
+    password CDATA #IMPLIED
+    registrationDate CDATA #IMPLIED
+    resetKey CDATA #IMPLIED
+    translationsInOneLesson CDATA #REQUIRED
+>
+
+<!ELEMENT UserRole EMPTY>
+<!ATTLIST UserRole
+    userId CDATA #REQUIRED
+    roleId CDATA #REQUIRED
+>
+
+<!ELEMENT Word EMPTY>
+<!ATTLIST Word
+    id CDATA #REQUIRED
+    langCode CDATA #IMPLIED
+    text CDATA #IMPLIED
+>
+
+<!ELEMENT hibernate_sequence EMPTY>
+<!ATTLIST hibernate_sequence
+    next_val CDATA #IMPLIED
+>
+
+<!ELEMENT oauth_access_token EMPTY>
+<!ATTLIST oauth_access_token
+    token_id CDATA #IMPLIED
+    token CDATA #IMPLIED
+    authentication_id CDATA #REQUIRED
+    user_name CDATA #IMPLIED
+    client_id CDATA #IMPLIED
+    authentication CDATA #IMPLIED
+    refresh_token CDATA #IMPLIED
+>
+
+<!ELEMENT oauth_client_details EMPTY>
+<!ATTLIST oauth_client_details
+    client_id CDATA #REQUIRED
+    resource_ids CDATA #IMPLIED
+    client_secret CDATA #IMPLIED
+    scope CDATA #IMPLIED
+    authorized_grant_types CDATA #IMPLIED
+    web_server_redirect_uri CDATA #IMPLIED
+    authorities CDATA #IMPLIED
+    access_token_validity CDATA #IMPLIED
+    refresh_token_validity CDATA #IMPLIED
+    additional_information CDATA #IMPLIED
+    autoapprove CDATA #IMPLIED
+>
+
+<!ELEMENT oauth_client_token EMPTY>
+<!ATTLIST oauth_client_token
+    token_id CDATA #IMPLIED
+    token CDATA #IMPLIED
+    authentication_id CDATA #REQUIRED
+    user_name CDATA #IMPLIED
+    client_id CDATA #IMPLIED
+>
+
+<!ELEMENT oauth_code EMPTY>
+<!ATTLIST oauth_code
+    code CDATA #IMPLIED
+    authentication CDATA #IMPLIED
+>
+
+<!ELEMENT oauth_refresh_token EMPTY>
+<!ATTLIST oauth_refresh_token
+    token_id CDATA #IMPLIED
+    token CDATA #IMPLIED
+    authentication CDATA #IMPLIED
+>
+
+<!ELEMENT schema_version EMPTY>
+<!ATTLIST schema_version
+    installed_rank CDATA #REQUIRED
+    version CDATA #IMPLIED
+    description CDATA #REQUIRED
+    type CDATA #REQUIRED
+    script CDATA #REQUIRED
+    checksum CDATA #IMPLIED
+    installed_by CDATA #REQUIRED
+    installed_on CDATA #REQUIRED
+    execution_time CDATA #REQUIRED
+    success CDATA #REQUIRED
+>
+

@@ -23,7 +23,7 @@ public class UserCriteriaQueries extends AbstractCriteriaQueriesConfig {
         CriteriaQuery<User> cq = cb.createQuery(User.class);
         Root<User> userRoot = cq.from(User.class);
         cq.select(userRoot);
-        ParameterExpression<String> parameter = cb.parameter(String.class, "templates");
+        ParameterExpression<String> parameter = cb.parameter(String.class, EMAIL);
         cq.where(cb.equal(userRoot.get(User_.email), parameter));
 
         return cq;

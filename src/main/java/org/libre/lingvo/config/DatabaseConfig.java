@@ -74,10 +74,6 @@ public class DatabaseConfig {
         additionalProperties.put("hibernate.hbm2ddl.import_files", HIBERNATE_HBM2DDL_IMPORT_FILES);
         additionalProperties.put("hibernate.hbm2ddl.import_files_sql_extractor", HIBERNATE_HBM2DDL_IMPORT_FILES_SQL_EXTRACTOR);
 
-        additionalProperties.put("hibernate.connection.CharSet", "utf8");
-        additionalProperties.put("hibernate.connection.characterEncoding", "utf8");
-        additionalProperties.put("hibernate.connection.useUnicode", "true");
-
         entityManagerFactory.setJpaProperties(additionalProperties);
 
         return entityManagerFactory;

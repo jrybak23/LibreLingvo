@@ -54,7 +54,7 @@ public class UserDaoImpl extends GenericDaoImpl<User, Long> implements UserDao {
     @Override
     public Optional<User> findByEmail(String email) {
         return findOptional(() -> entityManager.createQuery(findUserByEmailCriteriaQuery)
-                .setParameter("templates", email).getSingleResult());
+                .setParameter(EMAIL, email).getSingleResult());
     }
 
     @Override
@@ -75,7 +75,8 @@ public class UserDaoImpl extends GenericDaoImpl<User, Long> implements UserDao {
 
         entityManager.createQuery(findExpiredNotActivatedUsers)
                 .setParameter(EXPIRED_CURRENT_DATE, date)
-                .getResultList().forEach(entityManager::remove);
+                .getResultList()
+                .forEach(entityManager::remove);
     }
 
     @Override
@@ -106,4 +107,5 @@ public class UserDaoImpl extends GenericDaoImpl<User, Long> implements UserDao {
                 .setParameter(RESET_KEY, resetKey)
                 .getSingleResult());
     }
+
 }

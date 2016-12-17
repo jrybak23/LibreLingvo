@@ -1,16 +1,13 @@
 package org.libre.lingvo.config.security;
 
-import org.libre.lingvo.services.CustomUserDetailsService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.ComponentScan;
-import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.Primary;
+import org.springframework.context.annotation.*;
 import org.springframework.security.access.expression.SecurityExpressionHandler;
 import org.springframework.security.access.hierarchicalroles.RoleHierarchyImpl;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.oauth2.config.annotation.configurers.ClientDetailsServiceConfigurer;
 import org.springframework.security.oauth2.config.annotation.web.configuration.AuthorizationServerConfigurerAdapter;
 import org.springframework.security.oauth2.config.annotation.web.configuration.EnableAuthorizationServer;
@@ -32,7 +29,7 @@ import javax.sql.DataSource;
 
 @Configuration
 public class OAuth2ServerConfiguration {
-    private static final String RESOURCE_ID = "restservice";
+    public static final String RESOURCE_ID = "restservice";
 
     @Configuration
     @EnableResourceServer
@@ -67,6 +64,7 @@ public class OAuth2ServerConfiguration {
     }
 
     @Configuration
+    @Profile({"init", "dev", "cloud"})
     @EnableAuthorizationServer
     @ComponentScan
     protected static class AuthorizationServerConfiguration extends AuthorizationServerConfigurerAdapter {
@@ -74,7 +72,7 @@ public class OAuth2ServerConfiguration {
         private DataSource dataSource;
 
         @Bean
-        TokenStore tokenStore() {
+        public TokenStore tokenStore() {
             return new JdbcTokenStore(dataSource);
         }
 
@@ -83,7 +81,7 @@ public class OAuth2ServerConfiguration {
         private AuthenticationManager authenticationManager;
 
         @Autowired
-        private CustomUserDetailsService userDetailsService;
+        private UserDetailsService userDetailsService;
 
         @Override
         public void configure(AuthorizationServerEndpointsConfigurer endpoints) throws Exception {
@@ -102,8 +100,7 @@ public class OAuth2ServerConfiguration {
                     .scopes("use")
                     .resourceIds(RESOURCE_ID)
                     .secret("123456")
-                    //.accessTokenValiditySeconds(30);
-                    .accessTokenValiditySeconds(3600*24*7);
+                    .accessTokenValiditySeconds(3600 * 24 * 7);
         }
 
         @Bean

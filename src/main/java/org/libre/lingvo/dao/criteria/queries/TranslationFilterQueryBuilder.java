@@ -136,6 +136,7 @@ public class TranslationFilterQueryBuilder {
         Path<Long> sqTagIdPath = sqRoot.get(TranslationTag_.pk).get(TranslationTagId_.tag).get(Tag_.id);
         sq.select(sqTranslationIdPath);
 
+        if (tagIds != null && !tagIds.isEmpty())
         sq.where(
                 cb.and(
                         cb.equal(translationIdPath, sqTranslationIdPath),

@@ -19,7 +19,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Objects;
@@ -35,20 +34,24 @@ import static org.libre.lingvo.utils.EntityUtil.getOneOrThrowNotFound;
 @Service
 @Transactional
 public class TranslationServiceImpl implements TranslationService {
-    @Autowired
     private TranslationDao translationDao;
 
-    @Autowired
     private WordDao wordDao;
 
-    @Autowired
     private UserDao userDao;
 
-    @Autowired
-    TranslationDtoConverter translationDtoConverter;
+    private TranslationDtoConverter translationDtoConverter;
+
+    private TagDtoConverter tagDtoConverter;
 
     @Autowired
-    private TagDtoConverter tagDtoConverter;
+    public TranslationServiceImpl(TranslationDao translationDao, WordDao wordDao, UserDao userDao, TranslationDtoConverter translationDtoConverter, TagDtoConverter tagDtoConverter) {
+        this.translationDao = translationDao;
+        this.wordDao = wordDao;
+        this.userDao = userDao;
+        this.translationDtoConverter = translationDtoConverter;
+        this.tagDtoConverter = tagDtoConverter;
+    }
 
     private Supplier<Word> getWordSupplier(String text, String langKey) {
         return () -> {
@@ -152,8 +155,6 @@ public class TranslationServiceImpl implements TranslationService {
             SortingOptions sortOrder,
             TranslationSortFieldOptions sortField
     ) {
-        if (tagIds == null) tagIds = new ArrayList<Long>();
-
         List<TranslationListItemDto> translations = translationDao.findFilteredUserTranslations(
                 userId,
                 searchSubstring,
@@ -163,8 +164,9 @@ public class TranslationServiceImpl implements TranslationService {
                 learned,
                 tagIds,
                 sortOrder == null ? SortingOptions.DESC : sortOrder,
+                sortField == null ? TranslationSortFieldOptions.SORT_MODIFICATION_DATE : sortField,
                 pageIndex,
-                maxRecords, sortField == null ? TranslationSortFieldOptions.SORT_MODIFICATION_DATE : sortField)
+                maxRecords)
                 .stream()
                 .map(translationDtoConverter::convertToTranslationDto)
                 .collect(Collectors.toList());

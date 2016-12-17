@@ -77,6 +77,8 @@ public class UserDaoImpl extends GenericDaoImpl<User, Long> implements UserDao {
                 .setParameter(EXPIRED_CURRENT_DATE, date)
                 .getResultList()
                 .forEach(entityManager::remove);
+
+        entityManager.flush();
     }
 
     @Override

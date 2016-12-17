@@ -8,6 +8,7 @@ import java.util.List;
  * Created by igorek2312 on 30.10.16.
  */
 public class TranslationsDto {
+
     private List<TranslationListItemDto> translations;
 
     private Long filteredRecords;

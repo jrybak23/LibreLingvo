@@ -61,9 +61,8 @@ public class TranslationDaoImpl extends GenericDaoImpl<Translation, Long> implem
             Boolean learned,
             List<Long> tagIds,
             SortingOptions sortingOption,
-            Integer pageIndex,
-            Integer maxRecords,
-            TranslationSortFieldOptions sortFieldOption
+            TranslationSortFieldOptions sortFieldOption, Integer pageIndex,
+            Integer maxRecords
     ) {
         CriteriaQuery<Translation> cq = translationFilterQueryBuilder
                 .setUserId(userId)

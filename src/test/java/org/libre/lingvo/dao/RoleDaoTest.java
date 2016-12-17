@@ -18,7 +18,7 @@ public class RoleDaoTest extends AbstractDbTest {
     private RoleDao dao;
 
     @Test
-    @DatabaseSetup("/dao/user/users.xml")
+    @DatabaseSetup("/dao/user/users-test-case.xml")
     public void testFindRoleByName(){
         String roleName = "ROLE_USER";
         Role role = dao.findByName(roleName).get();

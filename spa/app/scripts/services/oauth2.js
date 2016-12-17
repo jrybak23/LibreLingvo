@@ -32,9 +32,9 @@ angular.module('libreLingvoApp')
     var updateAuthoritiesPromise = {};
     var updateCallback;
     var updateAuthorities = function () {
-      updateAuthoritiesPromise = UserAuthorities.get(
+      updateAuthoritiesPromise = UserAuthorities.query(
         function (data) {
-          updateCallback(data.authorities);
+          updateCallback(data);
         }
       ).$promise;
     };
@@ -84,7 +84,7 @@ angular.module('libreLingvoApp')
       },
       updateAuthorities: function (callback) {
         updateAuthoritiesPromise.then(function (data) {
-          callback(data.authorities);
+          callback(data);
         });
       }
     };

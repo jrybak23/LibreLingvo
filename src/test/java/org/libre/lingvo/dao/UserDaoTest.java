@@ -16,10 +16,10 @@ import static org.junit.Assert.*;
  */
 
 public class UserDaoTest extends AbstractDbTest {
-    private final static String SAMPLE_DATA_PATH ="/dao/user/users.xml";
-    private static final String testEmail = "testemail@example.com";
-    private static final String expiredEmail = "expired@example.com";
-    private static final String notExpiredEmail = "notexpired@example.com";
+    private final static String SAMPLE_DATA_PATH ="/dao/user/users-test-case.xml";
+    private static final String TEST_EMAIL = "testemail@example.com";
+    private static final String EXPIRED_EMAIL = "expired@example.com";
+    private static final String NOT_EXPIRED_EMAIL = "notexpired@example.com";
 
     @Autowired
     private UserDao userDao;
@@ -27,8 +27,8 @@ public class UserDaoTest extends AbstractDbTest {
     @Test
     @DatabaseSetup(SAMPLE_DATA_PATH)
     public void findByEmail() {
-        User user = userDao.findByEmail(testEmail).get();
-        assertEquals(user.getEmail(), testEmail);
+        User user = userDao.findByEmail(TEST_EMAIL).get();
+        assertEquals(user.getEmail(), TEST_EMAIL);
     }
 
     @Test
@@ -36,13 +36,12 @@ public class UserDaoTest extends AbstractDbTest {
     @ExpectedDatabase(value = "/dao/user/after-delete-expired-users.xml", assertionMode = DatabaseAssertionMode.NON_STRICT)
     public void deleteExpiredNotActivatedUsers() {
         userDao.deleteExpiredNotActivatedUsers();
-        userDao.flash();
     }
 
     @Test
     @DatabaseSetup(SAMPLE_DATA_PATH)
     public void existsWithEmail() {
-        assertTrue(userDao.existsWithEmail(testEmail));
+        assertTrue(userDao.existsWithEmail(TEST_EMAIL));
         assertFalse(userDao.existsWithEmail("fake@example.com"));
     }
 
@@ -61,7 +60,7 @@ public class UserDaoTest extends AbstractDbTest {
     public void findUsers() {
         assertThat(userDao.findUsers(1, 20))
                 .extracting(User::getEmail)
-                .containsExactlyInAnyOrder(testEmail, expiredEmail, notExpiredEmail);
+                .containsExactlyInAnyOrder(TEST_EMAIL, EXPIRED_EMAIL, NOT_EXPIRED_EMAIL);
     }
 
 

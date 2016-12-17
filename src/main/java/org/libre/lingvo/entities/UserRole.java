@@ -14,6 +14,14 @@ import java.io.Serializable;
 public class UserRole implements Serializable {
     private UserRoleId pk=new UserRoleId();
 
+    public UserRole() {
+    }
+
+    public UserRole(User user,Role role) {
+        pk.setUser(user);
+        pk.setRole(role);
+    }
+
     @EmbeddedId
     public UserRoleId getPk() {
         return pk;

@@ -27,13 +27,10 @@ import static org.libre.lingvo.utils.ReadOnlyAccountUtil.isReadOnly;
 @RestController
 @RequestMapping(value = "/api/v1")
 public class UserController {
-
     @Autowired
     private UserService userService;
-
     @Autowired
     private RoleHierarchyImpl roleHierarchy;
-
     @Autowired
     private EmailSender emailSender;
 
@@ -64,15 +61,12 @@ public class UserController {
     }
 
     @RequestMapping(value = "/users/me/authorities", method = RequestMethod.GET)
-    public UserAuthoritiesDto getUserAuthorities() {
-        Set<String> authorities = AuthorityUtils.authorityListToSet(
+    public Set<String> getUserAuthorities() {
+        return AuthorityUtils.authorityListToSet(
                 roleHierarchy.getReachableGrantedAuthorities(
                         SecurityContextHolder.getContext().getAuthentication().getAuthorities()
                 )
         );
-        UserAuthoritiesDto dto = new UserAuthoritiesDto();
-        dto.setAuthorities(authorities);
-        return dto;
     }
 
     @RequestMapping(value = "/oauth/revoke-token", method = RequestMethod.DELETE)
@@ -85,7 +79,7 @@ public class UserController {
     @ResponseStatus(HttpStatus.CREATED)
     public CreatedResourceDto registerUser(
             HttpServletRequest request,
-            @RequestBody UserRegistrationDto dto
+            @RequestBody @Validated UserRegistrationDto dto
     ) {
         String originUrl = request.getHeader("Origin");
 

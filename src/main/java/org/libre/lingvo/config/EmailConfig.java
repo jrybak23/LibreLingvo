@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Profile;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.JavaMailSenderImpl;
 import org.springframework.scheduling.annotation.Scheduled;
@@ -30,9 +31,6 @@ public class EmailConfig {
     @Value("${email.password}")
     private String EMAIL_PASSWORD;
 
-    @Autowired
-    private UserService userService;
-
     @Bean
     public FreeMarkerConfigurer freemarkerConfig() throws IOException, TemplateException {
         FreeMarkerConfigurationFactory factory = new FreeMarkerConfigurationFactory();
@@ -55,9 +53,16 @@ public class EmailConfig {
         return javaMailSender;
     }
 
-    //runs every 24 hours
-    @Scheduled(fixedRate = 1000 * 60 * 60 * 24)
-    public void deleteUsersWithExpiredTokens() {
-        userService.deleteExpiredNotActivatedUsers();
+    @Profile({"init", "dev", "cloud"})
+    @Configuration
+    public static class SchedulerConfig {
+        @Autowired
+        private UserService userService;
+
+        @Scheduled(fixedRate = 1000 * 60 * 60 * 24)
+        public void deleteUsersWithExpiredTokens() {
+            userService.deleteExpiredNotActivatedUsers();
+        }
     }
+
 }

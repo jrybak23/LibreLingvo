@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE dataset SYSTEM "../../test.dtd">
+<dataset>
+    <Role id="1" name="ROLE_USER"/>
+
+    <User id="1" email="testemail@example.com" password="1234" name="test" nonLocked="true"
+          autoPlayDuringLesson="true" enabled="true" lessonPartsCount="3" minutesBetweenLessonParts="10"
+          translationsInOneLesson="10" registrationDate="2016-12-04 10:21:53" activationKey="foo-activation-key"
+          resetKey="foo-reset-key"/>
+
+    <UserRole userId="1" roleId="1"/>
+
+    <Word id="1" text="sample" langCode="en"/>
+    <Word id="3" text="code" langCode="en"/>
+    <Word id="5" text="butterfly" langCode="en"/>
+    <Word id="7" text="log in" langCode="en"/>
+    <Word id="2" text="зразок" langCode="uk"/>
+    <Word id="4" text="код" langCode="uk"/>
+    <Word id="6" text="метелик" langCode="uk"/>
+    <Word id="8" text="увійти" langCode="uk"/>
+
+    <Translation id="1" sourceWord_id="1" resultWord_id="2" learnedDate="2016-12-04 10:21:53" lastModificationDate="2016-12-04 10:21:53" learned="false" partOfSpeech="NOUN" views="1" user_id="1"/>
+    <Translation id="2" sourceWord_id="3" resultWord_id="4" learnedDate="2016-12-04 10:21:53" lastModificationDate="2016-12-04 10:21:53" learned="false" partOfSpeech="NOUN" views="1" user_id="1"/>
+    <Translation id="3" sourceWord_id="5" resultWord_id="6" learnedDate="2016-12-04 10:21:53" lastModificationDate="2016-12-04 10:21:53" learned="false" partOfSpeech="NOT_DEFINED" views="1" user_id="1"/>
+    <Translation id="4" sourceWord_id="7" resultWord_id="8" learnedDate="2016-12-04 10:21:53" lastModificationDate="2016-12-04 10:21:53" learned="false" partOfSpeech="NOT_DEFINED" views="1" user_id="1"/>
+</dataset>

@@ -8,6 +8,9 @@ public class FieldErrorDto {
 
     private String message;
 
+    public FieldErrorDto() {
+    }
+
     public FieldErrorDto(String field, String message) {
         this.field = field;
         this.message = message;

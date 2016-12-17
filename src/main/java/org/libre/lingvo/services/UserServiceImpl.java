@@ -46,8 +46,6 @@ public class UserServiceImpl implements UserService {
         this.userDtoConverter=userDtoConverter;
     }
 
-
-
     private void deleteAccessTokens(String username) {
         tokenStore.findTokensByClientIdAndUserName("webapp", username)
                 .forEach(tokenStore::removeAccessToken);

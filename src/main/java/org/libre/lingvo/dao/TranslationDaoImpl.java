@@ -1,23 +1,19 @@
 package org.libre.lingvo.dao;
 
+import org.hibernate.Criteria;
 import org.hibernate.criterion.ProjectionList;
 import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Restrictions;
 import org.hibernate.transform.Transformers;
-import org.libre.lingvo.dao.criteria.queries.TranslationFilterQueryBuilder;
 import org.libre.lingvo.dto.LangCodesPairDto;
 import org.libre.lingvo.entities.Translation;
 import org.libre.lingvo.reference.PartOfSpeech;
 import org.libre.lingvo.reference.SortingOptions;
 import org.libre.lingvo.reference.TranslationSortFieldOptions;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Repository;
 
-import javax.persistence.criteria.CriteriaQuery;
 import java.util.List;
-
-import static org.libre.lingvo.reference.ParameterNames.*;
 
 /**
  * Created by igorek2312 on 29.10.16.
@@ -44,22 +40,21 @@ public class TranslationDaoImpl extends GenericDaoImpl<Translation, Long> implem
             TranslationSortFieldOptions sortFieldOption, Integer pageIndex,
             Integer maxRecords
     ) {
-        CriteriaQuery<Translation> cq = translationFilterQueryBuilder
+        return translationFilterQueryBuilder
+                .setAction(TranslationFilterQueryBuilder.Action.SELECT)
                 .setUserId(userId)
                 .setSearchSubstring(searchSubstring)
                 .setPartOfSpeech(partOfSpeech)
-                .setSourceLangKey(sourceLangCode)
-                .setResultLangKey(resultLangCode)
+                .setSourceLangCode(sourceLangCode)
+                .setResultLangCode(resultLangCode)
                 .setLearned(learned)
                 .setTagIds(tagIds)
                 .setSortFieldOptions(sortFieldOption)
                 .setSortingOptions(sortingOption)
-                .build(Translation.class);
-
-        return entityManager.createQuery(cq)
+                .build()
                 .setFirstResult((pageIndex - 1) * maxRecords)
                 .setMaxResults(maxRecords)
-                .getResultList();
+                .list();
     }
 
     @Override
@@ -72,17 +67,17 @@ public class TranslationDaoImpl extends GenericDaoImpl<Translation, Long> implem
             Boolean learned,
             List<Long> tagIds) {
 
-        CriteriaQuery<Long> cq = translationFilterQueryBuilder
+        return (Long) translationFilterQueryBuilder
+                .setAction(TranslationFilterQueryBuilder.Action.COUNT)
                 .setUserId(userId)
                 .setSearchSubstring(searchSubstring)
                 .setPartOfSpeech(partOfSpeech)
-                .setSourceLangKey(sourceLangCode)
-                .setResultLangKey(resultLangCode)
+                .setSourceLangCode(sourceLangCode)
+                .setResultLangCode(resultLangCode)
                 .setLearned(learned)
                 .setTagIds(tagIds)
-                .build(Long.class);
-
-        return entityManager.createQuery(cq).getSingleResult();
+                .build()
+                .uniqueResult();
     }
 
     @Override

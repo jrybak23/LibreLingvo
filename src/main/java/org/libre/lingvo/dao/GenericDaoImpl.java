@@ -2,7 +2,6 @@ package org.libre.lingvo.dao;
 
 import org.hibernate.Query;
 import org.hibernate.Session;
-import org.hibernate.SessionFactory;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -55,8 +54,8 @@ public abstract class GenericDaoImpl<T, ID extends Serializable> implements Gene
 
     @Override
     public List<T> getByIds(List<ID> ids) {
-        Query query = getSession().createQuery("SELECT e FROM " + daoType.getName() + " e WHERE e.id in :ids");
-        query.setParameter("ids", ids);
+        Query query = getSession().createQuery("SELECT e FROM " + daoType.getName() + " e WHERE e.id in (:ids)");
+        query.setParameterList("ids", ids);
         return query.list();
     }
 

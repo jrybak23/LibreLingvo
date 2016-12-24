@@ -37,6 +37,5 @@
     <Translation id="6" sourceWord_id="9" resultWord_id="10" learnedDate="2016-12-04 10:21:53" lastModificationDate="2016-12-04 10:21:53" learned="false" partOfSpeech="NOT_DEFINED" views="1" user_id="1" lesson_id="1"/>
     <Translation id="7" sourceWord_id="11" resultWord_id="12" learnedDate="2016-12-04 10:21:53" lastModificationDate="2016-12-04 10:21:53" learned="false" partOfSpeech="NOT_DEFINED" views="1" user_id="1" lesson_id="1"/>
 
-    <TranslationTag tagId="1" translationId="4"/>
     <TranslationTag tagId="1" translationId="7"/>
 </dataset>

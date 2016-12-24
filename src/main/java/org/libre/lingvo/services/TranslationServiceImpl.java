@@ -97,10 +97,10 @@ public class TranslationServiceImpl implements TranslationService {
             throw new CustomErrorException(CustomError.USER_HAS_ALREADY_SUCH_TRANSLATION);
 
 
-        Word sourceWord = wordDao.findByTextAndLangKey(sourceText, sourceLangKey)
+        Word sourceWord = wordDao.findByTextAndLangCode(sourceText, sourceLangKey)
                 .orElseGet(getWordSupplier(sourceText, sourceLangKey));
 
-        Word resultWord = wordDao.findByTextAndLangKey(resultText, resultLangKey)
+        Word resultWord = wordDao.findByTextAndLangCode(resultText, resultLangKey)
                 .orElseGet(getWordSupplier(resultText, resultLangKey));
 
         translation.setSourceWord(sourceWord);
@@ -185,9 +185,6 @@ public class TranslationServiceImpl implements TranslationService {
         Long totalRecords = translationDao.countTotalUserTranslations(userId);
 
         List<LangCodesPairDto> langCodes = translationDao.findLangCodesByUserId(userId);
-              /*  .stream()
-                .map(tuple -> new LangCodesPairDto((String) tuple.get(0), (String) tuple.get(1)))
-                .collect(Collectors.toList());*/
 
         List<PartOfSpeech> partsOfSpeech = translationDao.findPartsOfSpeechByUserId(userId);
 
@@ -228,7 +225,7 @@ public class TranslationServiceImpl implements TranslationService {
         if (wordsIsNotSame(newWordText, newWordLangKey, word)) {
             safeWordDelete(translationId, word);
 
-            return wordDao.findByTextAndLangKey(newWordText, newWordLangKey)
+            return wordDao.findByTextAndLangCode(newWordText, newWordLangKey)
                     .orElseGet(getWordSupplier(newWordText, newWordLangKey));
         }
         return word;

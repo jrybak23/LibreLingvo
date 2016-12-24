@@ -18,13 +18,13 @@ import static org.mockito.Mockito.mock;
 public class MockedServices {
     @Bean
     @Primary
-    public UserService userServiceMock(){
+    public UserService userService(){
         return mock(UserServiceImpl.class);
     }
 
     @Bean
     @Primary
-    public TranslationService translationServiceMock(){
+    public TranslationService translationService(){
         return mock(TranslationServiceImpl.class);
     }
 

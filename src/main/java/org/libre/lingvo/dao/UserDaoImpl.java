@@ -1,20 +1,13 @@
 package org.libre.lingvo.dao;
 
 import org.libre.lingvo.entities.User;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Repository;
-import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
-import javax.persistence.criteria.CriteriaQuery;
 import java.sql.Timestamp;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
-
-import static org.libre.lingvo.reference.ParameterNames.*;
-import static org.libre.lingvo.utils.DaoRetrieverUtil.findOptional;
 
 /**
  * Created by igorek2312 on 08.09.16.
@@ -27,7 +20,7 @@ public class UserDaoImpl extends GenericDaoImpl<User, Long> implements UserDao {
     @Override
     public Optional<User> findByEmail(String email) {
         User user = (User) getSession().createQuery("from org.libre.lingvo.entities.User user where user.email = :email")
-                .setParameter(EMAIL, email)
+                .setParameter("email", email)
                 .uniqueResult();
         return Optional.ofNullable(user);
     }
@@ -46,7 +39,7 @@ public class UserDaoImpl extends GenericDaoImpl<User, Long> implements UserDao {
                 .list()
                 .forEach(getSession()::delete);
 
-        entityManager.flush();
+        getSession().flush();
     }
 
     @Override

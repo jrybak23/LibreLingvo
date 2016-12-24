@@ -8,5 +8,5 @@ import java.util.Optional;
  * Created by igorek2312 on 29.10.16.
  */
 public interface WordDao extends GenericDao<Word, Long> {
-    Optional<Word> findByTextAndLangKey(String text, String langKey);
+    Optional<Word> findByTextAndLangCode(String text, String langCode);
 }

@@ -1,11 +1,10 @@
 <!ELEMENT dataset (
-        ClientDetails*,
-        Lesson*,
         Role*,
         User*,
         UserRole*,
-        Tag*,
         Word*,
+        Tag*,
+        Lesson*,
         Translation*,
         TranslationTag*
         )>

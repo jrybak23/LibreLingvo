@@ -8,6 +8,8 @@ import org.libre.lingvo.entities.Word;
 import org.libre.lingvo.reference.PartOfSpeech;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import java.lang.reflect.Array;
+import java.util.Arrays;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -93,6 +95,34 @@ public class TranslationDaoTest extends AbstractDbTest {
 
     @Test
     @DatabaseSetup(SAMPLE_DATA_PATH)
+    public void findFilteredUserTranslationsByTags() {
+        List<Translation> translations = translationDao.findFilteredUserTranslations(
+                1L,
+                "",
+                null,
+                null,
+                null,
+                false,
+                Arrays.asList(1L),
+                null,
+                null,
+                1,
+                20
+        );
+
+        assertThat(translations)
+                .extracting(Translation::getSourceWord)
+                .extracting(Word::getText)
+                .containsExactlyInAnyOrder("log in");
+
+        assertThat(translations)
+                .extracting(Translation::getResultWord)
+                .extracting(Word::getText)
+                .containsExactlyInAnyOrder("увійти");
+    }
+
+    @Test
+    @DatabaseSetup(SAMPLE_DATA_PATH)
     public void findSuchTranslations() {
         List<Translation> translations = translationDao.findSuchTranslations(
                 1L,
@@ -131,7 +161,7 @@ public class TranslationDaoTest extends AbstractDbTest {
     @DatabaseSetup(SAMPLE_DATA_PATH)
     public void countTotalUserTranslations() {
         long count = translationDao.countTotalUserTranslations(1L);
-        assertEquals(count, 5);
+        assertEquals(count, 7);
     }
 
     @Test

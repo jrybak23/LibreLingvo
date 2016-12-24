@@ -10,5 +10,5 @@ import java.util.List;
 public interface TagDao extends GenericDao<Tag, Long> {
     List<Tag> findByUserId(long userId);
 
-    void removeTranslation(long tagId, long translationId);
+    void removeTranslationTag(long tagId, long translationId);
 }

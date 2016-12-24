@@ -18,6 +18,9 @@ import org.libre.lingvo.utils.dto.converters.TagDtoConverter;
 import org.libre.lingvo.utils.dto.converters.TranslationDtoConverter;
 import org.mockito.Mock;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.SpringApplicationConfiguration;
+import org.springframework.context.annotation.Import;
+import org.springframework.test.context.ContextConfiguration;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -32,7 +35,7 @@ import static org.mockito.Mockito.when;
  */
 public class TranslationServiceTest extends AbstractServiceTest {
     public static final long USER_ID = 1L;
-    public static final String SEARCH_SUBSTRING = "samp";
+
     @Mock
     private TranslationDao translationDao;
 
@@ -72,7 +75,7 @@ public class TranslationServiceTest extends AbstractServiceTest {
 
         when(translationDao.findFilteredUserTranslations(
                 USER_ID,
-                SEARCH_SUBSTRING,
+                "samp",
                 PartOfSpeech.NOUN,
                 "en",
                 "uk",
@@ -87,7 +90,7 @@ public class TranslationServiceTest extends AbstractServiceTest {
 
         when(translationDao.countFilteredUserTranslations(
                 USER_ID,
-                SEARCH_SUBSTRING,
+                "samp",
                 PartOfSpeech.NOUN,
                 "en",
                 "uk",
@@ -105,7 +108,7 @@ public class TranslationServiceTest extends AbstractServiceTest {
                 USER_ID,
                 1,
                 20,
-                SEARCH_SUBSTRING,
+                "samp",
                 PartOfSpeech.NOUN,
                 "en",
                 "uk",

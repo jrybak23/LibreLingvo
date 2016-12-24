@@ -1,5 +1,7 @@
 package org.libre.lingvo.dao.criteria.queries;
 
+import org.hibernate.Session;
+
 import javax.annotation.PostConstruct;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -14,8 +16,12 @@ public abstract class AbstractCriteriaQueriesConfig {
 
     protected CriteriaBuilder cb;
 
+    protected Session getSession() {
+        return entityManager.unwrap(Session.class);
+    }
+
     @PostConstruct
-    private void postConstruct(){
-        cb =entityManager.getCriteriaBuilder();
+    private void postConstruct() {
+        cb = entityManager.getCriteriaBuilder();
     }
 }

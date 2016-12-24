@@ -7,6 +7,8 @@ import org.junit.Test;
 import org.libre.lingvo.entities.User;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import java.util.Optional;
+
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.Assert.*;
 
@@ -29,6 +31,12 @@ public class UserDaoTest extends AbstractDbTest {
     public void findByEmail() {
         User user = userDao.findByEmail(TEST_EMAIL).get();
         assertEquals(user.getEmail(), TEST_EMAIL);
+    }
+
+    @Test
+    @DatabaseSetup(SAMPLE_DATA_PATH)
+    public void findByNotExitingEmail() {
+        assertFalse(userDao.findByEmail("fakeemail@example.com").isPresent());
     }
 
     @Test

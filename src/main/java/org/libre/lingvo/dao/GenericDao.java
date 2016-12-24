@@ -25,5 +25,5 @@ public interface GenericDao<T,ID> {
 
     Class getDaoType();
 
-    void flash();
+    void flush();
 }

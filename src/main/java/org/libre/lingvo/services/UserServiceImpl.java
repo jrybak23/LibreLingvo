@@ -43,7 +43,7 @@ public class UserServiceImpl implements UserService {
         this.userDao = userDao;
         this.roleDao = roleDao;
         this.tokenStore = tokenStore;
-        this.userDtoConverter=userDtoConverter;
+        this.userDtoConverter = userDtoConverter;
     }
 
     private void deleteAccessTokens(String username) {

@@ -4,6 +4,7 @@ import org.libre.lingvo.entities.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Repository;
+import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
 import javax.persistence.criteria.CriteriaQuery;
 import java.sql.Timestamp;
@@ -13,7 +14,6 @@ import java.util.List;
 import java.util.Optional;
 
 import static org.libre.lingvo.reference.ParameterNames.*;
-import static org.libre.lingvo.utils.DaoRetrieverUtil.exists;
 import static org.libre.lingvo.utils.DaoRetrieverUtil.findOptional;
 
 /**
@@ -23,47 +23,13 @@ import static org.libre.lingvo.utils.DaoRetrieverUtil.findOptional;
 public class UserDaoImpl extends GenericDaoImpl<User, Long> implements UserDao {
     private static final int EXPIRATION = 60 * 24; //minutes
 
-    @Autowired
-    @Qualifier("findUserByEmail")
-    private CriteriaQuery<User> findUserByEmailCriteriaQuery;
-
-    @Autowired
-    @Qualifier("findUsersByEmailSubstring")
-    private CriteriaQuery<User> findUsersByEmailSubstring;
-
-    @Autowired
-    @Qualifier("findExpiredNotActivatedUsers")
-    private CriteriaQuery<User> findExpiredNotActivatedUsers;
-
-    @Autowired
-    @Qualifier("existsUserWithEmail")
-    private CriteriaQuery<Boolean> existsUserWithEmail;
-
-    @Autowired
-    @Qualifier("findUsers")
-    private CriteriaQuery<User> findUsers;
-
-    @Autowired
-    @Qualifier("findByActivationKey")
-    private CriteriaQuery<User> findByActivationKey;
-
-    @Autowired
-    @Qualifier("findByResetKey")
-    private CriteriaQuery<User> findByResetKey;
 
     @Override
     public Optional<User> findByEmail(String email) {
-        return findOptional(() -> entityManager.createQuery(findUserByEmailCriteriaQuery)
-                .setParameter(EMAIL, email).getSingleResult());
-    }
-
-    @Override
-    public List<User> findByEmailSubstring(String emailSubstring, Integer pageIndex, Integer maxRecords) {
-        return entityManager.createQuery(findUsersByEmailSubstring)
-                .setParameter("emailSubstring", emailSubstring)
-                .setFirstResult((pageIndex - 1) * maxRecords)
-                .setMaxResults(maxRecords)
-                .getResultList();
+        User user = (User) getSession().createQuery("from org.libre.lingvo.entities.User user where user.email = :email")
+                .setParameter(EMAIL, email)
+                .uniqueResult();
+        return Optional.ofNullable(user);
     }
 
     @Override
@@ -73,41 +39,50 @@ public class UserDaoImpl extends GenericDaoImpl<User, Long> implements UserDao {
         calendar.add(Calendar.MINUTE, -EXPIRATION);
         Date date = new Date(calendar.getTime().getTime());
 
-        entityManager.createQuery(findExpiredNotActivatedUsers)
-                .setParameter(EXPIRED_CURRENT_DATE, date)
-                .getResultList()
-                .forEach(entityManager::remove);
+        getSession().createQuery("from org.libre.lingvo.entities.User user where " +
+                "user.enabled = false and " +
+                "user.registrationDate < :currentMinusExpiredDate")
+                .setParameter("currentMinusExpiredDate", date)
+                .list()
+                .forEach(getSession()::delete);
 
         entityManager.flush();
     }
 
     @Override
     public boolean existsWithEmail(String email) {
-        return exists(() -> entityManager.createQuery(existsUserWithEmail)
-                .setParameter(EMAIL, email)
-                .getSingleResult());
+        return (boolean) getSession().createQuery("select case when (count(user) > 0)  then true else false end " +
+                "from org.libre.lingvo.entities.User user where user.email = :email")
+                .setParameter("email", email)
+                .uniqueResult();
     }
 
     @Override
     public List<User> findUsers(int pageIndex, int maxRecords) {
-        return entityManager.createQuery(findUsers)
+        return getSession().createQuery("from org.libre.lingvo.entities.User")
                 .setFirstResult((pageIndex - 1) * maxRecords)
                 .setMaxResults(maxRecords)
-                .getResultList();
+                .list();
     }
 
     @Override
     public Optional<User> findByActivationKey(String activationKey) {
-        return findOptional(() -> entityManager.createQuery(findByActivationKey)
-                .setParameter(ACTIVATION_KEY, activationKey)
-                .getSingleResult());
+        User user = (User) getSession().createQuery("from org.libre.lingvo.entities.User user " +
+                "where user.activationKey = :activationKey")
+                .setParameter("activationKey", activationKey)
+                .uniqueResult();
+
+        return Optional.ofNullable(user);
     }
 
     @Override
     public Optional<User> findByResetKey(String resetKey) {
-        return findOptional(() -> entityManager.createQuery(findByResetKey)
-                .setParameter(RESET_KEY, resetKey)
-                .getSingleResult());
+        User user = (User) getSession().createQuery("from org.libre.lingvo.entities.User user " +
+                "where user.resetKey = :resetKey")
+                .setParameter("resetKey", resetKey)
+                .uniqueResult();
+
+        return Optional.ofNullable(user);
     }
 
 }

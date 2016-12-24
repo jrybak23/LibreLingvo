@@ -1,8 +1,11 @@
 package org.libre.lingvo.dao;
 
+import org.hibernate.Query;
+import org.hibernate.Session;
+import org.hibernate.SessionFactory;
+
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
-import javax.persistence.Query;
 import java.io.Serializable;
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
@@ -13,10 +16,14 @@ import java.util.Optional;
  * Created by igorek2312 on 08.09.16.
  */
 
-public class GenericDaoImpl <T, ID extends Serializable> implements GenericDao<T, ID> {
+public abstract class GenericDaoImpl<T, ID extends Serializable> implements GenericDao<T, ID> {
 
     @PersistenceContext
     protected EntityManager entityManager;
+
+    protected Session getSession() {
+        return entityManager.unwrap(Session.class);
+    }
 
     protected Class<? extends T> daoType;
 
@@ -33,49 +40,49 @@ public class GenericDaoImpl <T, ID extends Serializable> implements GenericDao<T
 
     @Override
     public List<T> findAll() {
-        return entityManager.createQuery("from "+daoType.getName()).getResultList();
+        return getSession().createQuery("from " + daoType.getName()).list();
     }
 
     @Override
     public Optional<T> find(ID id) {
-        return Optional.ofNullable(entityManager.find(daoType,id));
+        return Optional.ofNullable(getSession().get(daoType, id));
     }
 
     @Override
     public Optional<T> getOne(ID id) {
-        return Optional.ofNullable(entityManager.getReference(daoType,id));
+        return Optional.ofNullable(getSession().load(daoType, id));
     }
 
     @Override
     public List<T> getByIds(List<ID> ids) {
-        Query query = entityManager.createQuery("SELECT e FROM "+daoType.getName()+" e WHERE e.id in :ids");
+        Query query = getSession().createQuery("SELECT e FROM " + daoType.getName() + " e WHERE e.id in :ids");
         query.setParameter("ids", ids);
-        return query.getResultList();
+        return query.list();
     }
 
     @Override
     public void create(T entity) {
-        entityManager.persist(entity);
+        getSession().persist(entity);
     }
 
     @Override
     public void update(T entity) {
-        entityManager.merge(entity);
+        getSession().merge(entity);
     }
 
     @Override
     public void deleteById(ID id) {
-        getOne(id).ifPresent(entityManager::remove);
+        getOne(id).ifPresent(getSession()::delete);
     }
 
     @Override
     public void delete(T entity) {
-        entityManager.remove(entity);
+        getSession().delete(entity);
     }
 
     @Override
-    public void flash() {
-        entityManager.flush();
+    public void flush() {
+        getSession().flush();
     }
 
     @Override

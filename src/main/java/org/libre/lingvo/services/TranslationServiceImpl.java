@@ -85,14 +85,14 @@ public class TranslationServiceImpl implements TranslationService {
         String sourceLangKey = dto.getSourceLangCode();
         String resultLangKey = dto.getResultLangCode();
 
-        Boolean exists = translationDao.existsSuchTranslation(
+        boolean exists = translationDao.existsSuchTranslation(
                 userId,
                 sourceText,
                 sourceLangKey,
                 resultText,
                 resultLangKey,
                 dto.getPartOfSpeech()
-        ).orElse(false);
+        );
         if (exists)
             throw new CustomErrorException(CustomError.USER_HAS_ALREADY_SUCH_TRANSLATION);
 
@@ -184,11 +184,12 @@ public class TranslationServiceImpl implements TranslationService {
 
         Long totalRecords = translationDao.countTotalUserTranslations(userId);
 
-        List<LangCodesPairDto> langCodes = translationDao.getLangKeysByUserId(userId)
-                .stream()
+        List<LangCodesPairDto> langCodes = translationDao.findLangCodesByUserId(userId);
+              /*  .stream()
                 .map(tuple -> new LangCodesPairDto((String) tuple.get(0), (String) tuple.get(1)))
-                .collect(Collectors.toList());
-        List<PartOfSpeech> partsOfSpeech = translationDao.getPartsOfSpeechByUserId(userId);
+                .collect(Collectors.toList());*/
+
+        List<PartOfSpeech> partsOfSpeech = translationDao.findPartsOfSpeechByUserId(userId);
 
         TranslationsDto dto = new TranslationsDto();
         dto.setTranslations(translations);

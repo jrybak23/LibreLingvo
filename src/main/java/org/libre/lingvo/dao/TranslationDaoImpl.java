@@ -1,6 +1,11 @@
 package org.libre.lingvo.dao;
 
+import org.hibernate.criterion.ProjectionList;
+import org.hibernate.criterion.Projections;
+import org.hibernate.criterion.Restrictions;
+import org.hibernate.transform.Transformers;
 import org.libre.lingvo.dao.criteria.queries.TranslationFilterQueryBuilder;
+import org.libre.lingvo.dto.LangCodesPairDto;
 import org.libre.lingvo.entities.Translation;
 import org.libre.lingvo.reference.PartOfSpeech;
 import org.libre.lingvo.reference.SortingOptions;
@@ -9,44 +14,19 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Repository;
 
-import javax.persistence.Tuple;
 import javax.persistence.criteria.CriteriaQuery;
 import java.util.List;
-import java.util.Optional;
 
 import static org.libre.lingvo.reference.ParameterNames.*;
-import static org.libre.lingvo.utils.DaoRetrieverUtil.exists;
-import static org.libre.lingvo.utils.DaoRetrieverUtil.findOptional;
 
 /**
  * Created by igorek2312 on 29.10.16.
  */
 @Repository
 public class TranslationDaoImpl extends GenericDaoImpl<Translation, Long> implements TranslationDao {
-
-    @Autowired
-    @Qualifier("countTotalUserTranslations")
-    private CriteriaQuery<Long> countTotalUserTranslations;
-
-    @Autowired
-    @Qualifier("existsSuchTranslation")
-    private CriteriaQuery<Boolean> existsSuchTranslation;
-
-    @Autowired
-    @Qualifier("findUserTranslationsForChecking")
-    private CriteriaQuery<Translation> findUserTranslationsForChecking;
-
-    @Autowired
-    @Qualifier("existsOtherTranslationsDependedOnWord")
-    private CriteriaQuery<Boolean> existsOtherTranslationsDependedOnWord;
-
-    @Autowired
-    @Qualifier("getLangKeysByUserId")
-    private CriteriaQuery<Tuple> getLangKeysByUserId;
-
-    @Autowired
-    @Qualifier("getPartsOfSpeechByUserId")
-    private CriteriaQuery<PartOfSpeech> getPartsOfSpeechByUserId;
+    private final ProjectionList projectionList = Projections.projectionList()
+            .add(Projections.property("sw.langCode"), "source")
+            .add(Projections.property("rw.langCode"), "result");
 
     @Autowired
     private TranslationFilterQueryBuilder translationFilterQueryBuilder;
@@ -107,28 +87,37 @@ public class TranslationDaoImpl extends GenericDaoImpl<Translation, Long> implem
 
     @Override
     public Long countTotalUserTranslations(Long userId) {
-        return entityManager.createQuery(countTotalUserTranslations)
-                .setParameter(USER_ID, userId)
-                .getSingleResult();
+        return (Long) getSession().createQuery("select count(*) " +
+                "from org.libre.lingvo.entities.Translation translation  where " +
+                "translation.user.id = :userId")
+                .setParameter("userId", userId)
+                .uniqueResult();
     }
 
     @Override
-    public Optional<Boolean> existsSuchTranslation(
+    public boolean existsSuchTranslation(
             Long userId,
             String sourceText,
-            String sourceLangKey,
+            String sourceLangCode,
             String resultText,
-            String resultLangKey,
+            String resultLangCode,
             PartOfSpeech partOfSpeech
     ) {
-        return findOptional(() -> entityManager.createQuery(existsSuchTranslation)
-                .setParameter(USER_ID, userId)
-                .setParameter(SOURCE_TEXT, sourceText)
-                .setParameter(SOURCE_LANG_CODE, sourceLangKey)
-                .setParameter(RESULT_TEXT, resultText)
-                .setParameter(RESULT_LANG_CODE, resultLangKey)
-                .setParameter(PART_OF_SPEECH, partOfSpeech)
-                .getSingleResult());
+        return (boolean) getSession().createQuery("select case when (count(user) > 0)  then true else false end " +
+                "from org.libre.lingvo.entities.Translation translation where " +
+                "translation.user.id = :userId and " +
+                "translation.sourceWord.text = :sourceText and " +
+                "translation.sourceWord.langCode = :sourceLangCode and " +
+                "translation.resultWord.text = :resultText and " +
+                "translation.resultWord.langCode = :resultLangCode and " +
+                "translation.partOfSpeech = :partOfSpeech")
+                .setParameter("userId", userId)
+                .setParameter("sourceText", sourceText)
+                .setParameter("sourceLangCode", sourceLangCode)
+                .setParameter("resultText", resultText)
+                .setParameter("resultLangCode", resultLangCode)
+                .setParameter("partOfSpeech", partOfSpeech)
+                .uniqueResult();
     }
 
     @Override
@@ -138,34 +127,47 @@ public class TranslationDaoImpl extends GenericDaoImpl<Translation, Long> implem
             String sourceLangKey,
             String resultLangKey
     ) {
-        return entityManager.createQuery(findUserTranslationsForChecking)
-                .setParameter(USER_ID, userId)
-                .setParameter(SOURCE_TEXT, sourceText)
-                .setParameter(SOURCE_LANG_CODE, sourceLangKey)
-                .setParameter(RESULT_LANG_CODE, resultLangKey)
-                .getResultList();
+        return getSession()
+                .createQuery("from org.libre.lingvo.entities.Translation translation where " +
+                        "translation.user.id = :userId and " +
+                        "translation.sourceWord.text = :sourceText and " +
+                        "translation.sourceWord.langCode = :sourceLangCode and " +
+                        "translation.resultWord.langCode = :resultLangCode")
+                .setParameter("userId", userId)
+                .setParameter("sourceText", sourceText)
+                .setParameter("sourceLangCode", sourceLangKey)
+                .setParameter("resultLangCode", resultLangKey)
+                .list();
     }
 
     @Override
     public boolean existsOtherTranslationsDependedOnWord(Long translationId, Long wordId) {
-        return exists(() -> entityManager.createQuery(existsOtherTranslationsDependedOnWord)
-                .setParameter(TRANSLATION_ID, translationId)
-                .setParameter(WORD_ID, wordId)
-                .getSingleResult());
+        return (boolean) getSession().createQuery("select case when (count(user) > 0)  then true else false end " +
+                "from org.libre.lingvo.entities.Translation translation where " +
+                "translation.id != :translationId and " +
+                "( translation.sourceWord.id = :wordId or translation.resultWord.id = :wordId )")
+                .setParameter("translationId", translationId)
+                .setParameter("wordId", wordId)
+                .uniqueResult();
     }
 
     @Override
-    public List<Tuple> getLangKeysByUserId(Long userId) {
-        return entityManager.createQuery(getLangKeysByUserId)
-                .setParameter(USER_ID, userId)
-                .getResultList();
+    public List<LangCodesPairDto> findLangCodesByUserId(Long userId) {
+        return getSession().createCriteria(Translation.class)
+                .createAlias("sourceWord", "sw")
+                .createAlias("resultWord", "rw")
+                .add(Restrictions.eq("user.id", userId))
+                .setProjection(Projections.distinct(projectionList))
+                .setResultTransformer(Transformers.aliasToBean(LangCodesPairDto.class))
+                .list();
     }
 
     @Override
-    public List<PartOfSpeech> getPartsOfSpeechByUserId(Long userId) {
-        return entityManager.createQuery(getPartsOfSpeechByUserId)
-                .setParameter(USER_ID, userId)
-                .getResultList();
+    public List<PartOfSpeech> findPartsOfSpeechByUserId(Long userId) {
+        return getSession().createQuery("select distinct translation.partOfSpeech " +
+                "from org.libre.lingvo.entities.Translation translation where translation.user.id = :userId")
+                .setParameter("userId", userId)
+                .list();
     }
 
 }

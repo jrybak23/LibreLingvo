@@ -11,8 +11,6 @@ import java.util.Optional;
 public interface UserDao extends GenericDao<User,Long> {
     Optional<User> findByEmail(String email);
 
-    List<User> findByEmailSubstring(String emailSubstring, Integer pageIndex, Integer maxRecords);
-
     void deleteExpiredNotActivatedUsers();
 
     boolean existsWithEmail(String email);

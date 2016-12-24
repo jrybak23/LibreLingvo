@@ -18,9 +18,11 @@
     <Word id="4" text="код" langCode="uk"/>
     <Word id="6" text="метелик" langCode="uk"/>
     <Word id="8" text="увійти" langCode="uk"/>
+    <Word id="10" text="пример" langCode="ru"/>
 
     <Translation id="1" sourceWord_id="1" resultWord_id="2" learnedDate="2016-12-04 10:21:53" lastModificationDate="2016-12-04 10:21:53" learned="false" partOfSpeech="NOUN" views="1" user_id="1"/>
     <Translation id="2" sourceWord_id="3" resultWord_id="4" learnedDate="2016-12-04 10:21:53" lastModificationDate="2016-12-04 10:21:53" learned="false" partOfSpeech="NOUN" views="1" user_id="1"/>
     <Translation id="3" sourceWord_id="5" resultWord_id="6" learnedDate="2016-12-04 10:21:53" lastModificationDate="2016-12-04 10:21:53" learned="false" partOfSpeech="NOT_DEFINED" views="1" user_id="1"/>
     <Translation id="4" sourceWord_id="7" resultWord_id="8" learnedDate="2016-12-04 10:21:53" lastModificationDate="2016-12-04 10:21:53" learned="false" partOfSpeech="NOT_DEFINED" views="1" user_id="1"/>
+    <Translation id="5" sourceWord_id="1" resultWord_id="10" learnedDate="2016-12-04 10:21:53" lastModificationDate="2016-12-04 10:21:53" learned="false" partOfSpeech="NOT_DEFINED" views="1" user_id="1"/>
 </dataset>

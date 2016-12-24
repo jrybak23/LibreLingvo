@@ -1,13 +1,12 @@
 package org.libre.lingvo.dao;
 
+import org.libre.lingvo.dto.LangCodesPairDto;
 import org.libre.lingvo.entities.Translation;
 import org.libre.lingvo.reference.PartOfSpeech;
 import org.libre.lingvo.reference.SortingOptions;
 import org.libre.lingvo.reference.TranslationSortFieldOptions;
 
-import javax.persistence.Tuple;
 import java.util.List;
-import java.util.Optional;
 
 /**
  * Created by igorek2312 on 29.10.16.
@@ -32,7 +31,7 @@ public interface TranslationDao extends GenericDao<Translation, Long> {
 
     Long countTotalUserTranslations(Long userId);
 
-    Optional<Boolean> existsSuchTranslation(
+    boolean existsSuchTranslation(
             Long userId,
             String sourceText,
             String sourceLangKey,
@@ -50,7 +49,7 @@ public interface TranslationDao extends GenericDao<Translation, Long> {
 
     boolean existsOtherTranslationsDependedOnWord(Long translationId, Long wordId);
 
-    List<Tuple> getLangKeysByUserId(Long userId);
+    List<LangCodesPairDto> findLangCodesByUserId(Long userId);
 
-    List<PartOfSpeech> getPartsOfSpeechByUserId(Long userId);
+    List<PartOfSpeech> findPartsOfSpeechByUserId(Long userId);
 }

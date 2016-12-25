@@ -1,10 +1,10 @@
 // generated on 2016-10-22 using generator-chrome-extension 0.6.1
-import gulp from 'gulp';
-import gulpLoadPlugins from 'gulp-load-plugins';
-import del from 'del';
-import runSequence from 'run-sequence';
-import {stream as wiredep} from 'wiredep';
-import modifyCssUrls from 'gulp-modify-css-urls';
+import gulp from "gulp";
+import gulpLoadPlugins from "gulp-load-plugins";
+import del from "del";
+import runSequence from "run-sequence";
+import {stream as wiredep} from "wiredep";
+import modifyCssUrls from "gulp-modify-css-urls";
 
 const $ = gulpLoadPlugins();
 

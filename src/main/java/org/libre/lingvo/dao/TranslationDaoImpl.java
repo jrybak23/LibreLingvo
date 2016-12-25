@@ -1,6 +1,5 @@
 package org.libre.lingvo.dao;
 
-import org.hibernate.Criteria;
 import org.hibernate.criterion.ProjectionList;
 import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Restrictions;
@@ -13,6 +12,7 @@ import org.libre.lingvo.reference.TranslationSortFieldOptions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
+import javax.persistence.criteria.CriteriaQuery;
 import java.util.List;
 
 /**
@@ -20,7 +20,7 @@ import java.util.List;
  */
 @Repository
 public class TranslationDaoImpl extends GenericDaoImpl<Translation, Long> implements TranslationDao {
-    private final ProjectionList projectionList = Projections.projectionList()
+    private final ProjectionList langCodePairProjection = Projections.projectionList()
             .add(Projections.property("sw.langCode"), "source")
             .add(Projections.property("rw.langCode"), "result");
 
@@ -40,8 +40,7 @@ public class TranslationDaoImpl extends GenericDaoImpl<Translation, Long> implem
             TranslationSortFieldOptions sortFieldOption, Integer pageIndex,
             Integer maxRecords
     ) {
-        return translationFilterQueryBuilder
-                .setAction(TranslationFilterQueryBuilder.Action.SELECT)
+        CriteriaQuery<Translation> criteriaQuery = translationFilterQueryBuilder
                 .setUserId(userId)
                 .setSearchSubstring(searchSubstring)
                 .setPartOfSpeech(partOfSpeech)
@@ -51,10 +50,12 @@ public class TranslationDaoImpl extends GenericDaoImpl<Translation, Long> implem
                 .setTagIds(tagIds)
                 .setSortFieldOptions(sortFieldOption)
                 .setSortingOptions(sortingOption)
-                .build()
+                .build(Translation.class);
+
+      return   entityManager.createQuery(criteriaQuery)
                 .setFirstResult((pageIndex - 1) * maxRecords)
                 .setMaxResults(maxRecords)
-                .list();
+                .getResultList();
     }
 
     @Override
@@ -67,8 +68,7 @@ public class TranslationDaoImpl extends GenericDaoImpl<Translation, Long> implem
             Boolean learned,
             List<Long> tagIds) {
 
-        return (Long) translationFilterQueryBuilder
-                .setAction(TranslationFilterQueryBuilder.Action.COUNT)
+        CriteriaQuery<Long> criteriaQuery = translationFilterQueryBuilder
                 .setUserId(userId)
                 .setSearchSubstring(searchSubstring)
                 .setPartOfSpeech(partOfSpeech)
@@ -76,8 +76,9 @@ public class TranslationDaoImpl extends GenericDaoImpl<Translation, Long> implem
                 .setResultLangCode(resultLangCode)
                 .setLearned(learned)
                 .setTagIds(tagIds)
-                .build()
-                .uniqueResult();
+                .build(Long.class);
+
+        return entityManager.createQuery(criteriaQuery).getSingleResult();
     }
 
     @Override
@@ -152,7 +153,7 @@ public class TranslationDaoImpl extends GenericDaoImpl<Translation, Long> implem
                 .createAlias("sourceWord", "sw")
                 .createAlias("resultWord", "rw")
                 .add(Restrictions.eq("user.id", userId))
-                .setProjection(Projections.distinct(projectionList))
+                .setProjection(Projections.distinct(langCodePairProjection))
                 .setResultTransformer(Transformers.aliasToBean(LangCodesPairDto.class))
                 .list();
     }

@@ -7,8 +7,6 @@ import org.junit.Test;
 import org.libre.lingvo.entities.User;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import java.util.Optional;
-
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.Assert.*;
 

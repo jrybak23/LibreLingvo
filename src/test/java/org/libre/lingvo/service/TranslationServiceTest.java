@@ -18,9 +18,6 @@ import org.libre.lingvo.utils.dto.converters.TagDtoConverter;
 import org.libre.lingvo.utils.dto.converters.TranslationDtoConverter;
 import org.mockito.Mock;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.SpringApplicationConfiguration;
-import org.springframework.context.annotation.Import;
-import org.springframework.test.context.ContextConfiguration;
 
 import java.util.ArrayList;
 import java.util.List;

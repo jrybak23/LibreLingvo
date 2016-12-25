@@ -8,14 +8,11 @@ import org.libre.lingvo.entities.Word;
 import org.libre.lingvo.reference.PartOfSpeech;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import java.lang.reflect.Array;
 import java.util.Arrays;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.*;
 
 /**
  * Created by igorek2312 on 17.12.16.

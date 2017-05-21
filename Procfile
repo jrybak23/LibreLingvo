@@ -1,1 +1,1 @@
-web: build/install/LibreLingvo/bin/LibreLingvo
+web: java $JAVA_OPTS -Dserver.port=$PORT -jar build/libs/*.jar --spring.profiles.active=heroku

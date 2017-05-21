@@ -5,5 +5,6 @@
     <file url="file://$PROJECT_DIR$/src/test/resources/sql/mysql" dialect="GenericSQL" />
     <file url="file://$PROJECT_DIR$/src/test/resources/sql/mysql/schema.sql" dialect="H2" />
     <file url="file://$PROJECT_DIR$/src/test/resources/util-scripts.sql" dialect="MySQL" />
+    <file url="file://$USER_HOME$/temp/inserts/ad_1474123138a0068_translation.sql" dialect="MySQL" />
   </component>
 </project>

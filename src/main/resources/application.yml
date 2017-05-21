@@ -48,3 +48,11 @@ hibernate:
       auto: update
       import_files: null
       import_files_sql_extractor: null
+---
+spring:
+  profiles: heroku,jawsdb
+hibernate:
+  hbm2ddl:
+      auto: update
+      import_files: null
+      import_files_sql_extractor: null

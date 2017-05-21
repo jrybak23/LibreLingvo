@@ -3,7 +3,7 @@
  */
 'use strict'
 var HOSTING = true;
-var HOSTING_URL = 'http://libre-lingvo-org.cfapps.io';
+var HOSTING_URL = 'https://libre-lingvo.herokuapp.com/';
 var HOST_URL = HOSTING ? HOSTING_URL : 'http://localhost:8080';
 var BASE_URL = HOSTING ? HOSTING_URL : 'http://localhost:9000';
 

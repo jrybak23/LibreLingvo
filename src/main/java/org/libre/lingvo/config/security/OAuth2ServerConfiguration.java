@@ -64,7 +64,7 @@ public class OAuth2ServerConfiguration {
     }
 
     @Configuration
-    @Profile({"init", "dev", "cloud"})
+    @Profile({"init", "dev", "cloud","heroku","jawsdb"})
     @EnableAuthorizationServer
     @ComponentScan
     protected static class AuthorizationServerConfiguration extends AuthorizationServerConfigurerAdapter {

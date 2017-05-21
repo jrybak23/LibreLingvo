@@ -19,15 +19,6 @@ import org.springframework.scheduling.annotation.EnableScheduling;
 @ComponentScan
 public class GeneralConfig {
 
-    @Bean
-    public static PropertySourcesPlaceholderConfigurer properties() {
-        PropertySourcesPlaceholderConfigurer propertySourcesPlaceholderConfigurer = new PropertySourcesPlaceholderConfigurer();
-        YamlPropertiesFactoryBean yaml = new YamlPropertiesFactoryBean();
-        yaml.setResources(new ClassPathResource("credentials.yml"));
-        propertySourcesPlaceholderConfigurer.setProperties(yaml.getObject());
-        return propertySourcesPlaceholderConfigurer;
-    }
-
     @Bean(name = "main")
     public ModelMapper modelMapper() {
         return new ModelMapper();

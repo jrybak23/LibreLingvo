@@ -2,9 +2,9 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/.idea/modules/libre-lingvo.iml" filepath="$PROJECT_DIR$/.idea/modules/libre-lingvo.iml" />
-      <module fileurl="file://$PROJECT_DIR$/.idea/modules/libre-lingvo_main.iml" filepath="$PROJECT_DIR$/.idea/modules/libre-lingvo_main.iml" group="libre-lingvo" />
-      <module fileurl="file://$PROJECT_DIR$/.idea/modules/libre-lingvo_test.iml" filepath="$PROJECT_DIR$/.idea/modules/libre-lingvo_test.iml" group="libre-lingvo" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/LibreLingvo.iml" filepath="$PROJECT_DIR$/.idea/modules/LibreLingvo.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/LibreLingvo_main.iml" filepath="$PROJECT_DIR$/.idea/modules/LibreLingvo_main.iml" group="LibreLingvo" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/LibreLingvo_test.iml" filepath="$PROJECT_DIR$/.idea/modules/LibreLingvo_test.iml" group="LibreLingvo" />
     </modules>
   </component>
 </project>

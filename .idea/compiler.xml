@@ -13,6 +13,8 @@
       <module name="libre-lingvo_main" target="1.8" />
       <module name="libre-lingvo_test" target="1.8" />
       <module name="librelingvo_main" target="1.8" />
+      <module name="LibreLingvo_main" target="1.8" />
+      <module name="LibreLingvo_test" target="1.8" />
       <module name="librelingvo_test" target="1.8" />
     </bytecodeTargetLevel>
   </component>

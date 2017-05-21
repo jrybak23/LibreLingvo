@@ -20,7 +20,7 @@ import java.util.stream.Collectors;
  * Created by igorek2312 on 08.09.16.
  */
 @Service
-@Profile({"init", "dev", "cloud"})
+@Profile({"init", "dev", "cloud","heroku","jawsdb"})
 public class CustomUserDetailsService implements UserDetailsService {
     @Autowired
     private UserDao userDao;

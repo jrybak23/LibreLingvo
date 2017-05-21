@@ -83,4 +83,3 @@ dist/
 generated/
 generated_tests/
 src/main/resources/credentials.yml
-src/main/resources/static/
